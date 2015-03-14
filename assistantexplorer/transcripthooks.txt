@@ -1,0 +1,18 @@
+%hook SiriUITranscriptItem
+- (void)setAceObject:(AceObject * )aceObject { %log; %orig; }
+- (AceObject * )aceObject { %log; AceObject *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setItemIdentifier:(NSUUID * )itemIdentifier { %log; %orig; }
+- (NSUUID * )itemIdentifier { %log; NSUUID *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setViewController:(UIViewController<SiriUIViewController> * )viewController { %log; %orig; }
+- (UIViewController<SiriUIViewController> * )viewController { %log; UIViewController<SiriUIViewController> *  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
++ (id)transcriptItemWithAceObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void).cxx_destruct { %log; %orig; }
+- (id)aceObject { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)description { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)initWithAceObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)itemIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setAceObject:(id)arg1 { %log; %orig; }
+- (void)setItemIdentifier:(id)arg1 { %log; %orig; }
+- (void)setViewController:(id)arg1 { %log; %orig; }
+- (id)viewController { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+%end

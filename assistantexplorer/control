@@ -1,0 +1,9 @@
+Package: com.zaid.assistantexplorer
+Name: AssistantExplorer
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Zaid Elkurdi
+Author: Zaid Elkurdi
+Section: Tweaks

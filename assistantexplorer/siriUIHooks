@@ -1,0 +1,147 @@
+%hook SiriUIPluginManager
++ (id)sharedInstance { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void).cxx_destruct { %log; %orig; }
+- (id)_bundleSearchPaths { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_createDebugViewControllerForAceObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_loadBundleMapsIfNecessary { %log; %orig; }
+- (id)disambiguationItemForListItem:(id)arg1 disambiguationKey:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)speakableProviderForObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)transcriptItemForObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+%end
+%hook SiriUISnippetViewController
+- (void)setAceObject:(AceObject * )aceObject { %log; %orig; }
+- (AceObject * )aceObject { %log; AceObject *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setAttributedSubtitle:(NSAttributedString * )attributedSubtitle { %log; %orig; }
+- (NSAttributedString * )attributedSubtitle { %log; NSAttributedString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setCancelled:(bool )cancelled { %log; %orig; }
+- (bool )isCancelled { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)setConfirmed:(bool )confirmed { %log; %orig; }
+- (bool )isConfirmed { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (NSString * )debugDescription { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString * )description { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (unsigned long long )hash { %log; unsigned long long  r = %orig; NSLog(@" = %llu", r); return r; }
+- (void)setHeaderPunchOut:(SAUIAppPunchOut * )headerPunchOut { %log; %orig; }
+- (SAUIAppPunchOut * )headerPunchOut { %log; SAUIAppPunchOut *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setLoading:(bool )loading { %log; %orig; }
+- (bool )isLoading { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)setNavigationTitle:(NSString * )navigationTitle { %log; %orig; }
+- (NSString * )navigationTitle { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_setPreviousConfirmationOptions:(SAUIConfirmationOptions * )previousConfirmationOptions { %log; %orig; }
+- (SAUIConfirmationOptions * )_previousConfirmationOptions { %log; SAUIConfirmationOptions *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_setProvisional:(bool )provisional { %log; %orig; }
+- (bool )_isProvisional { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)setRequestContext:(NSArray * )requestContext { %log; %orig; }
+- (NSArray * )requestContext { %log; NSArray *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSnippet:(SAUISnippet * )snippet { %log; %orig; }
+- (SAUISnippet * )snippet { %log; SAUISnippet *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSnippetPunchOut:(SAUIAppPunchOut * )snippetPunchOut { %log; %orig; }
+- (SAUIAppPunchOut * )snippetPunchOut { %log; SAUIAppPunchOut *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSubtitle:(NSString * )subtitle { %log; %orig; }
+- (NSString * )subtitle { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (Class )superclass { %log; Class  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+- (void)setTitle:(NSString * )title { %log; %orig; }
+- (NSString * )title { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (bool )isVirgin { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)_setWillAnimateCancellation:(bool )willAnimateCancellation { %log; %orig; }
+- (bool )_willAnimateCancellation { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)_setWillAnimateConfirmation:(bool )willAnimateConfirmation { %log; %orig; }
+- (bool )_willAnimateConfirmation { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void).cxx_destruct { %log; %orig; }
+- (void)_cellDidLayoutSubviews { %log; %orig; }
+- (id)_createReusableViewIfNeededWithClass:(Class)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_footerView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (bool)_hasConfirmationButtons { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)_hasConfirmationOrCancelledInsets { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (id)_headerView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (long long)_insertionAnimation { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (bool)_isProvisional { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (long long)_pinAnimationType { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (id)_previousConfirmationOptions { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_privateDelegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (long long)_replacementAnimation { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (void)_setPreviousConfirmationOptions:(id)arg1 { %log; %orig; }
+- (void)_setProvisional:(bool)arg1 { %log; %orig; }
+- (void)_setVirgin:(bool)arg1 { %log; %orig; }
+- (void)_setWillAnimateCancellation:(bool)arg1 { %log; %orig; }
+- (void)_setWillAnimateConfirmation:(bool)arg1 { %log; %orig; }
+- (void)_snippetPunchOutButtonTapped { %log; %orig; }
+- (void)_snippetViewControllerWillBeRemoved { %log; %orig; }
+- (id)_transparentFooterView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_transparentHeaderView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (bool)_willAnimateCancellation { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)_willAnimateConfirmation { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (id)aceObject { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)attributedSubtitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)cancelButtonTapped:(id)arg1 { %log; %orig; }
+- (void)configureReusableFooterView:(id)arg1 { %log; %orig; }
+- (void)configureReusableHeaderView:(id)arg1 { %log; %orig; }
+- (void)configureReusableTransparentFooterView:(id)arg1 { %log; %orig; }
+- (void)configureReusableTransparentHeaderView:(id)arg1 { %log; %orig; }
+- (void)confirmButtonTapped:(id)arg1 { %log; %orig; }
+- (long long)defaultKeylineType { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (struct UIEdgeInsets { double x1; double x2; double x3; double x4; })defaultViewInsets { %log; struct UIEdgeInsets { double x1; double x2; double x3; double x4; } r = %orig; return r; }
+- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (double)desiredHeight { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForFooterView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForHeaderView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForTransparentFooterView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForTransparentHeaderView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (Class)footerViewClass { %log; Class r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+- (id)headerPunchOut { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)headerTapped:(id)arg1 { %log; %orig; }
+- (Class)headerViewClass { %log; Class r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+- (id)initWithNibName:(id)arg1 bundle:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (bool)isCancelled { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)isConfirmed { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)isFullPadWidth { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)isLoading { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)isVirgin { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (id)navigationTitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (bool)removedAfterDialogProgresses { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (id)requestContext { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setAceObject:(id)arg1 { %log; %orig; }
+- (void)setAttributedSubtitle:(id)arg1 { %log; %orig; }
+- (void)setCancelled:(bool)arg1 { %log; %orig; }
+- (void)setConfirmed:(bool)arg1 { %log; %orig; }
+- (void)setDefaultKeylineType:(long long)arg1 { %log; %orig; }
+- (void)setDefaultViewInsets:(struct UIEdgeInsets { double x1 { %log; %orig; }
+- (void)setDelegate:(id)arg1 { %log; %orig; }
+- (void)setHeaderPunchOut:(id)arg1 { %log; %orig; }
+- (void)setIsFullPadWidth:(bool)arg1 { %log; %orig; }
+- (void)setLoading:(bool)arg1 { %log; %orig; }
+- (void)setNavigationTitle:(id)arg1 { %log; %orig; }
+- (void)setRequestContext:(id)arg1 { %log; %orig; }
+- (void)setShowHeaderChevron:(bool)arg1 { %log; %orig; }
+- (void)setSnippet:(id)arg1 { %log; %orig; }
+- (void)setSnippetPunchOut:(id)arg1 { %log; %orig; }
+- (void)setSubtitle:(id)arg1 { %log; %orig; }
+- (void)setTopKeylineHidden:(bool)arg1 { %log; %orig; }
+- (void)setWantsConfirmationInsets:(bool)arg1 { %log; %orig; }
+- (bool)showHeaderChevron { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)siriDidDeactivate { %log; %orig; }
+- (void)siriDidLayoutSnippetView { %log; %orig; }
+- (void)siriWillActivateFromSource:(long long)arg1 { %log; %orig; }
+- (void)siriWillLayoutSnippetView { %log; %orig; }
+- (id)snippet { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)snippetPunchOut { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)subtitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (bool)topKeylineHidden { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (Class)transparentFooterViewClass { %log; Class r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+- (Class)transparentHeaderViewClass { %log; Class r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+- (bool)wantsConfirmationInsets { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)wasAddedToTranscript { %log; %orig; }
+- (void)willCancel { %log; %orig; }
+- (void)willConfirm { %log; %orig; }
+%end
+%hook SVSSnippetPluginBundle
+- (void)setBundle:(NSBundle * )bundle { %log; %orig; }
+- (NSBundle * )bundle { %log; NSBundle *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSnippetPlugin:(<SiriUISnippetPlugin> * )snippetPlugin { %log; %orig; }
+- (<SiriUISnippetPlugin> * )snippetPlugin { %log; <SiriUISnippetPlugin> *  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
++ (id)snippetPluginWithBundle:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void).cxx_destruct { %log; %orig; }
+- (id)bundle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setBundle:(id)arg1 { %log; %orig; }
+- (void)setSnippetPlugin:(id)arg1 { %log; %orig; }
+- (id)snippetPlugin { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+%end

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:AssistantHeaders.h">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantQueryParser.h">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantQueryParser.m">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantQueryHandler.h">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantQueryHandler.m">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantAceCommandBuilder.h">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantAceCommandBuilder.xm"
+      assignedFileDataType = "public.objective-c-source">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantMusicController.h">
+   </FileRef>
+   <FileRef
+      location = "group:AssistantMusicController.xm"
+      assignedFileDataType = "public.objective-c-source">
+   </FileRef>
+   <FileRef
+      location = "group:Tweak.xm"
+      assignedFileDataType = "public.objective-c-source">
+   </FileRef>
+   <FileRef
+      location = "group:HelloSnippetViewController.h">
+   </FileRef>
+   <FileRef
+      location = "group:HelloSnippetViewController.xm"
+      assignedFileDataType = "public.objective-c-source">
+   </FileRef>
+</Workspace>

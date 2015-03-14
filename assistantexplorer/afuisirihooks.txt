@@ -1,0 +1,101 @@
+%hook AFUISiriSession
+- (AFConnection * )_connection { %log; AFConnection *  r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString * )debugDescription { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setDelegate:(<AFUISiriSessionDelegate> * )delegate { %log; %orig; }
+- (<AFUISiriSessionDelegate> * )delegate { %log; <AFUISiriSessionDelegate> *  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+- (NSString * )description { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setEyesFree:(bool )eyesFree { %log; %orig; }
+- (bool )isEyesFree { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (unsigned long long )hash { %log; unsigned long long  r = %orig; NSLog(@" = %llu", r); return r; }
+- (Class )superclass { %log; Class  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
++ (unsigned long long)availabilityState { %log; unsigned long long r = %orig; NSLog(@" = %llu", r); return r; }
++ (void)beginMonitoringSiriAvailability { %log; %orig; }
++ (id)effectiveCoreLocationBundle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void).cxx_destruct { %log; %orig; }
+- (id)_connection { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_didChangeDialogPhase:(id)arg1 { %log; %orig; }
+- (void)_handleRequestUpdateViewsCommand:(id)arg1 { %log; %orig; }
+- (void)_handleUnlockDeviceCommand:(id)arg1 { %log; %orig; }
+- (bool)_hasActiveRequest { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)_outputVoiceDidChange:(id)arg1 { %log; %orig; }
+- (void)_performAceCommand:(id)arg1 forRequestUpdateViewsCommand:(id)arg2 afterDelay:(double)arg3 { %log; %orig; }
+- (void)_performBlockWithDelegate:(id)arg1 { %log; %orig; }
+- (void)_performTransitionForEvent:(long long)arg1 { %log; %orig; }
+- (id)_preparedSpeechRequestWithRequestOptions:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_requestContextWithCompletion:(id)arg1 { %log; %orig; }
+- (void)_requestDidFinishWithError:(id)arg1 { %log; %orig; }
+- (void)_requestWillStart { %log; %orig; }
+- (void)_siriNetworkAvailabilityDidChange:(id)arg1 { %log; %orig; }
+- (void)_startContinuityRequestWithInfo:(id)arg1 { %log; %orig; }
+- (void)_startDirectActionRequestWithString:(id)arg1 appID:(id)arg2 withMessagesContext:(id)arg3 { %log; %orig; }
+- (void)_startRequestWithBlock:(id)arg1 { %log; %orig; }
+- (void)_startRequestWithFinalOptions:(id)arg1 { %log; %orig; }
+- (void)_startRequestWithText:(id)arg1 { %log; %orig; }
+- (void)_startSpeechPronunciationRequestWithContext:(id)arg1 options:(id)arg2 { %log; %orig; }
+- (void)_startSpeechRequestWithOptions:(id)arg1 { %log; %orig; }
+- (void)_startSpeechRequestWithSpeechFileAtURL:(id)arg1 { %log; %orig; }
+- (long long)_state { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (id)_stateMachine { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_voiceOverStatusDidChange:(id)arg1 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 didChangeAudioSessionID:(unsigned int)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 didFinishAcousticIDRequestWithSuccess:(bool)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 openURL:(id)arg2 completion:(id)arg3 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 receivedCommand:(id)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 requestFailedWithError:(id)arg2 requestClass:(id)arg3 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 shouldSpeak:(bool)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 speechRecognized:(id)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 speechRecognizedPartialResult:(id)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 speechRecordingDidBeginOnAVRecordRoute:(id)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 speechRecordingDidChangeAVRecordRoute:(id)arg2 { %log; %orig; }
+- (void)assistantConnection:(id)arg1 speechRecordingDidFail:(id)arg2 { %log; %orig; }
+- (void)assistantConnectionDidChangeAudioRecordingPower:(id)arg1 { %log; %orig; }
+- (void)assistantConnectionDidDetectMusic:(id)arg1 { %log; %orig; }
+- (void)assistantConnectionDismissAssistant:(id)arg1 { %log; %orig; }
+- (void)assistantConnectionRequestFinished:(id)arg1 { %log; %orig; }
+- (void)assistantConnectionRequestWillStart:(id)arg1 { %log; %orig; }
+- (void)assistantConnectionSpeechRecordingDidCancel:(id)arg1 { %log; %orig; }
+- (void)assistantConnectionSpeechRecordingDidEnd:(id)arg1 { %log; %orig; }
+- (void)assistantConnectionSpeechRecordingWillBegin:(id)arg1 { %log; %orig; }
+- (void)cancelSpeechRequest { %log; %orig; }
+- (void)clearContext { %log; %orig; }
+- (void)dealloc { %log; %orig; }
+- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)end { %log; %orig; }
+- (void)forceAudioSessionActive { %log; %orig; }
+- (id)initWithConnection:(id)arg1 delegateQueue:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (bool)isEyesFree { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)isListening { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (bool)isPreventingActivationGesture { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+- (id)localDataSource { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)localDelegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)performAceCommand:(id)arg1 conflictHandler:(id)arg2 { %log; %orig; }
+- (void)performAceCommand:(id)arg1 { %log; %orig; }
+- (void)preheat { %log; %orig; }
+- (void)recordMetrics:(id)arg1 { %log; %orig; }
+- (float)recordingPowerLevel { %log; float r = %orig; NSLog(@" = %f", r); return r; }
+- (void)requestDidPresent { %log; %orig; }
+- (void)resetContext { %log; %orig; }
+- (void)resultDidChangeForAceCommand:(id)arg1 { %log; %orig; }
+- (void)rollbackClearContext { %log; %orig; }
+- (void)sendReplyCommand:(id)arg1 { %log; %orig; }
+- (void)setAlertContext { %log; %orig; }
+- (void)setApplicationContext { %log; %orig; }
+- (void)setDelegate:(id)arg1 { %log; %orig; }
+- (void)setEyesFree:(bool)arg1 { %log; %orig; }
+- (void)setIsStark:(bool)arg1 { %log; %orig; }
+- (void)setLocalDataSource:(id)arg1 { %log; %orig; }
+- (void)setLocalDelegate:(id)arg1 { %log; %orig; }
+- (void)setLockState:(unsigned long long)arg1 { %log; %orig; }
+- (void)setOverriddenApplicationContext:(id)arg1 withSMSContext:(id)arg2 { %log; %orig; }
+- (id)speechSynthesis { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)speechSynthesisWillStartSpeaking:(id)arg1 { %log; %orig; }
+- (void)startCorrectedRequestWithText:(id)arg1 correctionIdentifier:(id)arg2 { %log; %orig; }
+- (void)startRequestWithOptions:(id)arg1 { %log; %orig; }
+- (id)stateMachine:(id)arg1 descriptionForEvent:(long long)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)stateMachine:(id)arg1 didTransitionFromState:(long long)arg2 forEvent:(long long)arg3 { %log; %orig; }
+- (void)stopRecordingSpeech { %log; %orig; }
+- (void)stopRequestWithOptions:(id)arg1 { %log; %orig; }
+- (void)telephonyRequestCompleted { %log; %orig; }
+- (id)underlyingConnection { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)updateRequestOptions:(id)arg1 { %log; %orig; }
+%end

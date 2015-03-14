@@ -1,0 +1,69 @@
+%hook SBUIPluginHost
+- (void)setPluginController:(SBUIPluginController *)pluginController { %log; %orig; }
+- (SBUIPluginController *)pluginController { %log; SBUIPluginController * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)uiPlugin:(id)arg1 forceUpdateToInterfaceOrientation:(long long)arg2 animated:(_Bool)arg3 { %log; %orig; }
+- (void)uiPluginUserEventOccurred:(id)arg1 { %log; %orig; }
+- (_Bool)uiPlugin:(id)arg1 openURL:(id)arg2 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)uiPlugin:(id)arg1 launchApplicationWithBundleID:(id)arg2 openURL:(id)arg3 allowDismissal:(_Bool)arg4 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)uiPlugin:(id)arg1 launchApplicationWithBundleID:(id)arg2 openURL:(id)arg3 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)uiPlugin:(id)arg1 setExpectsFaceContact:(_Bool)arg2 { %log; %orig; }
+- (void)_updateFaceContactForVisibilityChange:(_Bool)arg1 { %log; %orig; }
+- (_Bool)uiPluginExpectsFaceContact:(id)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)uiPlugin:(id)arg1 isNowRunning:(_Bool)arg2 { %log; %orig; }
+- (void)_updateExpectsFaceContactWithChangedValue:(_Bool)arg1 { %log; %orig; }
+- (_Bool)uiPluginWantsActivation:(id)arg1 forEvent:(int)arg2 completion:(CDUnknownBlockType)arg3 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)uiPluginAttemptDeviceUnlock:(id)arg1 withPassword:(id)arg2 lockViewOwner:(id)arg3 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)uiPluginWantsDismissal:(id)arg1 withAnimation:(_Bool)arg2 { %log; %orig; }
+- (_Bool)pluginSuppressesNotifications { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)pluginWantsScreenDimInterval:(double *)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)pluginWantsInterfaceOrientation:(long long *)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)pluginHandledButtonTapEventFromSource:(int)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)pluginHandledButtonUpEventFromSource:(int)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)pluginHandledButtonDownEventFromSource:(int)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)pluginHandledPasscodeUnlockWithCompletion:(CDUnknownBlockType)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)dismissPluginForEvent:(int)arg1 { %log; %orig; }
+- (void)_dismissUIPlugin:(id)arg1 animated:(_Bool)arg2 { %log; %orig; }
+- (void)cancelPendingPluginActivationEvent:(int)arg1 { %log; %orig; }
+- (void)preparePluginForActivationEvent:(int)arg1 eventSource:(int)arg2 afterInterval:(double)arg3 { %log; %orig; }
+- (_Bool)pluginWantsActivationEvent:(int)arg1 eventSource:(int)arg2 interval:(double *)arg3 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)activatePluginForEvent:(int)arg1 eventSource:(int)arg2 context:(void *)arg3 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)expectsFaceContact { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool )isPluginRunning { %log; _Bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool )isPluginVisible { %log; _Bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)_notePluginVisibilityDidChange { %log; %orig; }
+- (void)_restoreOrientation { %log; %orig; }
+- (void)_remoteLocked:(id)arg1 { %log; %orig; }
+- (void)_deviceBlocked:(id)arg1 { %log; %orig; }
+- (void)_uiLocked:(id)arg1 { %log; %orig; }
+- (void)_noteDeviceLockedOrBlocked { %log; %orig; }
+- (void)_pluginWillUnload:(id)arg1 { %log; %orig; }
+- (void)_pluginDidLoad:(id)arg1 { %log; %orig; }
+- (void)_removeObserversForPlugin:(id)arg1 { %log; %orig; }
+- (_Bool)pluginSupportedAndEnabled { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)dealloc { %log; %orig; }
+- (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString *)debugDescription { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString *)description { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (unsigned long long )hash { %log; unsigned long long  r = %orig; NSLog(@" = %llu", r); return r; }
+- (Class )superclass { %log; Class  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+%end
+%hook SBUIPluginManager
++ (id)sharedInstance { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setHostPendingActivation:(SBUIPluginHost *)hostPendingActivation { %log; %orig; }
+- (SBUIPluginHost *)hostPendingActivation { %log; SBUIPluginHost * r = %orig; NSLog(@" = %@", r); return r; }
+- (_Bool)overrideScreenDimInterval:(double *)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)suppressingNotifications { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)overrideInterfaceOrientation:(long long *)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)handleActivationEvent:(int)arg1 eventSource:(int)arg2 withContext:(id)arg3 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (void)cancelPendingActivationEvent:(int)arg1 { %log; %orig; }
+- (void)prepareForActivationEvent:(int)arg1 eventSource:(int)arg2 afterInterval:(double)arg3 { %log; %orig; }
+- (_Bool)wantsActivationEvent:(int)arg1 eventSource:(int)arg2 interval:(double *)arg3 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)handleButtonTapFromSource:(int)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)handleButtonUpEventFromSource:(int)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (_Bool)handleButtonDownEventFromSource:(int)arg1 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (id)loadedUIPluginHosts { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_loadedUIPluginHostsVisible:(_Bool)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)loadedUIPlugins { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (_Bool)unloadUIPlugin:(id)arg1 forHost:(id)arg2 { %log; _Bool r = %orig; NSLog(@" = %d", r); return r; }
+- (id)loadUIPluginNamed:(id)arg1 withHost:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+%end

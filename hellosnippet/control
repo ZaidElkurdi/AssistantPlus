@@ -1,0 +1,9 @@
+Package: com.zaid.hellosnippet
+Name: HelloSnippet
+Depends: firmware (>= 8.0), com.zaid.assistant+
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Displays a custom snippet in response to "Hello"
+Maintainer: Zaid Elkurdi
+Author: Zaid Elkurdi
+Section: Addons (AssistantPlus)

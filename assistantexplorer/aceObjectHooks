@@ -1,0 +1,51 @@
+%hook AceObject
++ (id)aceObjectWithPlistData:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)dictionaryWithAceObjectDictionary:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)dictionaryArrayWithAceObjectArray:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceObjectDictionaryWithDictionary:(id)arg1 baseProtocol:(id)arg2 context:(id)arg3 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceObjectArrayWithDictionaryArray:(id)arg1 baseProtocol:(id)arg2 context:(id)arg3 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceObjectDictionaryWithDictionary:(id)arg1 baseClass:(Class)arg2 context:(id)arg3 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceObjectArrayWithDictionaryArray:(id)arg1 baseClass:(Class)arg2 context:(id)arg3 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)_newAceObjectWithMutableDictionary:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)_aceObjectWithMutableDictionary:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)newAceObjectWithDictionary:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)newAceObjectWithGenericCommand:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceObjectWithDictionary:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceObjectWithGenericCommand:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (BOOL)supportsSecureCoding { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+- (NSMutableDictionary *)dict { %log; NSMutableDictionary * r = %orig; NSLog(@" = %@", r); return r; }
+- (NSData *)plistData { %log; NSData * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setRefId:(NSString *)refId { %log; %orig; }
+- (NSString *)refId { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setAceId:(NSString *)aceId { %log; %orig; }
+- (NSString *)aceId { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (unsigned int )hash { %log; unsigned int  r = %orig; NSLog(@" = %u", r); return r; }
+- (BOOL)isEqual:(id)arg1 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+- (id)mutableCopyWithZone:(struct _NSZone *)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)copyWithZone:(struct _NSZone *)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_appendDescriptionOfObject:(id)arg1 toString:(id)arg2 atDepth:(int)arg3 withPrefixes:(id)arg4 { %log; %orig; }
+- (NSString *)description { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_serializedData { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)forceEagerDeserialization { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (BOOL)hasArrayForPropertyForKey:(id)arg1 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+- (id)topLevelPropertyForKey:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)propertyForKey:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setProperty:(id)arg1 forKey:(id)arg2 { %log; %orig; }
+- (void)setTopLevelProperty:(id)arg1 forKey:(id)arg2 { %log; %orig; }
+- (id)properties { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)dictionary { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)groupIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)encodedClassName { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_dict { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)_deserializeFromPlistData { %log; %orig; }
+- (id)_initWithMutableDictionary:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)initWithDictionary:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)initWithDictionary:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)_initWithPlistData:(id)arg1 aceId:(id)arg2 refId:(id)arg3 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)dealloc { %log; %orig; }
+- (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)encodeWithCoder:(id)arg1 { %log; %orig; }
+- (id)initWithCoder:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString *)debugDescription { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (Class )superclass { %log; Class  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+%end

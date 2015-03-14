@@ -1,0 +1,20 @@
+%hook SAAceView
++ (id)aceViewWithDictionary:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setViewId:(NSString *)viewId { %log; %orig; }
+- (NSString *)viewId { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSpeakableText:(NSString *)speakableText { %log; %orig; }
+- (NSString *)speakableText { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setListenAfterSpeaking:(NSNumber *)listenAfterSpeaking { %log; %orig; }
+- (NSNumber *)listenAfterSpeaking { %log; NSNumber * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setDeferredRendering:(BOOL )deferredRendering { %log; %orig; }
+- (BOOL )deferredRendering { %log; BOOL  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)setContext:(id <SAAceSerializable> )context { %log; %orig; }
+- (id <SAAceSerializable> )context { %log; id <SAAceSerializable>  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+- (id)encodedClassName { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)groupIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString *)debugDescription { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString *)description { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (unsigned int )hash { %log; unsigned int  r = %orig; NSLog(@" = %u", r); return r; }
+- (Class )superclass { %log; Class  r = %orig; NSLog(@" = 0x%x", (unsigned int)r); return r; }
+%end
