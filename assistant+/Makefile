@@ -6,12 +6,15 @@ export SDKVERSION=8.1
 
 TWEAK_NAME = Assistant+
 
-Assistant+_FILES = AssistantHooks.xm APSession.xm APPluginManager.mm APPlugin.m
+Assistant+_FILES = AssistantHooks.xm assistantpluspluginmanager/APSession.xm
+
 Assistant+_FRAMEWORKS = Foundation UIKit CoreFoundation Accounts CoreLocation
 Assistant+_PRIVATE_FRAMEWORKS = AssistantServices SAObjects
-Assistant+_CODESIGN_FLAGS = -SEntitlements.plist
+Assistant+_LIBRARIES=substrate objcipc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 after-install::
 	install.exec "killall -9 SpringBoard"
+SUBPROJECTS += assistantpluspluginmanager
+include $(THEOS_MAKE_PATH)/aggregate.mk

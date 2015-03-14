@@ -6,6 +6,7 @@
 //
 //
 
+#import "APSession.h"
 #import "AssistantHeaders.h"
 
 #ifndef _AssistantPlusHeaders_h

@@ -11,9 +11,7 @@
 
 #define PLUGIN_PATH "/Library/AssistantPlusPlugins/"
 
-@implementation APPluginManager {
-  NSMutableArray *plugins;
-}
+@implementation APPluginManager
 
 + (id)sharedManager {
   static APPluginManager *sharedManager = nil;
@@ -31,7 +29,7 @@
 }
 
 - (BOOL)loadPlugins {
-  plugins = [[[[NSMutableArray alloc] init] retain] autorelease];
+  plugins = [[NSMutableArray alloc] init];
   
   NSURL *directoryPath = [NSURL URLWithString:@PLUGIN_PATH];
   
@@ -48,10 +46,11 @@
     NSString *name = [[[fileURL absoluteString] lastPathComponent] stringByDeletingPathExtension];
     
     NSLog(@"Loading %@ at %@", name, fileURL);
-    APPlugin *currPlugin = [[[APPlugin alloc] initWithFilePath:fileURL andName:name] autorelease];
+    APPlugin *currPlugin = [[APPlugin alloc] initWithFilePath:fileURL andName:name];
     
     if (currPlugin != nil) {
       [plugins addObject:currPlugin];
+      //Need to release currPlugin?
     }
   }
   
@@ -59,11 +58,14 @@
 }
 
 - (BOOL)handleCommand:(NSString*)command withSession:(APSession*)currSession {
+  [currSession sendSnippetWithText:@"Shit!"];
   NSLog(@"Looking for command to handle: %@", command);
   NSLog(@"There are currently %lu plugins registered: %@", (unsigned long)plugins.count, plugins);
   for (APPlugin *currPlugin in plugins) {
+    NSLog(@"Currently on: %@:%@", currPlugin, [currPlugin displayName]);
     if ([currPlugin handleSpeech:command forSession:currSession]) {
-      NSLog(@"%@ is handling command: %@", currPlugin.pluginName, command);
+      NSLog(@"%@ is handling command: %@", [currPlugin displayName], command);
+      return YES;
     }
   }
   return NO;

@@ -18,6 +18,15 @@
 }
 
 -(BOOL)handleSpeech:(NSString*)text session:(APSession*)session {
+  if ([[text lowercaseString] rangeOfString:@"hello"].location != NSNotFound) {
+    [session sendSnippetWithText:@"Fuck!"];
+  } else if ([[text lowercaseString] rangeOfString:@"test"].location != NSNotFound) {
+    [session sendSnippetWithText:@"Shit!"];
+  } else {
+    [session sendSnippetWithText:@"Bitch!"];
+  }
+  
+  return YES;
 	// logging useful during development
 	NSLog(@">> APHelloSnippetCommands handleSpeech: %@", text);
 

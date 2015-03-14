@@ -8,7 +8,9 @@
 
 #import "APSession.h"
 
-@interface APPluginManager : NSObject
+@interface APPluginManager : NSObject {
+  NSMutableArray *plugins;
+}
 + (id)sharedManager;
 - (BOOL)loadPlugins;
 - (BOOL)handleCommand:(NSString*)command withSession:(APSession*)currSession;

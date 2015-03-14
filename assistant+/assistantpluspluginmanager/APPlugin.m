@@ -8,76 +8,76 @@
 
 #import "APPlugin.h"
 
-@interface APPlugin()
-@property (strong, nonatomic) NSBundle *bundle;
-@property (nonatomic) BOOL isInitialized;
-
-@property (strong, nonatomic) NSString *name;
-@property (strong, nonatomic) NSString *displayName;
-@property (strong, nonatomic) NSString *bundleName;
-@property (strong, nonatomic) NSString *pluginDescription;
-@property (strong, nonatomic) NSString *author;
-@property (strong, nonatomic) NSString *identifier;
-
-@property (strong, nonatomic) NSMutableArray *commands;
-@property (strong, nonatomic) NSMutableSet *snippets;
-
-@end
-
 @implementation APPlugin
 
-- (id)initWithFilePath:(NSURL*)filePath andName:(NSString*)name {
+- (id)initWithFilePath:(NSURL*)filePath andName:(NSString*)fileName {
   if ((self = [super init])) {
-    self.bundle = [[NSBundle bundleWithURL:filePath] retain];
-    if (!self.bundle) {
-      NSLog(@"Failed to open extension bundle %@ (%@)!", name, filePath);
+    
+    commands = [[NSMutableArray alloc] init];
+    snippets = [[NSMutableSet alloc] init];
+    
+    NSLog(@"Commnds just created: %@", commands);
+    
+    bundle = [[NSBundle bundleWithURL:filePath] retain];
+    if (!bundle) {
+      NSLog(@"Failed to open extension bundle %@ (%@)!", fileName, filePath);
       [self release];
       return nil;
     }
     
-    if (![self.bundle load]) {
+    if (![bundle load]) {
       NSLog(@"Failed to load extension bundle %@ (wrong CFBundleExecutable? Missing? Not signed?)!", name);
       [self release];
       return nil;
+    } else {
+      NSLog(@"Loaded bundle!");
     }
     
     //load principal class
-    Class principal = [self.bundle principalClass];
+    Class principal = [bundle principalClass];
     if (!principal) {
-      NSLog(@"Plugin %@ doesn't provide a NSPrincipalClass!", name);
+      NSLog(@"Plugin %@ doesn't provide a NSPrincipalClass!", fileName);
       [self release];
       return nil;
+    } else {
+      NSLog(@"has principal!");
     }
     
-    self.pluginClass = [[principal alloc] initWithSystem:self];
-    if (!self.pluginClass) {
-      NSLog(@"Failed to initialize NSPrincipalClass from plugin %@!", name);
+    pluginClass = [[principal alloc] initWithSystem:self];
+    if (!pluginClass) {
+      NSLog(@"Failed to initialize NSPrincipalClass from plugin %@!", fileName);
       [self release];
       return nil;
+    } else {
+      NSLog(@"has pluginClass!");
     }
-    
-    self.commands = [[NSMutableArray alloc] init];
-    self.snippets = [[NSMutableSet alloc] init];
     
     // get extension info
-    self.displayName = [[[_bundle infoDictionary] objectForKey:@"APPluginName"] copy];
-    if (!self.displayName) {
-      self.displayName = name;
-    }
+    displayName = @"FuckerShit";
+//    displayName = [[[_bundle infoDictionary] objectForKey:@"APPluginName"] copy];
+//    if (!displayName) {
+//      displayName = name;
+//    }
     
-    self.author = [[self.bundle objectForInfoDictionaryKey:@"PluginAuthor"] copy];
-    self.pluginDescription = [[self.bundle objectForInfoDictionaryKey:@"PluginDescription"] copy];
-    self.identifier = [[self.bundle objectForInfoDictionaryKey:@"CFBundleIdentifier"] copy];
+    author = [[bundle objectForInfoDictionaryKey:@"PluginAuthor"] copy];
+    pluginDescription = [[bundle objectForInfoDictionaryKey:@"PluginDescription"] copy];
+    identifier = [[bundle objectForInfoDictionaryKey:@"CFBundleIdentifier"] copy];
+    pluginName = fileName;
     
-    self.bundleName = [name copy];
-    self.isInitialized = YES;
+    bundleName = [name copy];
+    isInitialized = YES;
   }
   
+  NSLog(@"Loaded Plugin: %@", self);
   return self;
 }
 
+-(NSString*)displayName {
+  return displayName;
+}
+
 - (BOOL)handleSpeech:(NSString*)text forSession:(APSession*)currSession {
-  for (NSObject<APPluginCommand>* cmd in self.commands) {
+  for (NSObject<APPluginCommand>* cmd in commands) {
     if ([cmd respondsToSelector:@selector(handleSpeech:session:)]) {
       if ([cmd handleSpeech:text session:currSession]) {
         return YES;
@@ -93,7 +93,7 @@
 #pragma mark - Snippet Presentation
 
 -(NSObject<APPluginSnippet>*)allocSnippet:(NSString*)snippetClass properties:(NSDictionary *)props {
-  if ([self.snippets containsObject:snippetClass]) {
+  if ([snippets containsObject:snippetClass]) {
     NSObject<APPluginSnippet>* snip = [NSClassFromString(snippetClass) alloc];
     
     id initRes = nil;
@@ -142,10 +142,11 @@
     return NO;
   }
   
-  [self.commands addObject:inst];
+  
+  [commands addObject:inst];
   [inst release];
   
-  NSLog(@"Registered Command %@", className);
+  NSLog(@"Registered Command %@, commands is now: %@", className, commands);
   
   return YES;
 }
@@ -158,8 +159,8 @@
     return NO;
   }
   
-  NSLog(@"Registered snippet %@", className);
-  [self.snippets addObject:className];
+  NSLog(@"Registered snippet %@, snippets is now %@", className, snippets);
+  [snippets addObject:className];
   
   return YES;
 }

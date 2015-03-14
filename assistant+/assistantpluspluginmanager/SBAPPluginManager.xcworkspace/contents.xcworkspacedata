@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:APPlugin.h">
+   </FileRef>
+   <FileRef
+      location = "container:APPlugin.m">
+   </FileRef>
+   <FileRef
+      location = "container:APPluginManager.h">
+   </FileRef>
+   <FileRef
+      location = "container:APPluginManager.mm">
+   </FileRef>
+   <FileRef
+      location = "container:APPluginSnippetViewController.xm">
+   </FileRef>
+   <FileRef
+      location = "container:APSession.h">
+   </FileRef>
+   <FileRef
+      location = "container:APSession.xm">
+   </FileRef>
+   <FileRef
+      location = "container:AssistantHeaders.h">
+   </FileRef>
+   <FileRef
+      location = "container:AssistantPlusHeaders.h">
+   </FileRef>
+   <FileRef
+      location = "container:Makefile">
+   </FileRef>
+   <FileRef
+      location = "container:Tweak.xm"
+      assignedFileDataType = "public.objective-c-source">
+   </FileRef>
+</Workspace>
