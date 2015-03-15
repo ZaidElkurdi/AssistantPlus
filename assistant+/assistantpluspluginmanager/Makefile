@@ -1,7 +1,9 @@
 include theos/makefiles/common.mk
 
 TWEAK_NAME = AssistantPlusPluginManager
-AssistantPlusPluginManager_FILES = Tweak.xm APSession.xm APPluginManager.mm APPlugin.m
+AssistantPlusPluginManager_FILES = Tweak.xm APSession.xm APPluginManager.mm APPlugin.m APPluginSnippetViewController.xm
+AssistantPlusPluginManager_PRIVATE_FRAMEWORKS = AssistantServices SAObjects
+AssistantPlusPluginManager_FRAMEWORKS = Foundation UIKit
 AssistantPlusPluginManager_LIBRARIES=substrate objcipc
 
 include $(THEOS_MAKE_PATH)/tweak.mk

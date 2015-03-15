@@ -9,6 +9,9 @@
 #ifndef _AssistantPlusHeaders_h
 #define _AssistantPlusHeaders_h
 
+@interface SOObject : NSObject
+@end
+
 @interface AceObject : NSObject
 @property(copy, nonatomic) NSString *refId;
 @property(copy, nonatomic) NSString *aceId;
@@ -17,6 +20,11 @@
 
 @interface APSession : NSObject
 - (void)sendSnippetWithText:(NSString*)text;
+- (void)sendAddViews:(NSArray*)views;
+-(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
+- (void)sendSnippetForViewController:(NSString*)snippetClass withProperties:(NSDictionary*)props;
+- (void)sendRequestCompleted;
+-(SOObject*)createAssistantUtteranceView:(NSString*)text;
 @end
 
 @protocol APPluginManager <NSObject>
@@ -49,15 +57,12 @@
 
 @protocol APPluginSnippet <SiriUIViewController>
 @optional
+-(id)view;
 /// Initializes a snippet by properties
 -(id)initWithProperties:(NSDictionary*)props;
 /// Initializes a snippet by properties and system
 -(id)initWithProperties:(NSDictionary*)props system:(id<APPluginManager>)system;
 /// Returns a view representing snippet, can be self if the conforming class is already UIView
-
-@end
-
-@interface APPluginSnippetViewController : UIViewController <APPluginSnippet>
 
 @end
 

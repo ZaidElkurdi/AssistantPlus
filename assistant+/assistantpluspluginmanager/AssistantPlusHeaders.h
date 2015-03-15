@@ -27,6 +27,7 @@
 
 @protocol APPluginSnippet <SiriUIViewController>
 @optional
+-(id)customView;
 /// Initializes a snippet by properties
 -(id)initWithProperties:(NSDictionary*)props;
 /// Initializes a snippet by properties and system
@@ -36,7 +37,7 @@
 @end
 
 @interface APPluginSnippetViewController : UIViewController <APPluginSnippet>
-
+-(void)setCustomView:(UIView*)newVC;
 @end
 
 

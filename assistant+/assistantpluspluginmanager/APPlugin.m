@@ -76,6 +76,11 @@
   return displayName;
 }
 
+- (NSSet*)getRegisteredSnippets {
+  NSLog(@"Registered Snippets: %@", snippets);
+  return snippets;
+}
+
 - (BOOL)handleSpeech:(NSString*)text forSession:(APSession*)currSession {
   for (NSObject<APPluginCommand>* cmd in commands) {
     if ([cmd respondsToSelector:@selector(handleSpeech:session:)]) {
@@ -159,9 +164,11 @@
     return NO;
   }
   
-  NSLog(@"Registered snippet %@, snippets is now %@", className, snippets);
-  [snippets addObject:className];
+  id helloClass = [[NSClassFromString(className) alloc] init];
+  NSLog(@"Snippet Initalized: %@", helloClass);
   
+  [snippets addObject:className];
+  NSLog(@"Registered snippet %@, snippets is now %@", className, snippets);
   return YES;
 }
 
@@ -172,5 +179,6 @@
 -(NSString*)localizedString:(NSString*)text {
   return text;
 }
+
 
 @end

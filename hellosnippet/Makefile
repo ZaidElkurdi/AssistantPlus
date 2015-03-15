@@ -6,7 +6,7 @@ export SDKVERSION=8.1
 
 BUNDLE_NAME = HelloSnippet
 HelloSnippet_BUNDLE_EXTENSION = assistantPlugin
-HelloSnippet_FILES = APHelloSnippet.mm APHelloSnippetCommands.mm APHelloSnippetViewController.mm
+HelloSnippet_FILES = APHelloSnippet.mm APHelloSnippetCommands.mm APHelloSnippetView.mm
 HelloSnippet_INSTALL_PATH = /Library/AssistantPlusPlugins/
 HelloSnippet_FRAMEWORKS = UIKit CoreGraphics
 

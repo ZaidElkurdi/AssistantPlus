@@ -8,7 +8,7 @@
 
 #import "AssistantPlusHeaders.h"
 
-@interface APHelloSnippetViewController : UIViewController <APPluginSnippet>
+@interface APHelloSnippetView : NSObject<APPluginSnippet>
 @property (nonatomic,retain) AceObject *aceObject;
 -(id)initWithProperties:(NSDictionary*)props;
 @end

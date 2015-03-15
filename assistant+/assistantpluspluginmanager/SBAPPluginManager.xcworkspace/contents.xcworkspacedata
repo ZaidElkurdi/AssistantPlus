@@ -14,13 +14,15 @@
       location = "container:APPluginManager.mm">
    </FileRef>
    <FileRef
-      location = "container:APPluginSnippetViewController.xm">
+      location = "container:APPluginSnippetViewController.xm"
+      assignedFileDataType = "public.objective-c-source">
    </FileRef>
    <FileRef
       location = "container:APSession.h">
    </FileRef>
    <FileRef
-      location = "container:APSession.xm">
+      location = "container:APSession.xm"
+      assignedFileDataType = "public.objective-c-source">
    </FileRef>
    <FileRef
       location = "container:AssistantHeaders.h">
@@ -33,6 +35,10 @@
    </FileRef>
    <FileRef
       location = "container:Tweak.xm"
+      assignedFileDataType = "public.objective-c-source">
+   </FileRef>
+   <FileRef
+      location = "group:../AssistantHooks.xm"
       assignedFileDataType = "public.objective-c-source">
    </FileRef>
 </Workspace>

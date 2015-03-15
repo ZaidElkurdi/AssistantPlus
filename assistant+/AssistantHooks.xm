@@ -28,8 +28,41 @@
 @end
 
 static BOOL defaultHandling = YES;
-//static AFConnection *currConnection;
+static AFConnection *currConnection;
+static APPluginManager *pluginManager;
 
+%hook BasicAceContext
+- (void)registerGroupAcronym:(id)arg1 forGroupWithIdentifier:(id)arg2 {
+  NSMutableDictionary *groupMaps;
+  object_getInstanceVariable(self, "_groupMap", (void **)&groupMaps);
+  NSLog(@"Group Map: %@", groupMaps);
+  %log;
+  %orig;
+}
++ (id)sharedBasicAceContext {
+  %log;
+  id r = %orig;
+  NSLog(@"CWC: %@", r);
+  return r;
+}
+
+- (id)aceObjectWithDictionary:(id)arg1 {
+  %log;
+  id r = %orig;
+  NSLog(@"CWC: %@", r);
+  return r;
+}
+- (Class)classWithClassName:(NSString*)name group:(NSString*)group {
+  %log;
+  id r = %orig;
+  if ([name isEqualToString:@"SnippetObject"] && [group isEqualToString:@"zaid.assistantplus.plugin"]) {
+    r = NSClassFromString(@"SAUISnippet");
+  }
+  NSLog(@"CWC: %@", r);
+  return r;
+}
+
+%end
 //%hook AFUISiriSession
 //- (AFConnection * )_connection { %log; AFConnection *  r = %orig; NSLog(@" = %@", r); return r; }
 //- (NSString * )debugDescription { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
@@ -131,113 +164,143 @@ static BOOL defaultHandling = YES;
 //%end
 
 
-//%hook SAAceView
-//+ (id)aceViewWithDictionary:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//+ (id)aceView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setViewId:(NSString *)viewId { %log; %orig; }
-//- (NSString *)viewId { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setSpeakableText:(NSString *)speakableText { %log; %orig; }
-//- (NSString *)speakableText { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setListenAfterSpeaking:(NSNumber *)listenAfterSpeaking { %log; %orig; }
-//- (NSNumber *)listenAfterSpeaking { %log; NSNumber * r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setDeferredRendering:(BOOL )deferredRendering { %log; %orig; }
-//- (BOOL )deferredRendering { %log; BOOL  r = %orig; NSLog(@" = %d", r); return r; }
-//- (void)setContext:(id)context { %log; %orig; }
-//- (id)context { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (id)encodedClassName { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (id)groupIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (NSString *)debugDescription { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
-//- (NSString *)description { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
-//%end
+%hook SAAceView
++ (id)aceViewWithDictionary:(id)arg1 context:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)aceView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setViewId:(NSString *)viewId { %log; %orig; }
+- (NSString *)viewId { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSpeakableText:(NSString *)speakableText { %log; %orig; }
+- (NSString *)speakableText { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setListenAfterSpeaking:(NSNumber *)listenAfterSpeaking { %log; %orig; }
+- (NSNumber *)listenAfterSpeaking { %log; NSNumber * r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setDeferredRendering:(BOOL )deferredRendering { %log; %orig; }
+- (BOOL )deferredRendering { %log; BOOL  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)setContext:(id)context { %log; %orig; }
+- (id)context { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)encodedClassName { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)groupIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString *)debugDescription { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString *)description { %log; NSString * r = %orig; NSLog(@" = %@", r); return r; }
+%end
 //
-//%hook SiriUIPluginManager
+%hook SiriUIPluginManager
 //
 //- (id)disambiguationItemForListItem:(id)arg1 disambiguationKey:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 //- (id)speakableProviderForObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-//- (id)transcriptItemForObject:(AceObject*)arg1 {
-//  NSLog(@"ARG1 is: %@", arg1);
-//  %log;
-//  //  return %orig;
+- (id)transcriptItemForObject:(AceObject*)arg1 {
+  NSLog(@"new manager: %@ and self:%@", [%c(APPluginManager) sharedManager], self);
+  NSDictionary *properties = [arg1 properties];
+  if (properties) {
+    NSString *className = properties[@"snippetClass"];
+    if (className) {
+      NSLog(@"Looking for %@", className);
+      if (true) {
+        id<APPluginSnippet> helloClass = [[NSClassFromString(className) alloc] init];
+        NSLog(@"Hello: %@", helloClass);
+        UIView *customVC = [helloClass customView];
+        NSLog(@"Custom: %@ %@", customVC, customVC.backgroundColor);
+        SiriUISnippetViewController *vc = [[%c(SiriUISnippetViewController) alloc] init];
+        NSLog(@"SiriSnippet: %@", vc);
+        NSLog(@"BREAK -- 1 --");
+        NSLog(@"Intermediary: %@", [%c(APPluginSnippetViewController) class]);
+        object_setClass(vc, [%c(APPluginSnippetViewController) class]);
+        NSLog(@"View was: %@", (APPluginSnippetViewController*)vc.view);
+        [(APPluginSnippetViewController*)vc setCustomView:customVC];
+        NSLog(@"View is now: %@", (APPluginSnippetViewController*)vc.view);
+        NSLog(@"BREAK -- 2 --");
+        SiriUITranscriptItem *item = [%c(SiriUITranscriptItem) transcriptItemWithAceObject:arg1];
+        NSLog(@"BREAK -- 3 --");
+        item.viewController = vc;
+        NSLog(@"SiriUITranscriptItem: %@", item);
+        return item;
+      } else {
+        NSLog(@"Found no VC!");
+      }
+    } else {
+      NSLog(@"No class!");
+    }
+  } else {
+    NSLog(@"No properties!");
+  }
+  id r = %orig;
+  return r;
+}
 //  
-//  SiriUISnippetViewController *vc = [[%c(SiriUISnippetViewController) alloc] init];
-//  object_setClass(vc, [%c(HelloSnippetViewController) class]);
-//  SiriUITranscriptItem *item = [%c(SiriUITranscriptItem) transcriptItemWithAceObject:arg1];
-//  item.viewController = vc;
+//
 //  NSLog(@"Returning: %@", item);
 //  return item;
-//  //  id r = %orig;
-//  //  NSLog(@" = %@", r);
-//  //  return r;
-//}
+  //  id r = %orig;
+  //  NSLog(@" = %@", r);
+  //  return r;
 
-//%end
-
-
-//%hook SiriUITranscriptItem
-//+ (id)transcriptItemWithAceObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (id)aceObject { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (id)description { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (id)initWithAceObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (id)itemIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setAceObject:(id)arg1 { %log; %orig; }
-//- (void)setItemIdentifier:(id)arg1 { %log; %orig; }
-//- (void)setViewController:(id)arg1 { %log; %orig; }
-//- (id)viewController {
-//  id r = %orig;
-////  NSLog(@" Going to return = %@", r);
-//  return r; }
-//%end
+%end
 
 
+%hook SiriUITranscriptItem
++ (id)transcriptItemWithAceObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)aceObject { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)description { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)initWithAceObject:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)itemIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setAceObject:(id)arg1 { %log; %orig; }
+- (void)setItemIdentifier:(id)arg1 { %log; %orig; }
+- (void)setViewController:(id)arg1 { %log; %orig; }
+- (id)viewController {
+  id r = %orig;
+//  NSLog(@" Going to return = %@", r);
+  return r; }
+%end
 
-//%hook SiriUISnippetViewController
-//- (void)setAceObject:(AceObject * )aceObject { %log; %orig; }
-//- (AceObject * )aceObject { %log; AceObject *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setAttributedSubtitle:(NSAttributedString * )attributedSubtitle { %log; %orig; }
-//- (NSAttributedString * )attributedSubtitle { %log; NSAttributedString *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setCancelled:(bool )cancelled { %log; %orig; }
-//- (void)setConfirmed:(bool )confirmed { %log; %orig; }
-//- (bool )isConfirmed { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
-//- (NSString * )debugDescription { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (NSString * )description { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (unsigned long long )hash { %log; unsigned long long  r = %orig; NSLog(@" = %llu", r); return r; }
-//- (void)setHeaderPunchOut:(SAUIAppPunchOut * )headerPunchOut { %log; %orig; }
-//- (SAUIAppPunchOut * )headerPunchOut { %log; SAUIAppPunchOut *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (SAUIConfirmationOptions * )_previousConfirmationOptions { %log; SAUIConfirmationOptions *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (bool )_isProvisional { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
-//- (void)setRequestContext:(NSArray * )requestContext { %log; %orig; }
-//- (NSArray * )requestContext { %log; NSArray *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setSnippet:(SAUISnippet * )snippet { %log; %orig; }
-//- (SAUISnippet * )snippet { %log; SAUISnippet *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setSnippetPunchOut:(SAUIAppPunchOut * )snippetPunchOut { %log; %orig; }
-//- (SAUIAppPunchOut * )snippetPunchOut { %log; SAUIAppPunchOut *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setSubtitle:(NSString * )subtitle { %log; %orig; }
-//- (NSString * )subtitle { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (void)setTitle:(NSString * )title { %log; %orig; }
-//- (NSString * )title { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
-//- (bool )isVirgin { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
-//- (id)_headerView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (long long)_insertionAnimation { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
-//- (long long)_pinAnimationType { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
-//- (id)_privateDelegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (long long)_replacementAnimation { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
-//- (void)_setProvisional:(bool)arg1 { %log; %orig; }
-//- (void)_setVirgin:(bool)arg1 { %log; %orig; }
-//- (void)_snippetPunchOutButtonTapped { %log; %orig; }
-//- (void)_snippetViewControllerWillBeRemoved { %log; %orig; }
-//- (void)cancelButtonTapped:(id)arg1 { %log; %orig; }
-//- (void)confirmButtonTapped:(id)arg1 { %log; %orig; }
-//- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (double)desiredHeight { %log; double r = %orig; NSLog(@" = %f", r); return r; }
-//- (double)desiredHeightForFooterView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
-//- (double)desiredHeightForHeaderView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
-//- (double)desiredHeightForTransparentFooterView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
-//- (double)desiredHeightForTransparentHeaderView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
-//- (void)headerTapped:(id)arg1 { %log; %orig; }
-//- (id)initWithNibName:(id)arg1 bundle:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-//- (bool)removedAfterDialogProgresses { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
-//%end
+
+
+%hook SiriUISnippetViewController
+- (void)setAceObject:(AceObject * )aceObject { %log; %orig; }
+- (AceObject * )aceObject { %log; AceObject *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setAttributedSubtitle:(NSAttributedString * )attributedSubtitle { %log; %orig; }
+- (NSAttributedString * )attributedSubtitle { %log; NSAttributedString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setCancelled:(bool )cancelled { %log; %orig; }
+- (void)setConfirmed:(bool )confirmed { %log; %orig; }
+- (bool )isConfirmed { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (NSString * )debugDescription { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (NSString * )description { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (unsigned long long )hash { %log; unsigned long long  r = %orig; NSLog(@" = %llu", r); return r; }
+- (void)setHeaderPunchOut:(SAUIAppPunchOut * )headerPunchOut { %log; %orig; }
+- (SAUIAppPunchOut * )headerPunchOut { %log; SAUIAppPunchOut *  r = %orig; NSLog(@" = %@", r); return r; }
+- (SAUIConfirmationOptions * )_previousConfirmationOptions { %log; SAUIConfirmationOptions *  r = %orig; NSLog(@" = %@", r); return r; }
+- (bool )_isProvisional { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (void)setRequestContext:(NSArray * )requestContext { %log; %orig; }
+- (NSArray * )requestContext { %log; NSArray *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSnippet:(SAUISnippet * )snippet { %log; %orig; }
+- (SAUISnippet * )snippet { %log; SAUISnippet *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSnippetPunchOut:(SAUIAppPunchOut * )snippetPunchOut { %log; %orig; }
+- (SAUIAppPunchOut * )snippetPunchOut { %log; SAUIAppPunchOut *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setSubtitle:(NSString * )subtitle { %log; %orig; }
+- (NSString * )subtitle { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setTitle:(NSString * )title { %log; %orig; }
+- (NSString * )title { %log; NSString *  r = %orig; NSLog(@" = %@", r); return r; }
+- (bool )isVirgin { %log; bool  r = %orig; NSLog(@" = %d", r); return r; }
+- (id)_headerView { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (long long)_insertionAnimation { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (long long)_pinAnimationType { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (id)_privateDelegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (long long)_replacementAnimation { %log; long long r = %orig; NSLog(@" = %lld", r); return r; }
+- (void)_setProvisional:(bool)arg1 { %log; %orig; }
+- (void)_setVirgin:(bool)arg1 { %log; %orig; }
+- (void)_snippetPunchOutButtonTapped { %log; %orig; }
+- (void)_snippetViewControllerWillBeRemoved { %log; %orig; }
+- (void)cancelButtonTapped:(id)arg1 { %log; %orig; }
+- (void)confirmButtonTapped:(id)arg1 { %log; %orig; }
+- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (double)desiredHeight { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForFooterView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForHeaderView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForTransparentFooterView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (double)desiredHeightForTransparentHeaderView { %log; double r = %orig; NSLog(@" = %f", r); return r; }
+- (void)headerTapped:(id)arg1 { %log; %orig; }
+- (id)initWithNibName:(id)arg1 bundle:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (bool)removedAfterDialogProgresses { %log; bool r = %orig; NSLog(@" = %d", r); return r; }
+%end
 //
 //%hook SVSSnippetPluginBundle
 //- (void)setBundle:(NSBundle * )bundle { %log; %orig; }
@@ -247,21 +310,21 @@ static BOOL defaultHandling = YES;
 //+ (id)snippetPluginWithBundle:(id)arg1 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 //%end
 //
-//%hook SAUISnippet
-//+ (id)snippetWithDictionary:(id)arg1 context:(id)arg2 {
-//  %log;
-//  id r = %orig;
-//  NSLog(@" = %@", r);
-//  return r;
-//}
-//
-//+ (id)snippet {
-//  %log;
-//  id r = %orig;
-//  NSLog(@" = %@", r);
-//  return r;
-//}
-//%end
+%hook SAUISnippet
++ (id)snippetWithDictionary:(id)arg1 context:(id)arg2 {
+  %log;
+  id r = %orig;
+  NSLog(@" = %@", r);
+  return r;
+}
+
++ (id)snippet {
+  %log;
+  id r = %orig;
+  NSLog(@" = %@", r);
+  return r;
+}
+%end
 
 %hook AFConnection
 - (void)_doCommand:(SAUIAddViews*)arg1 reply:(id)arg2 {
@@ -271,7 +334,9 @@ static BOOL defaultHandling = YES;
   NSLog(@"Service: %@", service);
   
   NSLog(@"Doing: %@", arg1);
-  NSLog(@"Views: %@", arg1.views);
+  if ([arg1 respondsToSelector:@selector(views)]) {
+    NSLog(@"Views: %@", arg1.views);
+  }
   %log;
   %orig;
 }
@@ -321,7 +386,7 @@ static BOOL defaultHandling = YES;
   NSLog(@"text is %@", text);
   NSLog(@"Here!!!");
   APSession *currSession = [APSession sessionWithRefId:nil andConnection:self];
-  APPluginManager *pluginManager = [%c(APSBPluginManager) getSharedManager];
+  pluginManager = [%c(APSBPluginManager) getSharedManager];
   NSLog(@"Retrieved: %@", pluginManager);
   if ([pluginManager handleCommand:text withSession:currSession]) {
     NSLog(@"Handling!");
@@ -350,7 +415,6 @@ static BOOL defaultHandling = YES;
 %hook AFConnectionClientServiceDelegate
 
 - (void)speechRecognized:(SASSpeechRecognized*)arg1 {
-  NSLog(@"Back: %@", [NSThread  callStackSymbols]);
   NSMutableString *phraseBuilder = [NSMutableString string];
   for (AFSpeechPhrase *currPhrase in arg1.recognition.phrases) {
     if (currPhrase.interpretations.count > 0) {
@@ -364,23 +428,23 @@ static BOOL defaultHandling = YES;
   
   NSLog(@"Query: %@", phraseBuilder);
   
-//  AFConnection *connection;
-//  object_getInstanceVariable(self, "_connection", (void **)&connection);
-//  currConnection = connection;
-//  
-//  APSession *currSession = [APSession sessionWithRefId:nil andConnection:currConnection];
-//  
-//  if ([pluginManager handleCommand:phraseBuilder withSession:currSession]) {
-//    defaultHandling = NO;
-//    NSLog(@"Handling with plugin!");
-//  } else {
-//    defaultHandling = NO;
-//    NSLog(@"Going to default!");
-//  }
+  AFConnection *connection;
+  object_getInstanceVariable(self, "_connection", (void **)&connection);
+  currConnection = connection;
+  
+  APSession *currSession = [APSession sessionWithRefId:nil andConnection:currConnection];
+  
+  pluginManager = [%c(APSBPluginManager) getSharedManager];
+  if ([pluginManager handleCommand:phraseBuilder withSession:currSession]) {
+    defaultHandling = NO;
+    NSLog(@"Handling with plugin!");
+  } else {
+    defaultHandling = NO;
+    NSLog(@"Going to default!");
+  }
 }
 
 - (void)requestDidFinish{ %log; %orig; }
-
 - (void)requestDidReceiveCommand:(id)arg1 reply:(CDUnknownBlockType*)arg2 {
   %log;
   if (defaultHandling) {

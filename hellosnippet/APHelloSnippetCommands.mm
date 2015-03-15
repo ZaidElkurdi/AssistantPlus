@@ -19,11 +19,11 @@
 
 -(BOOL)handleSpeech:(NSString*)text session:(APSession*)session {
   if ([[text lowercaseString] rangeOfString:@"hello"].location != NSNotFound) {
-    [session sendSnippetWithText:@"Fuck!"];
+    [session sendSnippetForViewController:@"APHelloSnippetView" withProperties:nil];
   } else if ([[text lowercaseString] rangeOfString:@"test"].location != NSNotFound) {
     [session sendSnippetWithText:@"Shit!"];
   } else {
-    [session sendSnippetWithText:@"Bitch!"];
+    return NO;
   }
   
   return YES;

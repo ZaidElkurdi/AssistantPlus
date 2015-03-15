@@ -8,12 +8,22 @@
 #ifndef _AssistantHeaders_h
 #define _AssistantHeaders_h
 
+static char kAPPluginAssociatedObjectKey;
+
+@interface BasicAceContext : NSObject
++ (id)sharedBasicAceContext;
+- (void)registerGroupAcronym:(id)arg1 forGroupWithIdentifier:(id)arg2;
+- (id)aceObjectWithDictionary:(id)arg1;
+- (Class)classWithClassName:(id)arg1 group:(id)arg2;
+@end
+
 @interface AceObject : NSObject
 @property(copy, nonatomic) NSString *refId;
 @property(copy, nonatomic) NSString *aceId;
+- (id)properties;
+- (id)dictionary;
 + (id)aceObjectWithDictionary:(id)arg1 context:(id)arg2;
 @end
-
 
 @interface SiriUISnippetViewController : UIViewController
 @property(retain) AceObject * aceObject;
@@ -135,6 +145,10 @@ typedef SOObject SOAceObject;
 + (id)assistantUtteranceView;
 - (id)encodedClassName;
 - (id)groupIdentifier;
+@end
+
+@interface SAUISnippet : SAAceView
++ (id)snippetWithDictionary:(id)arg1 context:(id)arg2;
 @end
 
 @interface SASRecognition : AceObject

@@ -58,7 +58,6 @@
 }
 
 - (BOOL)handleCommand:(NSString*)command withSession:(APSession*)currSession {
-  [currSession sendSnippetWithText:@"Shit!"];
   NSLog(@"Looking for command to handle: %@", command);
   NSLog(@"There are currently %lu plugins registered: %@", (unsigned long)plugins.count, plugins);
   for (APPlugin *currPlugin in plugins) {
@@ -69,6 +68,32 @@
     }
   }
   return NO;
+}
+
+- (id<APPluginSnippet>)viewControllerForClass:(NSString*)snippetClass {
+  NSLog(@"Begin search for: %@ with %d plugins", snippetClass, (int)plugins.count);
+  for (APPlugin *currPlugin in plugins) {
+    NSLog(@"Current (%@) contains: %@", [currPlugin displayName], [currPlugin getRegisteredSnippets]);
+    if ([[currPlugin getRegisteredSnippets] containsObject:snippetClass]) {
+      NSObject<APPluginSnippet>* snip = [NSClassFromString(snippetClass) alloc];
+      
+      id initRes = nil;
+      
+      if ([snip respondsToSelector:@selector(initWithProperties:)])
+        initRes = [snip initWithProperties:@{@"labelText" : @"fuck you"}];
+      
+      if (!initRes)
+        initRes = [snip init];
+      
+      if (!initRes) {
+        NSLog(@"ERROR: Snippet class %@ failed to initialize!", snippetClass);
+        return nil;
+      }
+      return snip;
+    }
+  }
+  NSLog(@"APPluginManager: Found no VC for %@", snippetClass);
+  return nil;
 }
 
 -(NSString*)localizedString:(NSString*)text {

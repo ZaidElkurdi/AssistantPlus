@@ -3,6 +3,7 @@
 		Bundles = (
 			"com.apple.AssistantServices",
 			"com.apple.springboard",
+			"com.apple.SiriViewService",
 		);
 	};
 }

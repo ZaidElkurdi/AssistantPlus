@@ -45,9 +45,18 @@ static AFConnection *currConnection = nil;
   sendAddViews(views);
 }
 
+- (void)sendSnippetForViewController:(NSString*)snippetClass withProperties:(NSDictionary*)props {
+  NSLog(@"Sending snippet: %@", snippetClass);
+  [self sendAddViewsSnippet:snippetClass properties:props dialogPhase:@"Completion" scrollToTop:NO temporary:NO];
+}
+
 - (void)sendRequestCompleted {
   NSMutableDictionary* dict = SOCreateAceRequestCompleted(referenceId);
   SessionSendToClient(dict);
+}
+
+- (void)sendAddViews:(NSArray*)views {
+  return sendAddViews(views);
 }
 
 #pragma mark - Communication
@@ -59,7 +68,7 @@ id SessionSendToClient(NSDictionary* dict) {
   static Class AceObject = objc_getClass("AceObject");
   static Class BasicAceContext = objc_getClass("BasicAceContext");
   
-  if (!AceObject) NSLog(@"AE ERROR: No AceObject class");
+  if (!AceObject) NSLog(@"No AceObject class");
   if (!BasicAceContext) NSLog(@"AE ERROR: No BasicAceContext class");
   
   if (!dict) {
@@ -101,6 +110,13 @@ id SessionSendToClient(NSDictionary* dict) {
   return obj;
 }
 
+-(void)sendAddViewsSnippet:(NSString*)snippetClass properties:(NSDictionary*)props dialogPhase:(NSString*)dialogPhase scrollToTop:(BOOL)scrollToTop temporary:(BOOL)temporary {
+  if (!props) props = [NSDictionary dictionary];
+  NSArray* views = [NSArray arrayWithObject:[self createSnippet:snippetClass properties:props]];
+//  NSLog(@"About to send: %@", views);
+  sendAddViews(views);
+}
+
 void sendAddViews(NSArray* views, NSString *dialogPhase, BOOL scrollToTop, BOOL temporary) {
   NSMutableDictionary* dict = SOCreateAceAddViews(referenceId, views, dialogPhase, scrollToTop, temporary);
   
@@ -125,14 +141,21 @@ void sendAddViews(NSArray* views) {
 
 #pragma mark - Object Creation
 
+-(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props {
+  NSMutableDictionary* lowLevelProps = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                        props,@"snippetProps", snippetClass,@"snippetClass", nil];
+
+  NSLog(@"Creating snippet: %@ with properties: %@", snippetClass, lowLevelProps);
+  return SOCreateObjectDict(@"zaid.assistantplus.plugin", @"SnippetObject", lowLevelProps);
+}
+
 -(SOObject*)createObjectDict:(NSString*)className group:(NSString*)group properties:(NSDictionary*)props {
   return SOCreateObjectDict(group, className, [[props mutableCopy] autorelease]);
 }
 
 #pragma mark - Object Dictionary Creation
 
-NSMutableDictionary* SOCreateObjectDict(NSString* group, NSString* className, NSMutableDictionary* properties)
-{
+NSMutableDictionary* SOCreateObjectDict(NSString* group, NSString* className, NSMutableDictionary* properties) {
   NSMutableDictionary *objDict = [[NSMutableDictionary alloc] init];
   [objDict setObject:className forKey:@"$class"];
   [objDict setObject:group forKey:@"$group"];
@@ -145,11 +168,11 @@ NSMutableDictionary* SOCreateObjectDict(NSString* group, NSString* className, NS
       [objDict setObject:properties[currKey] forKey:currKey];
     }
   }
+  NSLog(@"Returning: %@", objDict);
   return objDict;
 }
 
-NSMutableDictionary* SOCreateAceObjectDict(NSString* refId, NSString* group, NSString* className, NSMutableDictionary* properties)
-{
+NSMutableDictionary* SOCreateAceObjectDict(NSString* refId, NSString* group, NSString* className, NSMutableDictionary* properties) {
   NSString* aceId = RandomUUID();
   
   NSMutableDictionary *dict = SOCreateObjectDict(group, className, properties);
