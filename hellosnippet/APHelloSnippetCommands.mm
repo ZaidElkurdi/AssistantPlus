@@ -17,11 +17,11 @@
 	[super dealloc];
 }
 
--(BOOL)handleSpeech:(NSString*)text session:(APSession*)session {
+-(BOOL)handleSpeech:(NSString*)text session:(id<APSiriSession>)session {
   if ([[text lowercaseString] rangeOfString:@"hello"].location != NSNotFound) {
-    [session sendSnippetForViewController:@"APHelloSnippetView" withProperties:nil];
+    [session sendCustomSnippet:@"APHelloSnippetView" withProperties:nil];
   } else if ([[text lowercaseString] rangeOfString:@"test"].location != NSNotFound) {
-    [session sendSnippetWithText:@"Shit!"];
+    [session sendTextSnippet:@"Shit!"];
   } else {
     return NO;
   }
@@ -36,7 +36,7 @@
 		//NSDictionary* snipProps = [NSDictionary dictionaryWithObject:@"It's working!" forKey:@"text"];
 
 		// create an array of views
-    [session sendSnippetWithText:@"Why hello there dude"];
+    [session sendTextSnippet:@"Why hello there dude"];
 
 		// alternatively, for utterance response, you can use this call only:
 		//[ctx sendAddViewsUtteranceView:@"Hello Snippet!!"];

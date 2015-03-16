@@ -8,26 +8,25 @@
 
 #import "AssistantHeaders.h"
 
-@interface APSession : NSObject
+@protocol APSiriSession <NSObject>
+- (void)sendTextSnippet:(NSString*)text;
+- (void)sendAddViews:(NSArray*)views;
+-(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
+- (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
+- (void)sendRequestCompleted;
+-(SOObject*)createAssistantUtteranceView:(NSString*)text;
+@end
+
+
+@interface APSession : NSObject <APSiriSession>
 
 +(APSession*)sessionWithRefId:(NSString*)refId andConnection:(AFConnection*)connection;
 
-- (void)sendSnippetWithText:(NSString*)text;
+- (void)sendTextSnippet:(NSString*)text;
 - (void)sendAddViews:(NSArray*)views;
 -(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
-- (void)sendSnippetForViewController:(NSString*)snippetClass withProperties:(NSDictionary*)props;
+- (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
-
-//-(SOObject*)createObjectDict:(NSString*)className group:(NSString*)group properties:(NSDictionary*)props;
-//-(SOObject*)createAssistantUtteranceView:(NSString*)text;
-//-(SOObject*)createAssistantUtteranceView:(NSString*)text speakableText:(NSString*)speakableText;
-//-(SOObject*)createAssistantUtteranceView:(NSString*)text speakableText:(NSString*)speakableText dialogIdentifier:(NSString*)dialogIdentifier;
-//
-//NSMutableDictionary* SOCreateAssistantUtteranceView(NSString* text, NSString* speakableText, NSString* dialogIdentifier);
-//
-//NSMutableDictionary* SOCreateAceAddViews(NSString* refId, NSArray* views, NSString* dialogPhase, BOOL scrollToTop, BOOL temporary);
-//
-//NSMutableDictionary* SOCreateAceRequestCompleted(NSString* refId);
 
 @end

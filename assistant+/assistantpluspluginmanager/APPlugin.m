@@ -81,7 +81,7 @@
   return snippets;
 }
 
-- (BOOL)handleSpeech:(NSString*)text forSession:(APSession*)currSession {
+- (BOOL)handleSpeech:(NSString*)text forSession:(id<APSiriSession>)currSession {
   for (NSObject<APPluginCommand>* cmd in commands) {
     if ([cmd respondsToSelector:@selector(handleSpeech:session:)]) {
       if ([cmd handleSpeech:text session:currSession]) {

@@ -9,9 +9,6 @@ static inline __attribute__((constructor)) void init() {
   
   NSLog(@"Initialized SPM: %@", [%c(SiriUIPluginManager) sharedInstance]);
   pluginManager = [APPluginManager sharedManager];
-  objc_setAssociatedObject([%c(SiriUIPluginManager) sharedInstance], &kAPPluginAssociatedObjectKey, @"hey!", OBJC_ASSOCIATION_RETAIN);
-  
-  [[%c(BasicAceContext) sharedBasicAceContext] registerGroupAcronym:@"APPlugin" forGroupWithIdentifier:@"zaid.assistantplus.plugin"];
 }
 
 %subclass APSBPluginManager : NSObject

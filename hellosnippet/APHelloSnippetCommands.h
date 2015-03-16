@@ -2,7 +2,7 @@
 
 @interface APHelloSnippetCommands : NSObject<APPluginCommand>
 
--(BOOL)handleSpeech:(NSString*)text session:(APSession*)session;
+-(BOOL)handleSpeech:(NSString*)text session:(id<APSiriSession>)session;
 
 @end
 // vim:ft=objc

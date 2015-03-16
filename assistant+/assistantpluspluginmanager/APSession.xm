@@ -39,13 +39,13 @@ static AFConnection *currConnection = nil;
 
 #pragma mark - Public Methods 
 
-- (void)sendSnippetWithText:(NSString*)text {
+- (void)sendTextSnippet:(NSString*)text {
   NSMutableArray* views = [NSMutableArray arrayWithCapacity:1];
   [views addObject:[self createAssistantUtteranceView:text]];
   sendAddViews(views);
 }
 
-- (void)sendSnippetForViewController:(NSString*)snippetClass withProperties:(NSDictionary*)props {
+- (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props {
   NSLog(@"Sending snippet: %@", snippetClass);
   [self sendAddViewsSnippet:snippetClass properties:props dialogPhase:@"Completion" scrollToTop:NO temporary:NO];
 }

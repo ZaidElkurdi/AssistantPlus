@@ -6,23 +6,16 @@
 //
 //
 
+#import "AssistantHeaders.h"
+
 #ifndef _AssistantPlusHeaders_h
 #define _AssistantPlusHeaders_h
 
-@interface SOObject : NSObject
-@end
-
-@interface AceObject : NSObject
-@property(copy, nonatomic) NSString *refId;
-@property(copy, nonatomic) NSString *aceId;
-+ (id)aceObjectWithDictionary:(id)arg1 context:(id)arg2;
-@end
-
-@interface APSession : NSObject
-- (void)sendSnippetWithText:(NSString*)text;
+@protocol APSiriSession <NSObject>
+- (void)sendTextSnippet:(NSString*)text;
 - (void)sendAddViews:(NSArray*)views;
 -(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
-- (void)sendSnippetForViewController:(NSString*)snippetClass withProperties:(NSDictionary*)props;
+- (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
 @end
@@ -38,21 +31,6 @@
 -(NSString*)localizedString:(NSString*)text;
 
 -(NSString*)systemVersion;
-@end
-
-@protocol SiriUIViewController <NSObject>
-@property (nonatomic,retain) AceObject * aceObject;
-@optional
--(id)navigationTitle;
--(void)transcriptViewControllerTappedOutsideEditingView;
-
-@required
--(double)desiredHeightForWidth:(double)arg1;
--(void)siriWillActivateFromSource:(long long)arg1;
--(void)siriDidDeactivate;
--(void)wasAddedToTranscript;
--(AceObject *)aceObject;
--(void)setAceObject:(AceObject*)arg1;
 @end
 
 @protocol APPluginSnippet <SiriUIViewController>
@@ -74,7 +52,7 @@
 @protocol APPluginCommand <NSObject>
 @optional
 
--(BOOL)handleSpeech:(NSString*)text session:(APSession*)session;
+-(BOOL)handleSpeech:(NSString*)text session:(id<APSiriSession>)session;
 -(id)initWithSystem:(id<APPluginManager>)manager;
 
 -(void)assistantDismissed;

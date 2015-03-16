@@ -48,7 +48,7 @@
 @protocol APPluginCommand <NSObject>
 @optional
 
--(BOOL)handleSpeech:(NSString*)text session:(APSession*)session;
+-(BOOL)handleSpeech:(NSString*)text session:(id<APSiriSession>)session;
 -(id)initWithSystem:(id<APPluginManager>)manager;
 
 -(void)assistantDismissed;
