@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
   
   @autoreleasepool {
     [manager startMonitoringLocation];
+    [NSTimer scheduledTimerWithTimeInterval:30 target:manager selector:@selector(startMonitoringLocation) userInfo:nil repeats:YES];
     while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:2]]);
-    
   }
   return 0;
 }
