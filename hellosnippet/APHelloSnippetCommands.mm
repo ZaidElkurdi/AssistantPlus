@@ -20,6 +20,7 @@
 -(BOOL)handleSpeech:(NSString*)text session:(id<APSiriSession>)session {
   if ([[text lowercaseString] rangeOfString:@"hello"].location != NSNotFound) {
     [session sendCustomSnippet:@"APHelloSnippetView" withProperties:nil];
+    NSLog(@"Commands: %@", [session getCurrentLocation]);
   } else if ([[text lowercaseString] rangeOfString:@"test"].location != NSNotFound) {
     [session sendTextSnippet:@"Shit!"];
   } else {

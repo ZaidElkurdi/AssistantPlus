@@ -11,7 +11,7 @@ static inline __attribute__((constructor)) void init() {
   pluginManager = [APPluginManager sharedManager];
 }
 
-%subclass APSBPluginManager : NSObject
+%subclass APSpringboardUtils : NSObject
 %new
 + (APPluginManager*)getSharedManager {
   return pluginManager;

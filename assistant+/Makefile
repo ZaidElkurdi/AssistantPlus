@@ -9,7 +9,7 @@ TWEAK_NAME = Assistant+
 Assistant+_FILES = AssistantHooks.xm assistantpluspluginmanager/APSession.xm
 
 Assistant+_FRAMEWORKS = Foundation UIKit CoreFoundation Accounts CoreLocation
-Assistant+_PRIVATE_FRAMEWORKS = AssistantServices SAObjects
+Assistant+_PRIVATE_FRAMEWORKS = AssistantServices SAObjects AppSupport
 Assistant+_LIBRARIES=substrate objcipc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
@@ -17,4 +17,5 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 after-install::
 	install.exec "killall -9 SpringBoard"
 SUBPROJECTS += assistantpluspluginmanager
+SUBPROJECTS += aplocationdaemon
 include $(THEOS_MAKE_PATH)/aggregate.mk

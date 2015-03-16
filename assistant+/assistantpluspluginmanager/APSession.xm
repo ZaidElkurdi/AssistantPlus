@@ -9,6 +9,7 @@
 #import "AssistantHeaders.h"
 #import "APSession.h"
 #import "substrate.h"
+#import "CPDistributedMessagingCenter.h"
 
 static NSString *referenceId = @"00000000-0000-0000-0000-000000000000";
 static NSString* s_ver = nil;
@@ -53,6 +54,13 @@ static AFConnection *currConnection = nil;
 - (void)sendRequestCompleted {
   NSMutableDictionary* dict = SOCreateAceRequestCompleted(referenceId);
   SessionSendToClient(dict);
+}
+
+-(NSDictionary*)getCurrentLocation {
+  CPDistributedMessagingCenter *center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.center"];
+  NSDictionary *reply = [center sendMessageAndReceiveReplyName:@"GetLocation" userInfo:nil];
+  NSLog(@"AP: Sending location info to plugin: %@", reply);
+  return reply;
 }
 
 - (void)sendAddViews:(NSArray*)views {

@@ -1,0 +1,7 @@
+Package: com.zaid.aplocationdaemon
+Name: APLocationDaemon
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome XPC service!
+Author: Zaid Elkurdi
+Section: System

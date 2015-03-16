@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "Installing APLocationManager!"
+chown root:wheel /Library/LaunchDaemons/com.zaid.aplocationdaemon.plist
+launchctl unload /Library/LaunchDaemons/com.zaid.aplocationdaemon.plist
+exit 0

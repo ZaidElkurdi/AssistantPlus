@@ -5,7 +5,7 @@
 #import "assistantpluspluginmanager/APSession.h"
 #import <libobjcipc/objcipc.h>
 
-@interface APSBPluginManager : NSObject
+@interface APSpringboardUtils : NSObject
 + (id)getSharedManager;
 @end
 
@@ -32,7 +32,7 @@ static AFConnection *currConnection;
 static APPluginManager *pluginManager;
 
 BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
-  pluginManager = [%c(APSBPluginManager) getSharedManager];
+  pluginManager = [%c(APSpringboardUtils) getSharedManager];
   return [pluginManager handleCommand:text withSession:currSession];
 }
 
@@ -182,7 +182,7 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   
   APSession *currSession = [APSession sessionWithRefId:nil andConnection:currConnection];
   
-  pluginManager = [%c(APSBPluginManager) getSharedManager];
+  pluginManager = [%c(APSpringboardUtils) getSharedManager];
   if ([pluginManager handleCommand:phraseBuilder withSession:currSession]) {
     defaultHandling = NO;
     NSLog(@"Handling with plugin!");

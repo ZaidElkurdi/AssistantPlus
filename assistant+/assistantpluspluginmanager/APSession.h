@@ -7,6 +7,7 @@
 //
 
 #import "AssistantHeaders.h"
+#import <CoreLocation/CoreLocation.h>
 
 @protocol APSiriSession <NSObject>
 - (void)sendTextSnippet:(NSString*)text;
@@ -15,10 +16,11 @@
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
+-(NSDictionary*)getCurrentLocation;
 @end
 
 
-@interface APSession : NSObject <APSiriSession>
+@interface APSession : NSObject <APSiriSession, CLLocationManagerDelegate>
 
 +(APSession*)sessionWithRefId:(NSString*)refId andConnection:(AFConnection*)connection;
 
@@ -28,5 +30,5 @@
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
-
+-(NSDictionary*)getCurrentLocation;
 @end

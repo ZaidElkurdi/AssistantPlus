@@ -18,6 +18,7 @@
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
+-(NSDictionary*)getCurrentLocation;
 @end
 
 @protocol APPluginManager <NSObject>

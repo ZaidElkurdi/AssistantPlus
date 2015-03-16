@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:APLocationManager.h">
+   </FileRef>
+   <FileRef
+      location = "group:APLocationManager.m">
+   </FileRef>
+   <FileRef
+      location = "container:main.mm">
+   </FileRef>
+   <FileRef
+      location = "group:Makefile">
+   </FileRef>
+   <FileRef
+      location = "group:entitlements.xml">
+   </FileRef>
+   <FileRef
+      location = "group:../layout/debian/postinst">
+   </FileRef>
+   <FileRef
+      location = "group:../layout/debian/preinst">
+   </FileRef>
+   <FileRef
+      location = "group:../layout/debian/prerm">
+   </FileRef>
+</Workspace>
