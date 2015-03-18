@@ -57,12 +57,12 @@
   return TRUE;
 }
 
-- (BOOL)handleCommand:(NSString*)command withSession:(APSession*)currSession {
+- (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession {
   NSLog(@"Looking for command to handle: %@", command);
   NSLog(@"There are currently %lu plugins registered: %@", (unsigned long)plugins.count, plugins);
   for (APPlugin *currPlugin in plugins) {
     NSLog(@"Currently on: %@:%@", currPlugin, [currPlugin displayName]);
-    if ([currPlugin handleSpeech:command forSession:currSession]) {
+    if ([currPlugin handleSpeech:command withTokens:tokens withSession:currSession]) {
       NSLog(@"%@ is handling command: %@", [currPlugin displayName], command);
       return YES;
     }

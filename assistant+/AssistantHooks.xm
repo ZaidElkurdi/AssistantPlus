@@ -33,17 +33,18 @@ static APPluginManager *pluginManager;
 
 BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   pluginManager = [%c(APSpringboardUtils) getSharedManager];
-  return [pluginManager handleCommand:text withSession:currSession];
+  NSSet *tokens = [NSSet setWithArray:[text componentsSeparatedByString: @" "]];
+  return [pluginManager handleCommand:text withTokens:tokens withSession:currSession];
 }
 
 %hook BasicAceContext
 - (Class)classWithClassName:(NSString*)name group:(NSString*)group {
-  %log;
-  id r = %orig;
+  id r;
   if ([name isEqualToString:@"SnippetObject"] && [group isEqualToString:@"zaid.assistantplus.plugin"]) {
     r = NSClassFromString(@"SAUISnippet");
+  } else {
+    r = %orig;
   }
-  NSLog(@"CWC: %@", r);
   return r;
 }
 
@@ -112,30 +113,6 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   }
 }
 
-- (void)_requestWillBeginWithRequestClass:(id)arg1 isSpeechRequest:(BOOL)arg2 isBackgroundRequest:(BOOL)arg3 {
-  NSLog(@"yoyoyyo");
-  %log;
-  %orig;
-}
-
-- (void)_requestWillBeginWithRequestClass:(id)arg1 isSpeechRequest:(BOOL)arg2 {
-  NSLog(@"heyheyhey");
-  %log;
-  %orig;
-}
-
-- (void)requestWillBeginWithRequestClass:(id)arg1 isSpeechRequest:(BOOL)arg2 isBackgroundRequest:(BOOL)arg3 {
-  NSLog(@"brobrobro");
-  %log;
-  %orig;
-}
-
-- (void)requestWillBeginWithRequestClass:(id)arg1 isSpeechRequest:(BOOL)arg2 {
-  NSLog(@"zaidzaidzaid");
-  %log;
-  %orig;
-}
-
 - (void)startAcousticIDRequestWithOptions:(id)arg1 { %log; %orig; }
 - (void)startSpeechPronunciationRequestWithOptions:(id)arg1 pronunciationContext:(id)arg2 { %log; %orig; }
 
@@ -174,21 +151,20 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
     }
   }
   
-  NSLog(@"Query: %@", phraseBuilder);
+  NSLog(@"AP Starting Speech Query: %@", phraseBuilder);
   
   AFConnection *connection;
   object_getInstanceVariable(self, "_connection", (void **)&connection);
   currConnection = connection;
   
   APSession *currSession = [APSession sessionWithRefId:nil andConnection:currConnection];
-  
-  pluginManager = [%c(APSpringboardUtils) getSharedManager];
-  if ([pluginManager handleCommand:phraseBuilder withSession:currSession]) {
+  if (shouldHandleRequest(phraseBuilder, currSession)) {
     defaultHandling = NO;
     NSLog(@"Handling with plugin!");
   } else {
-    defaultHandling = NO;
+    defaultHandling = YES;
     NSLog(@"Going to default!");
+    %orig;
   }
 }
 
@@ -199,5 +175,4 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
     %orig;
   }
 }
-
 %end

@@ -17,7 +17,8 @@
 	[super dealloc];
 }
 
--(BOOL)handleSpeech:(NSString*)text session:(id<APSiriSession>)session {
+-(BOOL)handleSpeech:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session {
+  NSLog(@"Tokens: %@", tokens);
   if ([[text lowercaseString] rangeOfString:@"hello"].location != NSNotFound) {
     [session sendCustomSnippet:@"APHelloSnippetView" withProperties:nil];
     NSLog(@"Commands: %@", [session getCurrentLocation]);

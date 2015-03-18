@@ -2,33 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:APPluginManager.h">
-   </FileRef>
-   <FileRef
-      location = "group:APPluginManager.mm">
-   </FileRef>
-   <FileRef
       location = "container:AssistantHeaders.h">
    </FileRef>
    <FileRef
-      location = "group:APPlugin.h">
-   </FileRef>
-   <FileRef
-      location = "group:APPlugin.m">
-   </FileRef>
-   <FileRef
       location = "group:AssistantPlusHeaders.h">
-   </FileRef>
-   <FileRef
-      location = "group:APPluginSnippetViewController.xm"
-      assignedFileDataType = "public.objective-c-source">
-   </FileRef>
-   <FileRef
-      location = "container:APSession.h">
-   </FileRef>
-   <FileRef
-      location = "container:APSession.xm"
-      assignedFileDataType = "public.objective-c-source">
    </FileRef>
    <FileRef
       location = "container:AssistantHooks.xm"

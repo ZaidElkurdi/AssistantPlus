@@ -1,0 +1,3 @@
+#!/bin/sh
+launchctl unload /Library/LaunchDaemons/com.zaid.aplocationdaemon.plist
+exit 0

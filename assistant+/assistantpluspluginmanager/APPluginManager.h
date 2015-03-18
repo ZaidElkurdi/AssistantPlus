@@ -14,6 +14,6 @@
 }
 + (id)sharedManager;
 - (BOOL)loadPlugins;
-- (BOOL)handleCommand:(NSString*)command withSession:(APSession*)currSession;
+- (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession;
 - (id<APPluginSnippet>)viewControllerForClass:(NSString*)snippetClass;
 @end

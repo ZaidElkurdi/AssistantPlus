@@ -27,7 +27,7 @@
 -(NSString*)displayName;
 - (id)initWithFilePath:(NSURL*)filePath andName:(NSString*)name;
 - (NSSet*)getRegisteredSnippets;
-- (BOOL)handleSpeech:(NSString*)text forSession:(id<APSiriSession>)session;
+- (BOOL)handleSpeech:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session;
 
 /// Register a command class
 -(BOOL)registerCommand:(Class)cls;
