@@ -116,6 +116,13 @@ typedef SOObject SOAceObject;
 @property(copy, nonatomic) NSString *aceId;
 @end
 
+@interface AFConnectionClientServiceDelegate : NSObject
+{
+  AFConnection *_connection;
+}
+
+@end
+
 @interface SABaseClientBoundCommand : SABaseCommand
 @property(copy, nonatomic) NSArray *callbacks;
 @property(copy, nonatomic) NSString *appId;

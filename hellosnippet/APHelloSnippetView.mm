@@ -14,11 +14,32 @@
 
 @synthesize aceObject;
 
--(id)customView {
-  UIView *shit = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 1000)];
-  shit.backgroundColor = [UIColor redColor];
-  NSLog(@"Returing hello view: %@ %@", shit, shit.backgroundColor);
-  return shit;
+-(void)viewDidLoad {
+  [super viewDidLoad];
+  
+  self.view.frame = CGRectMake(0,0,self.view.frame.size.width-50, 300);
+  //UIView *contentView = [[UIView alloc] initWithFrame:self.view.frame];
+  UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+  [button addTarget:self
+             action:@selector(aMethod)
+   forControlEvents:UIControlEventTouchUpInside];
+  [button setTitle:@"Show View" forState:UIControlStateNormal];
+  button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
+  button.backgroundColor = [UIColor redColor];
+  [self.view  addSubview:button];
+  
+  UITableView *tv = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+  tv.dataSource = self;
+  tv.delegate = self;
+  [tv setBackgroundView:nil];
+  [tv setBackgroundColor:[UIColor clearColor]];
+  [self.view  addSubview:tv];
+//  [self.view addSubview:contentView];
+  NSLog(@"Returing hello view: %@ ", self.view);
+}
+
+- (void)aMethod {
+  NSLog(@"Tapped that!");
 }
 
 -(id)initWithAceObject:(id)aceObj {
@@ -28,14 +49,39 @@
 }
 
 -(id)initWithProperties:(NSDictionary*)props {
-  NSLog(@"Init with: %@" ,props);
+  NSLog(@"Snippet init with: %@" ,props);
   if (self = [super init]) {
-    NSString *newText = @"bitch nigga";
-    helloLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)] autorelease];
-    helloLabel.text = newText;
+    NSDictionary *locInfo = props[@"Location"];
+    NSLog(@"Loc Info: %@", locInfo);
+    helloLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 200)] autorelease];
+    helloLabel.text = [NSString stringWithFormat:@"%f", [locInfo[@"latitude"] floatValue]];
+    [self.view addSubview:helloLabel];
   }
   
   return self;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"siriCell"];
+  if (cell == nil) {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"siriCell"];
+    cell.contentView.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor clearColor];
+  }
+  
+  cell.textLabel.text = @"swag";
+  return cell;
+}
+
+- (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSLog(@"Selected!");
+}
+
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section {
+  return 3;
 }
 
 -(double)desiredHeightForWidth:(double)arg1 {

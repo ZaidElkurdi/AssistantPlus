@@ -20,8 +20,13 @@
 -(BOOL)handleSpeech:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session {
   NSLog(@"Tokens: %@", tokens);
   if ([[text lowercaseString] rangeOfString:@"hello"].location != NSNotFound) {
-    [session sendCustomSnippet:@"APHelloSnippetView" withProperties:nil];
-    NSLog(@"Commands: %@", [session getCurrentLocation]);
+    [session sendTextSnippet:@"Getting your location..."];
+    [session getCurrentLocationWithCompletion:^(NSDictionary *response) {
+      NSLog(@"Plugin got: %@", response);
+      [session sendCustomSnippet:@"APHelloSnippetView" withProperties:@{@"Location" : response}];
+      [session sendTextSnippet:@"Satisfied?"];
+    }];
+   // NSLog(@"Plugin got: %@", [session getCurrentLocation]);
   } else if ([[text lowercaseString] rangeOfString:@"test"].location != NSNotFound) {
     [session sendTextSnippet:@"Shit!"];
   } else {

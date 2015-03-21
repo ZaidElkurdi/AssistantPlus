@@ -18,16 +18,14 @@
     
     NSLog(@"Commnds just created: %@", commands);
     
-    bundle = [[NSBundle bundleWithURL:filePath] retain];
+    bundle = [NSBundle bundleWithURL:filePath];
     if (!bundle) {
       NSLog(@"Failed to open extension bundle %@ (%@)!", fileName, filePath);
-      [self release];
       return nil;
     }
     
     if (![bundle load]) {
       NSLog(@"Failed to load extension bundle %@ (wrong CFBundleExecutable? Missing? Not signed?)!", name);
-      [self release];
       return nil;
     } else {
       NSLog(@"Loaded bundle!");
@@ -37,7 +35,6 @@
     Class principal = [bundle principalClass];
     if (!principal) {
       NSLog(@"Plugin %@ doesn't provide a NSPrincipalClass!", fileName);
-      [self release];
       return nil;
     } else {
       NSLog(@"has principal!");
@@ -46,7 +43,6 @@
     pluginClass = [[principal alloc] initWithSystem:self];
     if (!pluginClass) {
       NSLog(@"Failed to initialize NSPrincipalClass from plugin %@!", fileName);
-      [self release];
       return nil;
     } else {
       NSLog(@"has pluginClass!");
@@ -136,10 +132,10 @@
   
   // init 1.0.2
   if ([inst respondsToSelector:@selector(initWithSystem:)]) {
-    [inst initWithSystem:self];
+    inst = [inst initWithSystem:self];
   } else {
     NSLog(@"%@ did not respond to initWithSystem:. Using default init.", className);
-    [inst init];
+    inst = [inst init];
   }
   
   if (!inst) {
@@ -149,7 +145,6 @@
   
   
   [commands addObject:inst];
-  [inst release];
   
   NSLog(@"Registered Command %@, commands is now: %@", className, commands);
   

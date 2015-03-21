@@ -12,6 +12,11 @@
 #ifndef _AssistantPlusHeaders_h
 #define _AssistantPlusHeaders_h
 
+@protocol APPluginSystem <NSObject>
+@required
++(id)sharedManager;
+@end
+
 @protocol APPluginManager <NSObject>
 @required
 /// Register a command class
@@ -25,9 +30,9 @@
 -(NSString*)systemVersion;
 @end
 
+
 @protocol APPluginSnippet <SiriUIViewController>
 @optional
--(id)customView;
 /// Initializes a snippet by properties
 -(id)initWithProperties:(NSDictionary*)props;
 /// Initializes a snippet by properties and system
@@ -37,7 +42,7 @@
 @end
 
 @interface APPluginSnippetViewController : UIViewController <APPluginSnippet>
--(void)setCustomView:(UIView*)newVC;
+-(void)setCustomView:(UIViewController*)newVC;
 @end
 
 

@@ -25,6 +25,16 @@
       assignedFileDataType = "public.objective-c-source">
    </FileRef>
    <FileRef
+      location = "container:Tweak.xm"
+      assignedFileDataType = "public.objective-c-source">
+   </FileRef>
+   <FileRef
+      location = "group:APSpringboardUtils.h">
+   </FileRef>
+   <FileRef
+      location = "group:APSpringboardUtils.m">
+   </FileRef>
+   <FileRef
       location = "container:AssistantHeaders.h">
    </FileRef>
    <FileRef
@@ -32,10 +42,6 @@
    </FileRef>
    <FileRef
       location = "container:Makefile">
-   </FileRef>
-   <FileRef
-      location = "container:Tweak.xm"
-      assignedFileDataType = "public.objective-c-source">
    </FileRef>
    <FileRef
       location = "group:../AssistantHooks.xm"

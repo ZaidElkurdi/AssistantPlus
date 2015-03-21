@@ -9,7 +9,7 @@
 #import "APSession.h"
 #import "AssistantPlusHeaders.h"
 
-@interface APPluginManager : NSObject {
+@interface APPluginManager : NSObject<APPluginSystem> {
   NSMutableArray *plugins;
 }
 + (id)sharedManager;

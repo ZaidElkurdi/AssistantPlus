@@ -13,13 +13,11 @@ int main(int argc, char *argv[]) {
   NSLog(@"Starting this shit 2");
   
   APLocationManager *manager = [[APLocationManager alloc] init];
-  CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.center"];
+  CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.daemon"];
   [center runServerOnCurrentThread];
-  [center registerForMessageName:@"GetLocation" target:manager selector:@selector(getCurrentLocation)];
+  [center registerForMessageName:@"RetrieveLocation" target:manager selector:@selector(startMonitoringLocation)];
   
   @autoreleasepool {
-    [manager startMonitoringLocation];
-    [NSTimer scheduledTimerWithTimeInterval:30 target:manager selector:@selector(startMonitoringLocation) userInfo:nil repeats:YES];
     while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:2]]);
   }
   return 0;

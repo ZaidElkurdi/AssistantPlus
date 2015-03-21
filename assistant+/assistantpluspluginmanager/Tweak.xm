@@ -1,19 +1,22 @@
 #import "AssistantPlusHeaders.h"
 #import "APPluginManager.h"
-#import <libobjcipc/objcipc.h>
+#import "APSpringboardUtils.h"
+#import "CPDistributedMessagingCenter.h"
 
 static APPluginManager *pluginManager;
+static APSpringboardUtils *sharedUtils;
+static NSDictionary *currLocation;
 
 static inline __attribute__((constructor)) void init() {
   NSLog(@"Creating AssistantPlusSBPluginManager!");
-  
-  NSLog(@"Initialized SPM: %@", [%c(SiriUIPluginManager) sharedInstance]);
-  pluginManager = [APPluginManager sharedManager];
+  NSLog(@"FUCK IS: %@", sharedUtils);
+  sharedUtils = [APSpringboardUtils sharedUtils];
 }
 
-%subclass APSpringboardUtils : NSObject
+%subclass APSpringboardCenter : NSObject
 %new
-+ (APPluginManager*)getSharedManager {
-  return pluginManager;
++ (id)sharedUtils {
+  NSLog(@"Returning: %@", sharedUtils);
+  return sharedUtils;
 }
 %end

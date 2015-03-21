@@ -18,7 +18,7 @@
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
--(NSDictionary*)getCurrentLocation;
+- (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
 @end
 
 @protocol APPluginManager <NSObject>
@@ -36,7 +36,6 @@
 
 @protocol APPluginSnippet <SiriUIViewController>
 @optional
--(id)view;
 /// Initializes a snippet by properties
 -(id)initWithProperties:(NSDictionary*)props;
 /// Initializes a snippet by properties and system

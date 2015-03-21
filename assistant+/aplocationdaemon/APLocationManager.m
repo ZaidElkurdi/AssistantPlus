@@ -27,19 +27,6 @@
   return self;
 }
 
-- (NSDictionary*)getCurrentLocation {
-  NSDictionary *dict = @{@"latitude" : @(currLocation.coordinate.latitude),
-                         @"longitude" : @(currLocation.coordinate.longitude),
-                         @"horizontalAccuracy" : @(currLocation.horizontalAccuracy),
-                         @"verticalAccuracy" : @(currLocation.verticalAccuracy),
-                         @"speed" : @(currLocation.speed),
-                         @"course" : @(currLocation.course),
-                         @"timestamp" : currLocation.timestamp};
-  
-  NSLog(@"Returning: %@", dict);
-  return dict;
-}
-
 - (void)startMonitoringLocation {
   NSLog(@"Start monitoring!");
   [locationManager startUpdatingLocation];
@@ -56,9 +43,19 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
   currLocation = locations.lastObject;
   NSLog(@"APLocationManager: %ld Retrieved location: %@", (long)++count, currLocation);
-  [locationManager stopUpdatingLocation];
-  
   [self stopMonitoringLocation];
+  
+  NSDictionary *dict = @{@"latitude" : @(currLocation.coordinate.latitude),
+                         @"longitude" : @(currLocation.coordinate.longitude),
+                         @"horizontalAccuracy" : @(currLocation.horizontalAccuracy),
+                         @"verticalAccuracy" : @(currLocation.verticalAccuracy),
+                         @"speed" : @(currLocation.speed),
+                         @"course" : @(currLocation.course),
+                         @"timestamp" : currLocation.timestamp};
+  
+  CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
+  NSLog(@"Sending %@ to APSpringboardUtils", dict);
+  [center sendMessageName:@"RetrievedLocation" userInfo:@{@"Location" : dict}];
 }
 
 @end

@@ -1,6 +1,6 @@
 //
 //  AssistantAceCommandBuilder.m
-//  
+//
 //
 //  Created by Zaid Elkurdi on 3/7/15.
 //
@@ -10,6 +10,11 @@
 #import "APSession.h"
 #import "substrate.h"
 #import "CPDistributedMessagingCenter.h"
+
+@protocol APSharedUtils <NSObject>
++ (id)sharedUtils;
+- (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
+@end
 
 static NSString *referenceId = @"00000000-0000-0000-0000-000000000000";
 static NSString* s_ver = nil;
@@ -32,13 +37,13 @@ static AFConnection *currConnection = nil;
   if (!refId) refId = @"00000000-0000-0000-0000-000000000000";
   
   currConnection = connection;
-  APSession *currSession = [[[APSession alloc] initWithRefId:refId] autorelease];
+  APSession *currSession = [[APSession alloc] initWithRefId:refId];
   if (!currSession) return nil;
   
   return currSession;
 }
 
-#pragma mark - Public Methods 
+#pragma mark - Public Methods
 
 - (void)sendTextSnippet:(NSString*)text {
   NSMutableArray* views = [NSMutableArray arrayWithCapacity:1];
@@ -56,18 +61,25 @@ static AFConnection *currConnection = nil;
   SessionSendToClient(dict);
 }
 
--(NSDictionary*)getCurrentLocation {
-  CPDistributedMessagingCenter *center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.center"];
-  NSDictionary *reply = [center sendMessageAndReceiveReplyName:@"GetLocation" userInfo:nil];
-  NSLog(@"AP: Sending location info to plugin: %@", reply);
-  return reply;
+- (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion {
+  id<APSharedUtils> x = [%c(APSpringboardUtils) sharedUtils];
+  [x getCurrentLocationWithCompletion:completion];
 }
 
 - (void)sendAddViews:(NSArray*)views {
   return sendAddViews(views);
 }
 
-#pragma mark - Communication
+#pragma mark - APLocationDaemon Communication
+
+- (void)handleMessage:(NSString*)name withInfo:(NSDictionary*)locationData {
+  if (self.completionHandler) {
+    NSLog(@"Sending %@" ,locationData);
+    self.completionHandler(locationData);
+  }
+}
+
+#pragma mark - AFConnection Communication
 
 id SessionSendToClient(NSDictionary* dict) {
   NSLog(@"Sending %@ to client", dict);
@@ -85,7 +97,7 @@ id SessionSendToClient(NSDictionary* dict) {
   }
   
   // create context
-  if (ctx == nil) ctx = [[[BasicAceContext alloc] init] autorelease]; // ... is not needed normally, but just in case...
+  if (ctx == nil) ctx = [[BasicAceContext alloc] init]; // ... is not needed normally, but just in case...
   if (!ctx) NSLog(@"AE ERROR: No context");
   
   
@@ -112,7 +124,7 @@ id SessionSendToClient(NSDictionary* dict) {
   if ([dict[@"$class"] isEqualToString:@"CommandSucceeded"]) {
     [currConnection sendReplyCommand:obj];
   } else {
-   [currConnection _doCommand:obj reply:nil];
+    [currConnection _doCommand:obj reply:nil];
   }
   
   return obj;
@@ -121,7 +133,7 @@ id SessionSendToClient(NSDictionary* dict) {
 -(void)sendAddViewsSnippet:(NSString*)snippetClass properties:(NSDictionary*)props dialogPhase:(NSString*)dialogPhase scrollToTop:(BOOL)scrollToTop temporary:(BOOL)temporary {
   if (!props) props = [NSDictionary dictionary];
   NSArray* views = [NSArray arrayWithObject:[self createSnippet:snippetClass properties:props]];
-//  NSLog(@"About to send: %@", views);
+  //  NSLog(@"About to send: %@", views);
   sendAddViews(views);
 }
 
@@ -152,13 +164,13 @@ void sendAddViews(NSArray* views) {
 -(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props {
   NSMutableDictionary* lowLevelProps = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                         props,@"snippetProps", snippetClass,@"snippetClass", nil];
-
+  
   NSLog(@"Creating snippet: %@ with properties: %@", snippetClass, lowLevelProps);
   return SOCreateObjectDict(@"zaid.assistantplus.plugin", @"SnippetObject", lowLevelProps);
 }
 
 -(SOObject*)createObjectDict:(NSString*)className group:(NSString*)group properties:(NSDictionary*)props {
-  return SOCreateObjectDict(group, className, [[props mutableCopy] autorelease]);
+  return SOCreateObjectDict(group, className, [props mutableCopy]);
 }
 
 #pragma mark - Object Dictionary Creation

@@ -11,7 +11,6 @@
 
 @interface APLocationManager : NSObject <CLLocationManagerDelegate>
 @property (nonatomic) BOOL shouldTerminate;
-- (NSDictionary*)getCurrentLocation;
 - (void)startMonitoringLocation;
 - (void)stopMonitoringLocation;
 

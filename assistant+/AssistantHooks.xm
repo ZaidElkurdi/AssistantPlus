@@ -3,11 +3,8 @@
 #import "assistantpluspluginmanager/AssistantHeaders.h"
 #import "assistantpluspluginmanager/APPluginManager.h"
 #import "assistantpluspluginmanager/APSession.h"
+#import "assistantpluspluginmanager/APSpringboardUtils.h"
 #import <libobjcipc/objcipc.h>
-
-@interface APSpringboardUtils : NSObject
-+ (id)getSharedManager;
-@end
 
 @protocol SAAceSerializable <NSObject>
 @end
@@ -21,18 +18,13 @@
 @interface SAUIConfirmationOptions : NSObject
 @end
 
-@interface SiriUIPluginManager : NSObject
-+ (id)sharedInstance;
-- (id)_bundleSearchPaths;
-- (void)_loadBundleMapsIfNecessary;
-@end
-
 static BOOL defaultHandling = YES;
 static AFConnection *currConnection;
 static APPluginManager *pluginManager;
 
 BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
-  pluginManager = [%c(APSpringboardUtils) getSharedManager];
+  pluginManager = [[%c(APSpringboardUtils) sharedUtils] getPluginManager];
+  NSLog(@"Manager: %@", pluginManager);
   NSSet *tokens = [NSSet setWithArray:[text componentsSeparatedByString: @" "]];
   return [pluginManager handleCommand:text withTokens:tokens withSession:currSession];
 }
@@ -50,18 +42,24 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 
 %end
 
+%hook SiriUISnippetViewController
+-(void)setSnippet:(id)arg1 {
+  %log;
+  %orig;
+}
+%end
+
 %hook SiriUIPluginManager
 
 - (id)transcriptItemForObject:(AceObject*)arg1 {
-  NSLog(@"new manager: %@ and self:%@", [%c(APPluginManager) sharedManager], self);
   NSDictionary *properties = [arg1 properties];
   if (properties) {
     NSString *className = properties[@"snippetClass"];
     if (className) {
       NSLog(@"AP: Looking for custom snippet: %@", className);
-      id<APPluginSnippet> customClass = [[NSClassFromString(className) alloc] initWithProperties:@{@"Bitch" : @"Nigga"}];
-      if ([customClass respondsToSelector:@selector(customView)]) {
-        UIView *customVC = [customClass customView];
+      id<APPluginSnippet> customClass = [[NSClassFromString(className) alloc] initWithProperties:properties[@"snippetProps"]];
+      if ([customClass respondsToSelector:@selector(view)]) {
+        UIViewController *customVC = (UIViewController*)customClass;
         SiriUISnippetViewController *vc = [[%c(SiriUISnippetViewController) alloc] init];
         object_setClass(vc, [%c(APPluginSnippetViewController) class]);
         [(APPluginSnippetViewController*)vc setCustomView:customVC];
@@ -86,11 +84,6 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 
 %hook AFConnection
 - (void)_doCommand:(SAUIAddViews*)arg1 reply:(id)arg2 {
-  
-  id service;
-  object_getInstanceVariable(self, "_delegate", (void **)&service);
-  NSLog(@"Service: %@", service);
-  
   NSLog(@"Doing: %@", arg1);
   if ([arg1 respondsToSelector:@selector(views)]) {
     NSLog(@"Views: %@", arg1.views);
@@ -101,7 +94,9 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 
 - (void)clearContext { %log; %orig; }
 
-- (void)sendReplyCommand:(id)arg1 { %log; %orig; }
+- (void)sendReplyCommand:(id)arg1 {
+  %log;
+}
 
 - (void)startRequestWithCorrectedText:(NSString*)text forSpeechIdentifier:(id)arg2 {
   NSLog(@"AP: Starting request with corrected text: %@", text);
@@ -137,6 +132,28 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 
 %end
 
+%hook AFUISiriSession
+- (void)_requestContextWithCompletion:(id)arg1 {
+  NSLog(@"%@", arg1);
+  %log;
+  %orig;
+}
+- (void)_requestDidFinishWithError:(id)arg1 {
+  NSLog(@"%@", arg1);
+  %log;
+  %orig;
+}
+- (void)assistantConnectionRequestFinished:(id)arg1 {
+  NSLog(@"%@", arg1);
+  %log;
+  %orig;
+}
+- (void)end {
+  %log;
+  %orig;
+}
+%end
+
 %hook AFConnectionClientServiceDelegate
 
 - (void)speechRecognized:(SASSpeechRecognized*)arg1 {
@@ -153,11 +170,9 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   
   NSLog(@"AP Starting Speech Query: %@", phraseBuilder);
   
-  AFConnection *connection;
-  object_getInstanceVariable(self, "_connection", (void **)&connection);
-  currConnection = connection;
+  AFConnection *connection = MSHookIvar<AFConnection*>(self, "_connection");
   
-  APSession *currSession = [APSession sessionWithRefId:nil andConnection:currConnection];
+  APSession *currSession = [APSession sessionWithRefId:nil andConnection:connection];
   if (shouldHandleRequest(phraseBuilder, currSession)) {
     defaultHandling = NO;
     NSLog(@"Handling with plugin!");

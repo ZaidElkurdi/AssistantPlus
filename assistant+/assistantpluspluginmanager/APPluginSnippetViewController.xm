@@ -26,7 +26,7 @@
 }
 @end
 
-static UIView *_view;
+static UIViewController *_view;
 
 %subclass APPluginSnippetViewController : SiriUISnippetViewController <SiriUISnippetPlugin, SiriUIViewController>
 
@@ -41,29 +41,27 @@ static UIView *_view;
 //  [vc.view addSubview:label];
 //}
 
-- (id)view {
-  NSLog(@"Returning custom view: %@ %@", _view, _view.backgroundColor);
-  //NSLog(@">> K3AExtensionSnippetController view");
-  return _view;
-}
-
 
 %new
--(void)setCustomView:(UIView*)newVC {
+-(void)setCustomView:(UIViewController*)newVC {
   NSLog(@"Setting custom view to: %@", newVC);
-  _view = [newVC retain];
+  _view = newVC;
+  [self addChildViewController:newVC];
+  [newVC didMoveToParentViewController:self];
+  self.view.frame = newVC.view.frame;
+  [self.view addSubview:newVC.view];
 }
 
 %new
 -(id)viewControllerForSnippet:(id)arg1 error:(id)arg2 {
   NSLog(@"VC FOR Snippet: %@" ,arg1);
-  return self;
+  return _view;
 }
 
 %new
 -(id)viewControllerForAceObject:(id)arg1 {
     NSLog(@"VC FOR ACE: %@" ,arg1);
-  return self;
+  return _view;
 }
 
 %new
@@ -76,7 +74,7 @@ static UIView *_view;
 //}
 
 -(double)desiredHeight {
-  return _view.frame.size.height;
+  return _view.view.frame.size.height;
 }
 
 %new

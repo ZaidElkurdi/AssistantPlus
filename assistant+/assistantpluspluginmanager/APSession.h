@@ -16,11 +16,13 @@
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
--(NSDictionary*)getCurrentLocation;
+- (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
 @end
 
 
 @interface APSession : NSObject <APSiriSession, CLLocationManagerDelegate>
+
+@property (nonatomic, copy) void (^completionHandler)(NSDictionary *locationData);
 
 +(APSession*)sessionWithRefId:(NSString*)refId andConnection:(AFConnection*)connection;
 
@@ -30,5 +32,6 @@
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
 - (void)sendRequestCompleted;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
--(NSDictionary*)getCurrentLocation;
+- (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
+
 @end

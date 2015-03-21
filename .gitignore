@@ -1,2 +1,4 @@
 *.deb
 last_package
+*.md
+*.o
