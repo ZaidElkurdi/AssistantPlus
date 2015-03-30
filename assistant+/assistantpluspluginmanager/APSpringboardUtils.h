@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "APPluginSystem.h"
+#import "AssistantPlusHeaders.h"
 
-@interface APSpringboardUtils : NSObject
+@interface APSpringboardUtils : NSObject <APSharedUtils>
 @property (copy, nonatomic) void (^completionHandler) (NSDictionary*) ;
 
-+ (id)sharedUtils;
-- (id)getPluginManager;
++ (id)sharedAPUtils;
+- (APPluginSystem*)getPluginManager;
 - (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
 - (void)loadPlugins;
 - (void)gotCurrentLocation:(NSString*)msg withInfo:(NSDictionary*)info;

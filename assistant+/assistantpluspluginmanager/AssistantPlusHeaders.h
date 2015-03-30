@@ -6,15 +6,32 @@
 //
 //
 
-#import "APSession.h"
 #import "AssistantHeaders.h"
 
-#ifndef _AssistantPlusHeaders_h
-#define _AssistantPlusHeaders_h
+#define PLUGIN_PATH "/Library/AssistantPlusPlugins/"
+
+@protocol APSiriSession <NSObject>
+- (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase;
+- (void)sendAddViews:(NSArray*)views;
+- (void)sendAddViews:(NSArray*)views dialogPhase:(NSString*)dialogPhase scrollToTop:(BOOL)toTop temporary:(BOOL)temporary;
+-(NSMutableDictionary*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
+-(NSMutableDictionary*)createTextSnippet:(NSString*)text;
+- (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
+- (void)sendRequestCompleted;
+-(NSMutableDictionary*)createAssistantUtteranceView:(NSString*)text;
+- (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
+@end
+
+@protocol APSharedUtils <NSObject>
++ (id)sharedAPUtils;
+- (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
+@end
 
 @protocol APPluginSystem <NSObject>
 @required
 +(id)sharedManager;
+- (void)reloadCustomRepliesPlugin:(NSDictionary*)replies;
+- (void)reloadActivatorListeners;
 @end
 
 @protocol APPluginManager <NSObject>
@@ -23,15 +40,9 @@
 -(BOOL)registerCommand:(Class)cls;
 /// Register a snippet class
 -(BOOL)registerSnippet:(Class)cls;
-
-
--(NSString*)localizedString:(NSString*)text;
-
--(NSString*)systemVersion;
 @end
 
-
-@protocol APPluginSnippet <SiriUIViewController>
+@protocol APPluginSnippet <NSObject>
 @optional
 /// Initializes a snippet by properties
 -(id)initWithProperties:(NSDictionary*)props;
@@ -73,5 +84,3 @@
 -(void)assistantDismissed; //clean up
 
 @end
-
-#endif

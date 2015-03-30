@@ -11,7 +11,7 @@ APLocationDaemon_CFLAGS = -fobjc-arc
 APLocationDaemon_FILES = main.mm APLocationManager.m
 APLocationDaemon_FRAMEWORKS = Foundation CoreLocation
 APLocationDaemon_PRIVATE_FRAMEWORKS = AppSupport
-APLocationDaemon_LIBRARIES = objcipc substrate
+APLocationDaemon_LIBRARIES = substrate
 APLocationDaemon_CODESIGN_FLAGS = -Sentitlements.xml
 
 include $(THEOS_MAKE_PATH)/tool.mk

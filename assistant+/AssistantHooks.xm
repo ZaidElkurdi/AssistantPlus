@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
 #import "assistantpluspluginmanager/AssistantPlusHeaders.h"
 #import "assistantpluspluginmanager/AssistantHeaders.h"
-#import "assistantpluspluginmanager/APPluginManager.h"
+#import "assistantpluspluginmanager/APPluginSystem.h"
 #import "assistantpluspluginmanager/APSession.h"
 #import "assistantpluspluginmanager/APSpringboardUtils.h"
-#import <libobjcipc/objcipc.h>
+#import <substrate.h>
 
 @protocol SAAceSerializable <NSObject>
 @end
@@ -20,10 +20,11 @@
 
 static BOOL defaultHandling = YES;
 static AFConnection *currConnection;
-static APPluginManager *pluginManager;
+static APPluginSystem *pluginManager;
+static BOOL hasLoadedSnippets = NO;
 
 BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
-  pluginManager = [[%c(APSpringboardUtils) sharedUtils] getPluginManager];
+  pluginManager = [[%c(APSpringboardUtils) sharedAPUtils] getPluginManager];
   NSLog(@"Manager: %@", pluginManager);
   NSSet *tokens = [NSSet setWithArray:[text componentsSeparatedByString: @" "]];
   return [pluginManager handleCommand:text withTokens:tokens withSession:currSession];
@@ -52,13 +53,18 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 %hook SiriUIPluginManager
 
 - (id)transcriptItemForObject:(AceObject*)arg1 {
+  if (!hasLoadedSnippets) {
+    [self loadAssistantPlusSnippets];
+  }
   NSDictionary *properties = [arg1 properties];
   if (properties) {
     NSString *className = properties[@"snippetClass"];
     if (className) {
       NSLog(@"AP: Looking for custom snippet: %@", className);
+      NSLog(@"Attempt to get: %@", NSClassFromString(className));
       id<APPluginSnippet> customClass = [[NSClassFromString(className) alloc] initWithProperties:properties[@"snippetProps"]];
       if ([customClass respondsToSelector:@selector(view)]) {
+        NSLog(@"Custom class: %@", customClass);
         UIViewController *customVC = (UIViewController*)customClass;
         SiriUISnippetViewController *vc = [[%c(SiriUISnippetViewController) alloc] init];
         object_setClass(vc, [%c(APPluginSnippetViewController) class]);
@@ -75,16 +81,48 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   } else {
     NSLog(@"AP ERROR: No properties for snippet, this shouldn't hapepn...");
   }
-  id r = %orig;
+  id r = %orig(arg1);
   return r;
 }
 
+%new
+- (void)loadAssistantPlusSnippets {
+  hasLoadedSnippets = YES;
+  
+  NSURL *directoryPath = [NSURL URLWithString:@PLUGIN_PATH];
+  
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSArray *contents = [fileManager contentsOfDirectoryAtURL:directoryPath
+                                 includingPropertiesForKeys:@[]
+                                                    options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                      error:nil];
+  
+  NSLog(@"SiriUIPluginManager: Plugins:");
+  for (NSURL *fileURL in contents) {
+    NSString *name = [[[fileURL absoluteString] lastPathComponent] stringByDeletingPathExtension];
+    
+    NSLog(@"Loading %@ at %@", name, fileURL);
+    NSBundle *bundle = [NSBundle bundleWithURL:fileURL];
+    
+    if (!bundle) {
+      NSLog(@"Failed to open extension bundle %@ (%@)!", fileURL, fileURL);
+      continue;
+    }
+    
+    if (![bundle load]) {
+      NSLog(@"Failed to load extension bundle %@ (wrong CFBundleExecutable? Missing? Not signed?)!", name);
+      continue;
+    } else {
+      NSLog(@"Loaded bundle!");
+    }
+  }
+}
 
 %end
 
 %hook AFConnection
 - (void)_doCommand:(SAUIAddViews*)arg1 reply:(id)arg2 {
-  NSLog(@"Doing: %@", arg1);
+  NSLog(@"Doing: %@ with reply: %@", arg1, arg2);
   if ([arg1 respondsToSelector:@selector(views)]) {
     NSLog(@"Views: %@", arg1.views);
   }
@@ -92,15 +130,9 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   %orig;
 }
 
-- (void)clearContext { %log; %orig; }
-
-- (void)sendReplyCommand:(id)arg1 {
-  %log;
-}
-
 - (void)startRequestWithCorrectedText:(NSString*)text forSpeechIdentifier:(id)arg2 {
   NSLog(@"AP: Starting request with corrected text: %@", text);
-  APSession *currSession = [APSession sessionWithRefId:nil andConnection:self];
+  APSession *currSession = [APSession sessionWithConnection:self];
   if (shouldHandleRequest(text, currSession)) {
     NSLog(@"Handling!");
   } else {
@@ -121,7 +153,7 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 
 - (void)startRequestWithText:(NSString*)text {
   NSLog(@"AP: Starting request with text: %@", text);
-  APSession *currSession = [APSession sessionWithRefId:nil andConnection:self];
+  APSession *currSession = [APSession sessionWithConnection:self];
   if (shouldHandleRequest(text, currSession)) {
     NSLog(@"Handling!");
   } else {
@@ -172,7 +204,7 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   
   AFConnection *connection = MSHookIvar<AFConnection*>(self, "_connection");
   
-  APSession *currSession = [APSession sessionWithRefId:nil andConnection:connection];
+  APSession *currSession = [APSession sessionWithConnection:connection];
   if (shouldHandleRequest(phraseBuilder, currSession)) {
     defaultHandling = NO;
     NSLog(@"Handling with plugin!");

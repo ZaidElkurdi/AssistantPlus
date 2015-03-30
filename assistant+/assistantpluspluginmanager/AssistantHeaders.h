@@ -8,8 +8,6 @@
 #ifndef _AssistantHeaders_h
 #define _AssistantHeaders_h
 
-static char kAPPluginAssociatedObjectKey;
-
 @interface BasicAceContext : NSObject
 + (id)sharedBasicAceContext;
 - (void)registerGroupAcronym:(id)arg1 forGroupWithIdentifier:(id)arg2;
@@ -32,6 +30,7 @@ static char kAPPluginAssociatedObjectKey;
 -(void)wasAddedToTranscript;
 -(AceObject *)aceObject;
 -(void)setAceObject:(AceObject*)arg1;
+-(void)setCustomView:(UIViewController*)customVC;
 @end
 
 
@@ -197,6 +196,11 @@ typedef SOObject SOAceObject;
 -(void)wasAddedToTranscript;
 -(AceObject *)aceObject;
 -(void)setAceObject:(AceObject*)arg1;
+@end
+
+@interface SiriUIPluginManager
++ (id)sharedInstance;
+- (void)loadAssistantPlusSnippets;
 @end
 
 #endif

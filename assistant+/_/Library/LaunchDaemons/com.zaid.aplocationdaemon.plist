@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>KeepAlive</key>
-	<false/>
+	<true/>
 	<key>StandardErrorPath</key>
 	<string>/dev/null</string>
 	<key>RunAtLoad</key>

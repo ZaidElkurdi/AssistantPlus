@@ -1,8 +1,8 @@
 include theos/makefiles/common.mk
 
 export ARCHS = armv7s arm64
-export TARGET = iphone:latest:8.1
-export SDKVERSION=8.1
+export TARGET = iphone:latest:8.2
+export SDKVERSION=8.2
 
 BUNDLE_NAME = HelloSnippet
 HelloSnippet_BUNDLE_EXTENSION = assistantPlugin

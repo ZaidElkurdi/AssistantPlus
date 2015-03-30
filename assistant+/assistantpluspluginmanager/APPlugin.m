@@ -36,9 +36,9 @@
     if (!principal) {
       NSLog(@"Plugin %@ doesn't provide a NSPrincipalClass!", fileName);
       return nil;
-    } else {
-      NSLog(@"has principal!");
     }
+    
+    NSLog(@"AP: Principal Class is %@", principal);
     
     pluginClass = [[principal alloc] initWithSystem:self];
     if (!pluginClass) {
@@ -70,6 +70,15 @@
 
 -(NSString*)displayName {
   return displayName;
+}
+
+- (NSString*)identifier {
+  return identifier;
+}
+
+- (NSArray*)getRegisteredCommands {
+  NSLog(@"Registered Commands: %@", commands);
+  return commands;
 }
 
 - (NSSet*)getRegisteredSnippets {

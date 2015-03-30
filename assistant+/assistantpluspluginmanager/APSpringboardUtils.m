@@ -9,13 +9,20 @@
 #import "APSpringboardUtils.h"
 #import "AssistantPlusHeaders.h"
 #import "CPDistributedMessagingCenter.h"
+#include <spawn.h>
+#include <signal.h>
+
+@interface SpringBoard : UIApplication
+- (void)_relaunchSpringBoardNow;
+@end
+
 
 @implementation APSpringboardUtils {
-  id<APPluginManager> pluginManager;
+  APPluginSystem *pluginManager;
   NSDictionary *currLocation;
 }
 
-+ (id)sharedUtils {
++ (id)sharedAPUtils {
   static APSpringboardUtils *sharedObj = nil;
   @synchronized(self) {
     if (sharedObj == nil) {
@@ -25,18 +32,40 @@
       CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
       [center runServerOnCurrentThread];
       [center registerForMessageName:@"RetrievedLocation" target:sharedObj selector:@selector(gotCurrentLocation:withInfo:)];
+      [center registerForMessageName:@"UpdateActivatorListeners" target:sharedObj selector:@selector(updateActivatorListeners)];
+      [center registerForMessageName:@"UpdateCustomReplies" target:sharedObj selector:@selector(updateCustomReplies:withReplies:)];
+      [center registerForMessageName:@"respringForListeners" target:sharedObj selector:@selector(respring)];
     }
   }
   return sharedObj;
 }
 
-- (id)getPluginManager {
+- (APPluginSystem*)getPluginManager {
   return pluginManager;
 }
 
 - (void)loadPlugins {
-  pluginManager = [NSClassFromString(@"APPluginManager") sharedManager];
+  pluginManager = [APPluginSystem sharedManager];
   NSLog(@"APSpringboardUtils: Loaded Plugin Manager: %@", pluginManager);
+}
+
+- (void)updateActivatorListeners {
+  NSLog(@"Calling1 on %@", pluginManager);
+  [pluginManager reloadActivatorListeners];
+}
+
+- (void)updateCustomReplies:(NSString*)msg withReplies:(NSDictionary*)dict {
+  NSLog(@"AP SB: Updating custom replies with %@", dict);
+  [pluginManager reloadCustomRepliesPlugin:dict];
+}
+
+- (void)respring {
+  NSLog(@"Respringing here!");
+  pid_t pid;
+  int status;
+  const char *argv[] = {"killall", "backboardd", NULL};
+  posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char *const *)argv, NULL);
+  waitpid(pid, &status, WEXITED);
 }
 
 - (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion {

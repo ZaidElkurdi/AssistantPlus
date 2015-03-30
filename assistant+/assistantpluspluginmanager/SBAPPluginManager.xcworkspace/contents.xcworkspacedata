@@ -8,10 +8,10 @@
       location = "container:APPlugin.m">
    </FileRef>
    <FileRef
-      location = "container:APPluginManager.h">
+      location = "container:APPluginSystem.h">
    </FileRef>
    <FileRef
-      location = "container:APPluginManager.mm">
+      location = "container:APPluginSystem.m">
    </FileRef>
    <FileRef
       location = "container:APPluginSnippetViewController.xm"

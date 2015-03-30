@@ -51,11 +51,13 @@
 -(id)initWithProperties:(NSDictionary*)props {
   NSLog(@"Snippet init with: %@" ,props);
   if (self = [super init]) {
-    NSDictionary *locInfo = props[@"Location"];
-    NSLog(@"Loc Info: %@", locInfo);
-    helloLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 200)] autorelease];
-    helloLabel.text = [NSString stringWithFormat:@"%f", [locInfo[@"latitude"] floatValue]];
-    [self.view addSubview:helloLabel];
+    if (props) {
+      NSDictionary *locInfo = props[@"Location"];
+      NSLog(@"Loc Info: %@", locInfo);
+      helloLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 200)] autorelease];
+      helloLabel.text = [NSString stringWithFormat:@"%f", [locInfo[@"latitude"] floatValue]];
+      [self.view addSubview:helloLabel];
+    }
   }
   
   return self;

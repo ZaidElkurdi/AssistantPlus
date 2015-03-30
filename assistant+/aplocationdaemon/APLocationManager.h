@@ -6,7 +6,6 @@
 //
 //
 #import <CoreLocation/CoreLocation.h>
-#import "libobjcipc/objcipc.h"
 #import "CPDistributedMessagingCenter.h"
 
 @interface APLocationManager : NSObject <CLLocationManagerDelegate>
