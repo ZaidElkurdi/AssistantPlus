@@ -1,6 +1,8 @@
 #import "MainViewController.h"
 #import "ActivatorListenersViewController.h"
 #import "CustomRepliesViewController.h"
+#import "CPDistributedMessagingCenter.h"
+#import "PluginsViewController.h"
 
 @implementation MainViewController
 
@@ -23,17 +25,6 @@
   self.optionsTable.backgroundColor = backgroundColor;
   
   [self.view addSubview:self.optionsTable];
-  
-  NSBundle *bundle = [NSBundle mainBundle];
-  NSLog(@"%@", bundle);
-  NSLog(@"%@", bundle.resourcePath);
-  
-  NSURL *bundleURL = [[NSBundle mainBundle] bundleURL];
-  NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:bundleURL
-                                 includingPropertiesForKeys:@[]
-                                                    options:NSDirectoryEnumerationSkipsHiddenFiles
-                                                      error:nil];
-  NSLog(@"contents: %@", contents);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -106,9 +97,11 @@
     case 1:
       [self goToNewVC:[[CustomRepliesViewController alloc] init]];
       break;
-    case 2:
-      [self goToNewVC:[[ActivatorListenersViewController alloc] init]];
-      break;
+    case 2: {
+      CPDistributedMessagingCenter *center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
+      NSDictionary *installed = [center sendMessageAndReceiveReplyName:@"getInstalledPlugins" userInfo:nil];
+      [self goToNewVC:[[PluginsViewController alloc] initWithInstalledPlugins:installed[@"plugins"]]];
+      break; }
     default:
       break;
   }

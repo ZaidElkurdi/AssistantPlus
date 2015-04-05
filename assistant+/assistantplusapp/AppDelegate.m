@@ -1,4 +1,3 @@
-#import "MainViewController.h"
 #import "AppDelegate.h"
 
 @implementation AppDelegate
@@ -7,22 +6,14 @@
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   self.window.backgroundColor = [UIColor whiteColor];
   
-  MainViewController *mainVC = [[MainViewController alloc] init];
+  self.mainController = [[MainViewController alloc] init];
   
-  self.navController = [[UINavigationController alloc] initWithRootViewController:mainVC];
+  self.navController = [[UINavigationController alloc] initWithRootViewController:self.mainController];
   self.navController.title = @"Assistant+";
   self.navController.view.backgroundColor = [UIColor whiteColor];
   [self.window setRootViewController:self.navController];
   [self.window makeKeyAndVisible];
   return YES;
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-   [[UIApplication sharedApplication] setStatusBarHidden:NO];
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 @end

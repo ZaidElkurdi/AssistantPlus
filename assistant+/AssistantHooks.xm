@@ -25,9 +25,11 @@ static BOOL hasLoadedSnippets = NO;
 
 BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   pluginManager = [[%c(APSpringboardUtils) sharedAPUtils] getPluginManager];
-  NSLog(@"Manager: %@", pluginManager);
-  NSSet *tokens = [NSSet setWithArray:[text componentsSeparatedByString: @" "]];
-  return [pluginManager handleCommand:text withTokens:tokens withSession:currSession];
+  NSArray *lowerCaseArr = [[text componentsSeparatedByString: @" "] valueForKey:@"lowercaseString"];
+  NSSet *tokens = [NSSet setWithArray:lowerCaseArr];
+  BOOL pluginWillHandle = [pluginManager handleCommand:text withTokens:tokens withSession:currSession];
+  defaultHandling = !pluginWillHandle;
+  return pluginWillHandle;
 }
 
 %hook BasicAceContext
@@ -43,13 +45,6 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 
 %end
 
-%hook SiriUISnippetViewController
--(void)setSnippet:(id)arg1 {
-  %log;
-  %orig;
-}
-%end
-
 %hook SiriUIPluginManager
 
 - (id)transcriptItemForObject:(AceObject*)arg1 {
@@ -60,11 +55,8 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   if (properties) {
     NSString *className = properties[@"snippetClass"];
     if (className) {
-      NSLog(@"AP: Looking for custom snippet: %@", className);
-      NSLog(@"Attempt to get: %@", NSClassFromString(className));
       id<APPluginSnippet> customClass = [[NSClassFromString(className) alloc] initWithProperties:properties[@"snippetProps"]];
       if ([customClass respondsToSelector:@selector(view)]) {
-        NSLog(@"Custom class: %@", customClass);
         UIViewController *customVC = (UIViewController*)customClass;
         SiriUISnippetViewController *vc = [[%c(SiriUISnippetViewController) alloc] init];
         object_setClass(vc, [%c(APPluginSnippetViewController) class]);
@@ -97,20 +89,18 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
                                                     options:NSDirectoryEnumerationSkipsHiddenFiles
                                                       error:nil];
   
-  NSLog(@"SiriUIPluginManager: Plugins:");
   for (NSURL *fileURL in contents) {
     NSString *name = [[[fileURL absoluteString] lastPathComponent] stringByDeletingPathExtension];
     
-    NSLog(@"Loading %@ at %@", name, fileURL);
     NSBundle *bundle = [NSBundle bundleWithURL:fileURL];
     
     if (!bundle) {
-      NSLog(@"Failed to open extension bundle %@ (%@)!", fileURL, fileURL);
+      NSLog(@"Failed to open plugin bundle %@ (%@)!", fileURL, fileURL);
       continue;
     }
     
     if (![bundle load]) {
-      NSLog(@"Failed to load extension bundle %@ (wrong CFBundleExecutable? Missing? Not signed?)!", name);
+      NSLog(@"Failed to load plugin bundle %@!", name);
       continue;
     } else {
       NSLog(@"Loaded bundle!");
@@ -121,14 +111,6 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 %end
 
 %hook AFConnection
-- (void)_doCommand:(SAUIAddViews*)arg1 reply:(id)arg2 {
-  NSLog(@"Doing: %@ with reply: %@", arg1, arg2);
-  if ([arg1 respondsToSelector:@selector(views)]) {
-    NSLog(@"Views: %@", arg1.views);
-  }
-  %log;
-  %orig;
-}
 
 - (void)startRequestWithCorrectedText:(NSString*)text forSpeechIdentifier:(id)arg2 {
   NSLog(@"AP: Starting request with corrected text: %@", text);
@@ -139,17 +121,6 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
     %orig;
   }
 }
-
-- (void)startAcousticIDRequestWithOptions:(id)arg1 { %log; %orig; }
-- (void)startSpeechPronunciationRequestWithOptions:(id)arg1 pronunciationContext:(id)arg2 { %log; %orig; }
-
-- (void)startSpeechRequestWithOptions:(id)arg1 {
-  NSLog(@"%@", arg1);
-  %log;
-  %orig;
-}
-- (void)startContinuationRequestWithUserInfo:(id)arg1 { %log; %orig; }
-- (void)startDirectActionRequestWithString:(id)arg1 { %log; %orig; }
 
 - (void)startRequestWithText:(NSString*)text {
   NSLog(@"AP: Starting request with text: %@", text);
@@ -164,28 +135,6 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
 
 %end
 
-%hook AFUISiriSession
-- (void)_requestContextWithCompletion:(id)arg1 {
-  NSLog(@"%@", arg1);
-  %log;
-  %orig;
-}
-- (void)_requestDidFinishWithError:(id)arg1 {
-  NSLog(@"%@", arg1);
-  %log;
-  %orig;
-}
-- (void)assistantConnectionRequestFinished:(id)arg1 {
-  NSLog(@"%@", arg1);
-  %log;
-  %orig;
-}
-- (void)end {
-  %log;
-  %orig;
-}
-%end
-
 %hook AFConnectionClientServiceDelegate
 
 - (void)speechRecognized:(SASSpeechRecognized*)arg1 {
@@ -194,8 +143,9 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
     if (currPhrase.interpretations.count > 0) {
       SASInterpretation *currInterpretation = currPhrase.interpretations[0];
       if (currInterpretation.tokens.count > 0) {
-        AFSpeechToken *currToken = currInterpretation.tokens[0];
-        [phraseBuilder appendString:[NSString stringWithFormat:@"%@ ", currToken.text]];
+        for (AFSpeechToken *currToken in currInterpretation.tokens) {
+          [phraseBuilder appendString:[NSString stringWithFormat:@"%@ ", currToken.text]];
+        }
       }
     }
   }
@@ -203,23 +153,21 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   NSLog(@"AP Starting Speech Query: %@", phraseBuilder);
   
   AFConnection *connection = MSHookIvar<AFConnection*>(self, "_connection");
-  
   APSession *currSession = [APSession sessionWithConnection:connection];
   if (shouldHandleRequest(phraseBuilder, currSession)) {
-    defaultHandling = NO;
-    NSLog(@"Handling with plugin!");
+    [connection cancelRequest];
+    [self requestDidFinish];
   } else {
-    defaultHandling = YES;
-    NSLog(@"Going to default!");
     %orig;
   }
 }
 
-- (void)requestDidFinish{ %log; %orig; }
 - (void)requestDidReceiveCommand:(id)arg1 reply:(CDUnknownBlockType*)arg2 {
-  %log;
   if (defaultHandling) {
+    NSLog(@"Allowing default!");
     %orig;
+  } else {
+    NSLog(@"Overriding!");
   }
 }
 %end

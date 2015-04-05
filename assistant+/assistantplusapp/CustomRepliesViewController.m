@@ -20,6 +20,8 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+
+  self.title = @"Custom Replies";
   
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewReply:)];
 
@@ -34,7 +36,7 @@
   self.repliesTableView.backgroundColor = backgroundColor;
   
   [self.view addSubview:self.repliesTableView];
-  
+
   [self loadRepliesFromFile];
 }
 
@@ -55,7 +57,6 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if ([defaults objectForKey:@"customReplies"]) {
     NSArray *replies = [defaults objectForKey:@"customReplies"];
-    NSLog(@"Serialized replies: %@", replies);
     for (NSDictionary *currReply in replies) {
       APCustomReply *reply = [[APCustomReply alloc] initWithDictionary:currReply];
       [savedReplies addObject:reply];
@@ -68,7 +69,6 @@
   if (savedReplies) {
     NSMutableArray *toSave = [[NSMutableArray alloc] init];
     for (APCustomReply *currReply in savedReplies) {
-      NSLog(@"Saving: %@ %@", currReply.trigger, currReply.response);
       [toSave addObject:[currReply dictionaryRepresentation]];
     }
     
@@ -78,8 +78,6 @@
     CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
     [center sendMessageName:@"UpdateCustomReplies" userInfo:@{@"customReplies" : toSave}];
   }
-  
-  NSLog(@"Saved replies is: %@", savedReplies);
 }
 
 #pragma mark - Reply Creation

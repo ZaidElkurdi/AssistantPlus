@@ -7,7 +7,6 @@ static UIViewController *_view;
 
 %new
 -(void)setCustomView:(UIViewController*)newVC {
-  NSLog(@"Setting custom view to: %@", newVC);
   _view = newVC;
   [self addChildViewController:newVC];
   [newVC didMoveToParentViewController:self];
@@ -17,13 +16,11 @@ static UIViewController *_view;
 
 %new
 -(id)viewControllerForSnippet:(id)arg1 error:(id)arg2 {
-  NSLog(@"VC FOR Snippet: %@" ,arg1);
   return _view;
 }
 
 %new
 -(id)viewControllerForAceObject:(id)arg1 {
-    NSLog(@"VC FOR ACE: %@" ,arg1);
   return _view;
 }
 
@@ -42,17 +39,13 @@ static UIViewController *_view;
 }
 
 -(id)navigationTitle {
-  return @"yoyoyo";
+  return @"APPluginSnippet";
 }
 
 %new
 -(void)transcriptViewControllerTappedOutsideEditingView {
-  NSLog(@"tapped outside editing view!");
+  NSLog(@"Tapped outside editing view!");
 }
 
-
-- (void)didMoveToParentViewController:(UIViewController *)parent  {
-  NSLog(@"Hello moved to %@", parent);
-}
 
 %end

@@ -10,8 +10,6 @@
 
 @interface APPlugin : NSObject <APPluginManager> {
   NSBundle *bundle;
-  BOOL isInitialized;
-  
   NSString *name;
   NSString *displayName;
   NSString *bundleName;
@@ -25,6 +23,7 @@
   id<APPlugin> pluginClass;
 }
 -(NSString*)displayName;
+-(NSString*)author;
 -(NSString*)identifier;
 
 - (id)initWithFilePath:(NSURL*)filePath andName:(NSString*)name;

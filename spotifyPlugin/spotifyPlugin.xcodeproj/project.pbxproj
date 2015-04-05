@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B86E66CA1ACA10BC007C6014 /* AFHTTPRequestSerializer+OAuth2.m in Sources */ = {isa = PBXBuildFile; fileRef = B86E66C71ACA10BC007C6014 /* AFHTTPRequestSerializer+OAuth2.m */; };
+		B86E66CB1ACA10BC007C6014 /* AFOAuth2Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = B86E66C91ACA10BC007C6014 /* AFOAuth2Manager.m */; };
+		B86E66CE1ACA1E6F007C6014 /* SpotifyPlayCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = B86E66CD1ACA1E6F007C6014 /* SpotifyPlayCommands.m */; };
 		B8EC46F21AC7670700ED3836 /* libspotifyPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8EC46E61AC7670700ED3836 /* libspotifyPlugin.a */; };
 		B8EC47031AC768A100ED3836 /* spotifySiri.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC47021AC768A100ED3836 /* spotifySiri.m */; };
-		B8EC47061AC7690E00ED3836 /* spotifyCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC47051AC7690E00ED3836 /* spotifyCommands.m */; };
+		B8EC47061AC7690E00ED3836 /* SpotifySearchCommands.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC47051AC7690E00ED3836 /* SpotifySearchCommands.m */; };
 		B8EC470A1AC76D1E00ED3836 /* SpotifySongTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC47091AC76D1E00ED3836 /* SpotifySongTableViewCell.m */; };
-		B8EC470D1AC76E1000ED3836 /* spotifySongListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC470C1AC76E1000ED3836 /* spotifySongListViewController.m */; };
+		B8EC470D1AC76E1000ED3836 /* SpotifySearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC470C1AC76E1000ED3836 /* SpotifySearchResultsViewController.m */; };
 		B8EC47221AC7746E00ED3836 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC47101AC7746E00ED3836 /* AFHTTPRequestOperation.m */; };
 		B8EC47231AC7746E00ED3836 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC47121AC7746E00ED3836 /* AFHTTPRequestOperationManager.m */; };
 		B8EC47241AC7746E00ED3836 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B8EC47141AC7746E00ED3836 /* AFHTTPSessionManager.m */; };
@@ -36,11 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B8EC46E41AC7670700ED3836 /* CopyFiles */ = {
+		B86E66D71ACB560F007C6014 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
+			dstPath = "";
+			dstSubfolderSpec = 7;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,19 +51,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B86E66C61ACA10BC007C6014 /* AFHTTPRequestSerializer+OAuth2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestSerializer+OAuth2.h"; sourceTree = "<group>"; };
+		B86E66C71ACA10BC007C6014 /* AFHTTPRequestSerializer+OAuth2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestSerializer+OAuth2.m"; sourceTree = "<group>"; };
+		B86E66C81ACA10BC007C6014 /* AFOAuth2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAuth2Manager.h; sourceTree = "<group>"; };
+		B86E66C91ACA10BC007C6014 /* AFOAuth2Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuth2Manager.m; sourceTree = "<group>"; };
+		B86E66CC1ACA1E6F007C6014 /* SpotifyPlayCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyPlayCommands.h; sourceTree = "<group>"; };
+		B86E66CD1ACA1E6F007C6014 /* SpotifyPlayCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifyPlayCommands.m; sourceTree = "<group>"; };
 		B8EC46E61AC7670700ED3836 /* libspotifyPlugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libspotifyPlugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8EC46F11AC7670700ED3836 /* spotifyPluginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = spotifyPluginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8EC46F71AC7670700ED3836 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8EC47001AC7689100ED3836 /* AssistantPlusHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AssistantPlusHeaders.h; sourceTree = "<group>"; };
 		B8EC47011AC768A100ED3836 /* spotifySiri.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spotifySiri.h; sourceTree = "<group>"; };
 		B8EC47021AC768A100ED3836 /* spotifySiri.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = spotifySiri.m; sourceTree = "<group>"; };
-		B8EC47041AC7690E00ED3836 /* spotifyCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spotifyCommands.h; sourceTree = "<group>"; };
-		B8EC47051AC7690E00ED3836 /* spotifyCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = spotifyCommands.m; sourceTree = "<group>"; };
+		B8EC47041AC7690E00ED3836 /* SpotifySearchCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifySearchCommands.h; sourceTree = "<group>"; };
+		B8EC47051AC7690E00ED3836 /* SpotifySearchCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifySearchCommands.m; sourceTree = "<group>"; };
 		B8EC47071AC76B8800ED3836 /* SpotifySongTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpotifySongTableViewCell.xib; sourceTree = "<group>"; };
 		B8EC47081AC76D1E00ED3836 /* SpotifySongTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifySongTableViewCell.h; sourceTree = "<group>"; };
 		B8EC47091AC76D1E00ED3836 /* SpotifySongTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifySongTableViewCell.m; sourceTree = "<group>"; };
-		B8EC470B1AC76E1000ED3836 /* spotifySongListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spotifySongListViewController.h; sourceTree = "<group>"; };
-		B8EC470C1AC76E1000ED3836 /* spotifySongListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = spotifySongListViewController.m; sourceTree = "<group>"; };
+		B8EC470B1AC76E1000ED3836 /* SpotifySearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifySearchResultsViewController.h; sourceTree = "<group>"; };
+		B8EC470C1AC76E1000ED3836 /* SpotifySearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifySearchResultsViewController.m; sourceTree = "<group>"; };
 		B8EC470F1AC7746E00ED3836 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		B8EC47101AC7746E00ED3836 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
 		B8EC47111AC7746E00ED3836 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
@@ -129,10 +138,12 @@
 				B8EC47001AC7689100ED3836 /* AssistantPlusHeaders.h */,
 				B8EC47011AC768A100ED3836 /* spotifySiri.h */,
 				B8EC47021AC768A100ED3836 /* spotifySiri.m */,
-				B8EC47041AC7690E00ED3836 /* spotifyCommands.h */,
-				B8EC47051AC7690E00ED3836 /* spotifyCommands.m */,
-				B8EC470B1AC76E1000ED3836 /* spotifySongListViewController.h */,
-				B8EC470C1AC76E1000ED3836 /* spotifySongListViewController.m */,
+				B86E66CC1ACA1E6F007C6014 /* SpotifyPlayCommands.h */,
+				B86E66CD1ACA1E6F007C6014 /* SpotifyPlayCommands.m */,
+				B8EC47041AC7690E00ED3836 /* SpotifySearchCommands.h */,
+				B8EC47051AC7690E00ED3836 /* SpotifySearchCommands.m */,
+				B8EC470B1AC76E1000ED3836 /* SpotifySearchResultsViewController.h */,
+				B8EC470C1AC76E1000ED3836 /* SpotifySearchResultsViewController.m */,
 				B8EC47081AC76D1E00ED3836 /* SpotifySongTableViewCell.h */,
 				B8EC47091AC76D1E00ED3836 /* SpotifySongTableViewCell.m */,
 				B8EC47071AC76B8800ED3836 /* SpotifySongTableViewCell.xib */,
@@ -160,6 +171,10 @@
 		B8EC470E1AC7746E00ED3836 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				B86E66C61ACA10BC007C6014 /* AFHTTPRequestSerializer+OAuth2.h */,
+				B86E66C71ACA10BC007C6014 /* AFHTTPRequestSerializer+OAuth2.m */,
+				B86E66C81ACA10BC007C6014 /* AFOAuth2Manager.h */,
+				B86E66C91ACA10BC007C6014 /* AFOAuth2Manager.m */,
 				B8EC470F1AC7746E00ED3836 /* AFHTTPRequestOperation.h */,
 				B8EC47101AC7746E00ED3836 /* AFHTTPRequestOperation.m */,
 				B8EC47111AC7746E00ED3836 /* AFHTTPRequestOperationManager.h */,
@@ -192,7 +207,7 @@
 			buildPhases = (
 				B8EC46E21AC7670700ED3836 /* Sources */,
 				B8EC46E31AC7670700ED3836 /* Frameworks */,
-				B8EC46E41AC7670700ED3836 /* CopyFiles */,
+				B86E66D71ACB560F007C6014 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -272,19 +287,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8EC47061AC7690E00ED3836 /* spotifyCommands.m in Sources */,
+				B8EC47061AC7690E00ED3836 /* SpotifySearchCommands.m in Sources */,
+				B86E66CB1ACA10BC007C6014 /* AFOAuth2Manager.m in Sources */,
 				B8EC47261AC7746E00ED3836 /* AFSecurityPolicy.m in Sources */,
 				B8EC47031AC768A100ED3836 /* spotifySiri.m in Sources */,
 				B8EC47231AC7746E00ED3836 /* AFHTTPRequestOperationManager.m in Sources */,
 				B8EC47271AC7746E00ED3836 /* AFURLConnectionOperation.m in Sources */,
 				B8EC47221AC7746E00ED3836 /* AFHTTPRequestOperation.m in Sources */,
-				B8EC470D1AC76E1000ED3836 /* spotifySongListViewController.m in Sources */,
+				B8EC470D1AC76E1000ED3836 /* SpotifySearchResultsViewController.m in Sources */,
 				B8EC47281AC7746E00ED3836 /* AFURLRequestSerialization.m in Sources */,
 				B8EC47241AC7746E00ED3836 /* AFHTTPSessionManager.m in Sources */,
 				B8EC47251AC7746E00ED3836 /* AFNetworkReachabilityManager.m in Sources */,
 				B8EC47291AC7746E00ED3836 /* AFURLResponseSerialization.m in Sources */,
+				B86E66CA1ACA10BC007C6014 /* AFHTTPRequestSerializer+OAuth2.m in Sources */,
 				B8EC472A1AC7746E00ED3836 /* AFURLSessionManager.m in Sources */,
 				B8EC472C1AC779D700ED3836 /* Makefile in Sources */,
+				B86E66CE1ACA1E6F007C6014 /* SpotifyPlayCommands.m in Sources */,
 				B8EC470A1AC76D1E00ED3836 /* SpotifySongTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,6 +402,7 @@
 		B8EC46FB1AC7670700ED3836 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zaid Elkurdi (4W5YEE5275)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -393,6 +412,7 @@
 		B8EC46FC1AC7670700ED3836 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zaid Elkurdi (4W5YEE5275)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -402,6 +422,7 @@
 		B8EC46FE1AC7670700ED3836 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zaid Elkurdi (4W5YEE5275)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -419,6 +440,7 @@
 		B8EC46FF1AC7670700ED3836 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zaid Elkurdi (4W5YEE5275)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -448,6 +470,7 @@
 				B8EC46FC1AC7670700ED3836 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B8EC46FD1AC7670700ED3836 /* Build configuration list for PBXNativeTarget "spotifyPluginTests" */ = {
 			isa = XCConfigurationList;
@@ -456,6 +479,7 @@
 				B8EC46FF1AC7670700ED3836 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

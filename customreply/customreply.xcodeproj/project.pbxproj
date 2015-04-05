@@ -29,7 +29,6 @@
 		B8315F0C1ABE856000818E61 /* customreplyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = customreplyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8315F121ABE856000818E61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8315F1D1ABE862A00818E61 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = customreply/Makefile; sourceTree = "<group>"; };
-		B8315F241ABF466900818E61 /* AssistantHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssistantHeaders.h; sourceTree = "<group>"; };
 		B8315F251ABF466900818E61 /* AssistantPlusHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssistantPlusHeaders.h; sourceTree = "<group>"; };
 		B8315F261ABF480000818E61 /* customReplyCommands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = customReplyCommands.h; sourceTree = "<group>"; };
 		B8315F271ABF480000818E61 /* customReplyCommands.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = customReplyCommands.m; sourceTree = "<group>"; };
@@ -69,7 +68,6 @@
 		B8315F031ABE856000818E61 /* customreply */ = {
 			isa = PBXGroup;
 			children = (
-				B8315F241ABF466900818E61 /* AssistantHeaders.h */,
 				B8315F251ABF466900818E61 /* AssistantPlusHeaders.h */,
 				B8315F261ABF480000818E61 /* customReplyCommands.h */,
 				B8315F271ABF480000818E61 /* customReplyCommands.m */,
@@ -416,6 +414,7 @@
 				B8315F171ABE856000818E61 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B8315F181ABE856000818E61 /* Build configuration list for PBXNativeTarget "customreplyTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +423,7 @@
 				B8315F1A1ABE856000818E61 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B8315F201ABE867400818E61 /* Build configuration list for PBXLegacyTarget "customreplyTheos" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +432,7 @@
 				B8315F221ABE867400818E61 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

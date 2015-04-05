@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "APActivatorListener.h"
 
-@interface ListenerDetailViewController : UIViewController <UITextFieldDelegate>
+@protocol ListenerDetailDelegate <NSObject>
+- (void)listenerDidChange:(APActivatorListener*)listener;
+@end
+
+@interface ListenerDetailViewController : UIViewController <UITextViewDelegate, UITextFieldDelegate>
+@property (assign) id<ListenerDetailDelegate> delegate;
 - (id)initWithListener:(APActivatorListener*)listener;
 @end

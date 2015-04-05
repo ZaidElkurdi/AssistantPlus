@@ -14,4 +14,7 @@
    <FileRef
       location = "group:Makefile">
    </FileRef>
+   <FileRef
+      location = "group:assistantplus_root_helper/assistantplus_root_helper.xcodeproj">
+   </FileRef>
 </Workspace>

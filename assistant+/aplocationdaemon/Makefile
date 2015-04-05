@@ -15,6 +15,3 @@ APLocationDaemon_LIBRARIES = substrate
 APLocationDaemon_CODESIGN_FLAGS = -Sentitlements.xml
 
 include $(THEOS_MAKE_PATH)/tool.mk
-
-after-APLocationDaemon-stage::
-	$(ECHO_NOTHING)$(FAKEROOT) chown root:wheel $(THEOS_STAGING_DIR)/Library/LaunchDaemons/com.zaid.aplocationdaemon.plist$(ECHO_END)

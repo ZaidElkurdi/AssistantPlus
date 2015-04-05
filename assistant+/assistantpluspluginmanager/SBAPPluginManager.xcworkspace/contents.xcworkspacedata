@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:APActivatorListener.h">
+   </FileRef>
+   <FileRef
+      location = "group:APActivatorListener.m">
+   </FileRef>
+   <FileRef
       location = "container:APPlugin.h">
    </FileRef>
    <FileRef

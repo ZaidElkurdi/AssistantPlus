@@ -1,0 +1,138 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		B86E66E11ACE4084007C6014 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		B86E66E21ACE4084007C6014 /* assistantplus_root_helper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = assistantplus_root_helper.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		B86E66DB1ACE4084007C6014 = {
+			isa = PBXGroup;
+			children = (
+				B86E66E11ACE4084007C6014 /* Makefile */,
+				B86E66E21ACE4084007C6014 /* assistantplus_root_helper.c */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		B86E66E01ACE4084007C6014 /* assistantplus_root_helper */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = B86E66E31ACE4084007C6014 /* Build configuration list for PBXLegacyTarget "assistantplus_root_helper" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "/Users/Zaid/Programming/Assistant2/assistant+/assistantplus_root_helper";
+			dependencies = (
+			);
+			name = assistantplus_root_helper;
+			passBuildSettingsInEnvironment = 1;
+			productName = assistantplus_root_helper;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		B86E66DC1ACE4084007C6014 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = B86E66DF1ACE4084007C6014 /* Build configuration list for PBXProject "assistantplus_root_helper" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B86E66DB1ACE4084007C6014;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B86E66E01ACE4084007C6014 /* assistantplus_root_helper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		B86E66DD1ACE4084007C6014 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		B86E66DE1ACE4084007C6014 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		B86E66E41ACE4084007C6014 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = assistantplus_root_helper;
+			};
+			name = Debug;
+		};
+		B86E66E51ACE4084007C6014 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = assistantplus_root_helper;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B86E66DF1ACE4084007C6014 /* Build configuration list for PBXProject "assistantplus_root_helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B86E66DD1ACE4084007C6014 /* Debug */,
+				B86E66DE1ACE4084007C6014 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B86E66E31ACE4084007C6014 /* Build configuration list for PBXLegacyTarget "assistantplus_root_helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B86E66E41ACE4084007C6014 /* Debug */,
+				B86E66E51ACE4084007C6014 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B86E66DC1ACE4084007C6014 /* Project object */;
+}

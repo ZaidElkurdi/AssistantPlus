@@ -108,6 +108,11 @@ typedef SOObject SOAceObject;
 - (void)sendReplyCommand:(id)arg1;
 - (void)_willCompleteRequest;
 - (void)_tellDelegateRequestFinished;
+- (void)cancelRequest;
+- (void)_requestDidEnd;
+- (void)endSession;
+- (void)clearContext;
+-(void)_cancelRequestTimeout;
 @end
 
 @interface SABaseCommand : AceObject
@@ -115,11 +120,10 @@ typedef SOObject SOAceObject;
 @property(copy, nonatomic) NSString *aceId;
 @end
 
-@interface AFConnectionClientServiceDelegate : NSObject
-{
+@interface AFConnectionClientServiceDelegate : NSObject {
   AFConnection *_connection;
 }
-
+- (void)requestDidFinish;
 @end
 
 @interface SABaseClientBoundCommand : SABaseCommand
@@ -162,8 +166,33 @@ typedef SOObject SOAceObject;
 @property(copy, nonatomic) NSArray *phrases;
 @end
 
+@interface AFUserUtterance : NSObject {
+  
+  NSMutableArray* _phrases;
+  NSMutableArray* _tokens;
+  NSString* _text;
+  NSDictionary* _correctionIdentifier;
+  
+}
+
+@property (nonatomic,readonly) NSDictionary * correctionIdentifier;              //@synthesize correctionIdentifier=_correctionIdentifier - In the implementation block
+@property (nonatomic,readonly) NSArray * dictationResult;
+-(id)description;
+-(id)bestTextInterpretation;
+-(id)initWithPhrases:(id)arg1 correctionIdentifier:(id)arg2 ;
+-(id)initWithTokens:(id)arg1 correctionIdentifier:(id)arg2 ;
+-(id)initWithString:(id)arg1 correctionIdentifier:(id)arg2 ;
+-(NSArray *)dictationResult;
+-(id)streamingTokens;
+-(NSDictionary *)correctionIdentifier;
+@end
+
+
 @interface SASSpeechRecognized : SABaseClientBoundCommand
 @property(retain, nonatomic) SASRecognition *recognition;
+- (id)af_bestTextInterpretation;
+- (id)af_correctionContext;
+- (AFUserUtterance*)af_userUtteranceValue;
 @end
 
 @interface AFSpeechToken : NSObject

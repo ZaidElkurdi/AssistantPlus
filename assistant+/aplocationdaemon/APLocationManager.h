@@ -9,7 +9,6 @@
 #import "CPDistributedMessagingCenter.h"
 
 @interface APLocationManager : NSObject <CLLocationManagerDelegate>
-@property (nonatomic) BOOL shouldTerminate;
 - (void)startMonitoringLocation;
 - (void)stopMonitoringLocation;
 

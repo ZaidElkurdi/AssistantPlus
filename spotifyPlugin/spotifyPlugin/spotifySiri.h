@@ -10,5 +10,5 @@
 #import "AssistantPlusHeaders.h"
 
 @interface spotifySiri : NSObject <APPlugin>
--(id)initWithSystem:(id<APPluginManager>)system;
+-(id)initWithPluginManager:(id<APPluginManager>)manager;
 @end

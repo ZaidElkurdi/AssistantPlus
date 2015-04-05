@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		B834F0171AC5FEEF00CF009E /* AssistantPlusAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B834F0161AC5FEEF00CF009E /* AssistantPlusAppTests.m */; };
+		B86E66DA1ACD1991007C6014 /* PluginsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B86E66D91ACD1991007C6014 /* PluginsViewController.m */; };
+		B86E67101ACE7AC0007C6014 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7C1ABF79AA00D4D107 /* AppDelegate.m */; };
+		B86E67111ACE7AC0007C6014 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */; };
+		B86E67121ACE7AC0007C6014 /* PluginsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B86E66D91ACD1991007C6014 /* PluginsViewController.m */; };
+		B86E67131ACE7AC0007C6014 /* CustomRepliesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0ADF1AC32C2000D4D107 /* CustomRepliesViewController.m */; };
+		B86E67141ACE7AC0007C6014 /* CustomReplyDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0AE21AC32C2A00D4D107 /* CustomReplyDetailViewController.m */; };
+		B86E67151ACE7AC0007C6014 /* ActivatorListenersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0ACD1ABF8F7C00D4D107 /* ActivatorListenersViewController.m */; };
+		B86E67161ACE7AC0007C6014 /* ListenerDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0AD91AC0949D00D4D107 /* ListenerDetailViewController.m */; };
+		B86E67171ACE7AC0007C6014 /* APActivatorListener.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0AD21ABF968B00D4D107 /* APActivatorListener.m */; };
+		B86E67181ACE7AC0007C6014 /* APCustomReply.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0AE51AC32CEF00D4D107 /* APCustomReply.m */; };
+		B86E67191ACE7AC0007C6014 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A871ABF7D6200D4D107 /* main.m */; };
+		B86E671B1ACE7C66007C6014 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B86E671A1ACE7C66007C6014 /* Default-568h@2x.png */; };
 		B8EC46D41AC6422100ED3836 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7C1ABF79AA00D4D107 /* AppDelegate.m */; };
 		B8EC46D51AC6422100ED3836 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */; };
 		B8EC46D61AC6422100ED3836 /* ActivatorListenersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0ACD1ABF8F7C00D4D107 /* ActivatorListenersViewController.m */; };
@@ -27,6 +39,13 @@
 			remoteGlobalIDString = B834EFF71AC5FEEF00CF009E;
 			remoteInfo = AssistantPlusApp;
 		};
+		B86E67031ACE7A77007C6014 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B88C0A561ABF794E00D4D107 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B86E66E91ACE7A77007C6014;
+			remoteInfo = assistantapp;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +56,11 @@
 		B834F0101AC5FEEF00CF009E /* AssistantPlusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AssistantPlusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B834F0151AC5FEEF00CF009E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B834F0161AC5FEEF00CF009E /* AssistantPlusAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssistantPlusAppTests.m; sourceTree = "<group>"; };
+		B86E66D81ACD1991007C6014 /* PluginsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginsViewController.h; sourceTree = SOURCE_ROOT; };
+		B86E66D91ACD1991007C6014 /* PluginsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginsViewController.m; sourceTree = SOURCE_ROOT; };
+		B86E66EA1ACE7A77007C6014 /* assistantapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assistantapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B86E67021ACE7A77007C6014 /* assistantappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = assistantappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B86E671A1ACE7C66007C6014 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		B88C0A7C1ABF79AA00D4D107 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		B88C0A7E1ABF79AA00D4D107 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = SOURCE_ROOT; };
 		B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = SOURCE_ROOT; };
@@ -75,6 +99,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B86E66E71ACE7A77007C6014 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B86E66FF1ACE7A77007C6014 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -107,6 +145,7 @@
 		B88C0A551ABF794E00D4D107 = {
 			isa = PBXGroup;
 			children = (
+				B86E671A1ACE7C66007C6014 /* Default-568h@2x.png */,
 				B88C0A601ABF794E00D4D107 /* AssistantPlusApp */,
 				B834F0131AC5FEEF00CF009E /* AssistantPlusAppTests */,
 				B834EFB81AC51E4600CF009E /* Frameworks */,
@@ -120,6 +159,8 @@
 			children = (
 				B834EFF81AC5FEEF00CF009E /* AssistantPlusApp.app */,
 				B834F0101AC5FEEF00CF009E /* AssistantPlusAppTests.xctest */,
+				B86E66EA1ACE7A77007C6014 /* assistantapp.app */,
+				B86E67021ACE7A77007C6014 /* assistantappTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -133,6 +174,8 @@
 				B88C0A7E1ABF79AA00D4D107 /* MainViewController.h */,
 				B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */,
 				B834EFF31AC5EF2C00CF009E /* LaunchScreen2.xib */,
+				B86E66D81ACD1991007C6014 /* PluginsViewController.h */,
+				B86E66D91ACD1991007C6014 /* PluginsViewController.m */,
 				B88C0ADE1AC32C2000D4D107 /* CustomRepliesViewController.h */,
 				B88C0ADF1AC32C2000D4D107 /* CustomRepliesViewController.m */,
 				B88C0AE11AC32C2A00D4D107 /* CustomReplyDetailViewController.h */,
@@ -190,6 +233,41 @@
 			productReference = B834F0101AC5FEEF00CF009E /* AssistantPlusAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		B86E66E91ACE7A77007C6014 /* assistantapp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B86E670A1ACE7A77007C6014 /* Build configuration list for PBXNativeTarget "assistantapp" */;
+			buildPhases = (
+				B86E66E61ACE7A77007C6014 /* Sources */,
+				B86E66E71ACE7A77007C6014 /* Frameworks */,
+				B86E66E81ACE7A77007C6014 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = assistantapp;
+			productName = assistantapp;
+			productReference = B86E66EA1ACE7A77007C6014 /* assistantapp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B86E67011ACE7A77007C6014 /* assistantappTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B86E670D1ACE7A77007C6014 /* Build configuration list for PBXNativeTarget "assistantappTests" */;
+			buildPhases = (
+				B86E66FE1ACE7A77007C6014 /* Sources */,
+				B86E66FF1ACE7A77007C6014 /* Frameworks */,
+				B86E67001ACE7A77007C6014 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B86E67041ACE7A77007C6014 /* PBXTargetDependency */,
+			);
+			name = assistantappTests;
+			productName = assistantappTests;
+			productReference = B86E67021ACE7A77007C6014 /* assistantappTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -205,6 +283,14 @@
 					B834F00F1AC5FEEF00CF009E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = B834EFF71AC5FEEF00CF009E;
+					};
+					B86E66E91ACE7A77007C6014 = {
+						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = 7AMDTT3YCW;
+					};
+					B86E67011ACE7A77007C6014 = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = B86E66E91ACE7A77007C6014;
 					};
 				};
 			};
@@ -223,6 +309,8 @@
 			targets = (
 				B834EFF71AC5FEEF00CF009E /* AssistantPlusApp */,
 				B834F00F1AC5FEEF00CF009E /* AssistantPlusAppTests */,
+				B86E66E91ACE7A77007C6014 /* assistantapp */,
+				B86E67011ACE7A77007C6014 /* assistantappTests */,
 			);
 		};
 /* End PBXProject section */
@@ -242,6 +330,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B86E66E81ACE7A77007C6014 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B86E671B1ACE7C66007C6014 /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B86E67001ACE7A77007C6014 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -254,6 +357,7 @@
 				B8EC46D61AC6422100ED3836 /* ActivatorListenersViewController.m in Sources */,
 				B8EC46D71AC6422100ED3836 /* CustomRepliesViewController.m in Sources */,
 				B8EC46D81AC6422100ED3836 /* CustomReplyDetailViewController.m in Sources */,
+				B86E66DA1ACD1991007C6014 /* PluginsViewController.m in Sources */,
 				B8EC46D91AC6422100ED3836 /* ListenerDetailViewController.m in Sources */,
 				B8EC46DA1AC6422100ED3836 /* APActivatorListener.m in Sources */,
 				B8EC46DB1AC6422100ED3836 /* APCustomReply.m in Sources */,
@@ -269,6 +373,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B86E66E61ACE7A77007C6014 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B86E67101ACE7AC0007C6014 /* AppDelegate.m in Sources */,
+				B86E67111ACE7AC0007C6014 /* MainViewController.m in Sources */,
+				B86E67121ACE7AC0007C6014 /* PluginsViewController.m in Sources */,
+				B86E67131ACE7AC0007C6014 /* CustomRepliesViewController.m in Sources */,
+				B86E67141ACE7AC0007C6014 /* CustomReplyDetailViewController.m in Sources */,
+				B86E67151ACE7AC0007C6014 /* ActivatorListenersViewController.m in Sources */,
+				B86E67161ACE7AC0007C6014 /* ListenerDetailViewController.m in Sources */,
+				B86E67171ACE7AC0007C6014 /* APActivatorListener.m in Sources */,
+				B86E67181ACE7AC0007C6014 /* APCustomReply.m in Sources */,
+				B86E67191ACE7AC0007C6014 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B86E66FE1ACE7A77007C6014 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -276,6 +404,11 @@
 			isa = PBXTargetDependency;
 			target = B834EFF71AC5FEEF00CF009E /* AssistantPlusApp */;
 			targetProxy = B834F0111AC5FEEF00CF009E /* PBXContainerItemProxy */;
+		};
+		B86E67041ACE7A77007C6014 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B86E66E91ACE7A77007C6014 /* assistantapp */;
+			targetProxy = B86E67031ACE7A77007C6014 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -348,6 +481,82 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AssistantPlusApp.app/AssistantPlusApp";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B86E670B1ACE7A77007C6014 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B86E670C1ACE7A77007C6014 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B86E670E1ACE7A77007C6014 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = assistantappTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/assistantapp.app/assistantapp";
+			};
+			name = Debug;
+		};
+		B86E670F1ACE7A77007C6014 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = assistantappTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/assistantapp.app/assistantapp";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -446,6 +655,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		B86E670A1ACE7A77007C6014 /* Build configuration list for PBXNativeTarget "assistantapp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B86E670B1ACE7A77007C6014 /* Debug */,
+				B86E670C1ACE7A77007C6014 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		B86E670D1ACE7A77007C6014 /* Build configuration list for PBXNativeTarget "assistantappTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B86E670E1ACE7A77007C6014 /* Debug */,
+				B86E670F1ACE7A77007C6014 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		B88C0A591ABF794E00D4D107 /* Build configuration list for PBXProject "AssistantPlusApp" */ = {
 			isa = XCConfigurationList;

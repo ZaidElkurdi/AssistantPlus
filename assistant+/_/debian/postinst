@@ -1,6 +1,11 @@
 #!/bin/sh
 chown root:wheel /Library/LaunchDaemons/com.zaid.aplocationdaemon.plist
-launchctl unload /Library/LaunchDaemons/com.zaid.aplocationdaemon.plist
+launchctl unload /Library/LaunchDaemons/com.zaid.aplocationdaemon.plist 2> /dev/null
 launchctl load /Library/LaunchDaemons/com.zaid.aplocationdaemon.plist
-echo "Starting APLocationManger..."
+
+chown root:wheel /Applications/AssistantPlusApp.app/assistantplus_root_helper
+chmod 6755 /Applications/AssistantPlusApp.app/assistantplus_root_helper
+
+uicache
+
 exit 0

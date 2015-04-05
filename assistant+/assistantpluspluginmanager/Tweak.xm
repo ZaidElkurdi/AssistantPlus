@@ -10,5 +10,4 @@ static NSDictionary *currLocation;
 static inline __attribute__((constructor)) void init() {
   NSLog(@"Creating AssistantPlusSBPluginManager!");
   sharedUtils = [APSpringboardUtils sharedAPUtils];
-  NSLog(@"FUCK IS: %@", sharedUtils);
 }

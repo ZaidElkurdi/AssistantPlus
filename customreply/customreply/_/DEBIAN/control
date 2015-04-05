@@ -1,0 +1,10 @@
+Package: com.assistantplus.customreply
+Name: customreply
+Depends: mobilesubstrate
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Zaid Elkurdi
+Author: Zaid Elkurdi
+Section: Tweaks
+Version: 0.0.1-23
+Installed-Size: 136

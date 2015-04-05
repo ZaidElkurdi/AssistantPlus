@@ -16,55 +16,45 @@
     commands = [[NSMutableArray alloc] init];
     snippets = [[NSMutableSet alloc] init];
     
-    NSLog(@"Commnds just created: %@", commands);
-    
     bundle = [NSBundle bundleWithURL:filePath];
     if (!bundle) {
-      NSLog(@"Failed to open extension bundle %@ (%@)!", fileName, filePath);
+      NSLog(@"Failed to open plugin bundle %@!", filePath);
       return nil;
     }
     
     if (![bundle load]) {
-      NSLog(@"Failed to load extension bundle %@ (wrong CFBundleExecutable? Missing? Not signed?)!", name);
+      NSLog(@"Failed to load plugin bundle %@!", name);
       return nil;
-    } else {
-      NSLog(@"Loaded bundle!");
     }
     
     //load principal class
     Class principal = [bundle principalClass];
     if (!principal) {
-      NSLog(@"Plugin %@ doesn't provide a NSPrincipalClass!", fileName);
+      NSLog(@"AP: Plugin %@ doesn't provide a NSPrincipalClass!", fileName);
       return nil;
     }
     
     NSLog(@"AP: Principal Class is %@", principal);
     
-    pluginClass = [[principal alloc] initWithSystem:self];
+    pluginClass = [[principal alloc] initWithPluginManager:self];
     if (!pluginClass) {
-      NSLog(@"Failed to initialize NSPrincipalClass from plugin %@!", fileName);
+      NSLog(@"AP: Failed to initialize NSPrincipalClass from plugin %@!", fileName);
       return nil;
-    } else {
-      NSLog(@"has pluginClass!");
     }
     
-    // get extension info
-    displayName = @"FuckerShit";
-//    displayName = [[[_bundle infoDictionary] objectForKey:@"APPluginName"] copy];
-//    if (!displayName) {
-//      displayName = name;
-//    }
+    //Get the plugin's display name
+    displayName = [[bundle infoDictionary] objectForKey:@"APPluginName"];
+    if (!displayName) {
+      displayName = name;
+    }
     
-    author = [[bundle objectForInfoDictionaryKey:@"PluginAuthor"] copy];
-    pluginDescription = [[bundle objectForInfoDictionaryKey:@"PluginDescription"] copy];
-    identifier = [[bundle objectForInfoDictionaryKey:@"CFBundleIdentifier"] copy];
+    author = [bundle objectForInfoDictionaryKey:@"APPluginAuthor"];
+    identifier = [bundle objectForInfoDictionaryKey:@"CFBundleIdentifier"];
     pluginName = fileName;
     
-    bundleName = [name copy];
-    isInitialized = YES;
+    bundleName = fileName;
   }
   
-  NSLog(@"Loaded Plugin: %@", self);
   return self;
 }
 
@@ -72,17 +62,19 @@
   return displayName;
 }
 
+-(NSString*)author {
+  return author;
+}
+
 - (NSString*)identifier {
   return identifier;
 }
 
 - (NSArray*)getRegisteredCommands {
-  NSLog(@"Registered Commands: %@", commands);
   return commands;
 }
 
 - (NSSet*)getRegisteredSnippets {
-  NSLog(@"Registered Snippets: %@", snippets);
   return snippets;
 }
 
@@ -107,17 +99,16 @@
     NSObject<APPluginSnippet>* snip = [NSClassFromString(snippetClass) alloc];
     
     id initRes = nil;
-    if ([snip respondsToSelector:@selector(initWithProperties:system:)])
-      initRes = [snip initWithProperties:props system:self];
     
-    if (!initRes && [snip respondsToSelector:@selector(initWithProperties:)])
+    if (!initRes && [snip respondsToSelector:@selector(initWithProperties:)]) {
       initRes = [snip initWithProperties:props];
+    }
     
-    if (!initRes)
+    if (!initRes) {
       initRes = [snip init];
+    }
     
-    if (!initRes)
-    {
+    if (!initRes) {
       NSLog(@"APPluginSnippet class %@ failed to initialize!", snippetClass);
       return nil;
     }
@@ -136,22 +127,13 @@
     return NO;
   }
   
-  // alloc
   id inst = [cls alloc];
-  
-  // init 1.0.2
-  if ([inst respondsToSelector:@selector(initWithSystem:)]) {
-    inst = [inst initWithSystem:self];
-  } else {
-    NSLog(@"%@ did not respond to initWithSystem:. Using default init.", className);
-    inst = [inst init];
-  }
+  inst = [inst init];
   
   if (!inst) {
     NSLog(@"Command %@ failed to initialize!", className);
     return NO;
   }
-  
   
   [commands addObject:inst];
   
@@ -168,20 +150,8 @@
     return NO;
   }
   
-  id helloClass = [[NSClassFromString(className) alloc] init];
-  NSLog(@"Snippet Initalized: %@", helloClass);
-  
   [snippets addObject:className];
-  NSLog(@"Registered snippet %@, snippets is now %@", className, snippets);
   return YES;
-}
-
--(NSString*)systemVersion {
-  return @"1.0";
-}
-
--(NSString*)localizedString:(NSString*)text {
-  return text;
 }
 
 

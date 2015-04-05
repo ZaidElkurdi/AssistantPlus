@@ -20,9 +20,6 @@
       location = "group:../layout/debian/postinst">
    </FileRef>
    <FileRef
-      location = "group:../layout/debian/preinst">
-   </FileRef>
-   <FileRef
       location = "group:../layout/debian/prerm">
    </FileRef>
 </Workspace>

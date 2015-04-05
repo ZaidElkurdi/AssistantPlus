@@ -8,7 +8,6 @@
 
 #import "ActivatorListenersViewController.h"
 #import "APActivatorListener.h"
-#import "ListenerDetailViewController.h"
 #import "CPDistributedMessagingCenter.h"
 
 @interface ActivatorListenersViewController ()
@@ -22,6 +21,8 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   
+  self.title = @"Listeners";
+  
   UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewListener:)];
   [self.navigationItem setRightBarButtonItem:addButton];
   
@@ -29,21 +30,21 @@
   self.listenersTable.delegate = self;
   self.listenersTable.dataSource = self;
   
-  UIView *msgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 130)];
-  UILabel *msgLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, self.view.frame.size.width-40, 60)];
+  UIView *msgView = [[UIView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, 130)];
+  UILabel *msgLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, 60)];
   msgLabel.lineBreakMode = NSLineBreakByWordWrapping;
-  msgLabel.numberOfLines = 2;
-  msgLabel.text = @"You must respring your device before new listeners will appear in Activator";
+  msgLabel.numberOfLines = 0;
+  msgLabel.text = @"You must respring your device before listeners you delete here will be removed from Activator";
   msgLabel.textAlignment = NSTextAlignmentCenter;
   msgLabel.font = [UIFont fontWithName:@"Helvetica" size:16];
   msgLabel.textColor = [UIColor darkGrayColor];
   [msgView addSubview:msgLabel];
   
   UIButton *respringButton = [UIButton buttonWithType:UIButtonTypeSystem];
-  respringButton.frame = CGRectMake(0, 60, self.view.frame.size.width, 40);
+  respringButton.frame = CGRectMake(0, 70, self.view.frame.size.width, 40);
   [respringButton addTarget:self action:@selector(respringPressed:) forControlEvents:UIControlEventTouchUpInside];
   [respringButton setTitle:@"Respring" forState:UIControlStateNormal];
-  respringButton.titleLabel.font = [UIFont systemFontOfSize:20];
+  respringButton.titleLabel.font = [UIFont systemFontOfSize:18];
   
   [msgView addSubview:respringButton];
   self.listenersTable.tableFooterView = msgView;
@@ -62,9 +63,6 @@
   if ([self.listenersTable indexPathForSelectedRow]) {
     [self.listenersTable deselectRowAtIndexPath:[self.listenersTable indexPathForSelectedRow] animated:YES];
   }
-  
-  [self saveListenersToFile];
-  [self.listenersTable reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,18 +74,18 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if ([defaults objectForKey:@"activatorListeners"]) {
     NSArray *listeners = [defaults objectForKey:@"activatorListeners"];
-    NSLog(@"Serialized listeners: %@", listeners);
     for (NSDictionary *currListener in listeners) {
       APActivatorListener *listener = [[APActivatorListener alloc] initWithDictionary:currListener];
       [savedListeners addObject:listener];
     }
   }
+  
 }
 
 - (void)saveListenersToFile {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSMutableArray *toSave = [[NSMutableArray alloc] init];
   if (savedListeners) {
-    NSMutableArray *toSave = [[NSMutableArray alloc] init];
     for (APActivatorListener *currListener in savedListeners) {
       [toSave addObject:[currListener dictionaryRepresentation]];
     }
@@ -96,7 +94,7 @@
   }
   
   CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
-  [center sendMessageName:@"UpdateActivatorListeners" userInfo:nil];
+  [center sendMessageName:@"UpdateActivatorListeners" userInfo:@{@"activatorListeners" : toSave}];
 }
 
 #pragma mark - Button Handlers
@@ -119,7 +117,6 @@
 }
 
 - (void)respringPressed:(UIButton*)button {
-  NSLog(@"Will respring!");
   CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
   [center sendMessageName:@"respringForListeners" userInfo:nil];
 }
@@ -145,6 +142,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   APActivatorListener *selectedListener = [savedListeners objectAtIndex:indexPath.row];
   ListenerDetailViewController *detailVC = [[ListenerDetailViewController alloc] initWithListener:selectedListener];
+  detailVC.delegate = self;
   [self.navigationController pushViewController:detailVC animated:YES];
 }
 
@@ -168,5 +166,21 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   return 60;
 }
+
+#pragma mark - ListenerDelegate
+
+- (void)listenerDidChange:(APActivatorListener *)listener {
+  for (NSInteger currIndex = 0; currIndex < savedListeners.count; currIndex++) {
+    APActivatorListener *currListener = [savedListeners objectAtIndex:currIndex];
+    if ([currListener.uniqueId isEqualToString:currListener.uniqueId]) {
+      [savedListeners replaceObjectAtIndex:currIndex withObject:currListener];
+      break;
+    }
+  }
+  
+  [self saveListenersToFile];
+  [self.listenersTable reloadData];
+}
+
 
 @end

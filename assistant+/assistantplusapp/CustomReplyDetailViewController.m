@@ -11,7 +11,7 @@
 @interface CustomReplyDetailViewController ()
 @property (strong, nonatomic) APCustomReply *currReply;
 @property (strong, nonatomic) UITextField *triggerField;
-@property (strong, nonatomic) UITextField *responseField;
+@property (strong, nonatomic) UITextView *responseField;
 @property (nonatomic) BOOL didChange;
 @end
 
@@ -46,12 +46,13 @@
   [triggerBackground addSubview:self.triggerField];
   [self.view addSubview:triggerBackground];
   
-  UIView *responseBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 190, self.view.frame.size.width, 50)];
+  UIView *responseBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 190, self.view.frame.size.width, 100)];
   responseBackground.backgroundColor = [UIColor whiteColor];
   UILabel *responseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 50)];
   responseLabel.text = @"Response:";
-  self.responseField = [[UITextField alloc] initWithFrame:CGRectMake(120, 2, self.view.frame.size.width-60, 50)];
+  self.responseField = [[UITextView alloc] initWithFrame:CGRectMake(110, 8, self.view.frame.size.width-110, 90)];
   self.responseField.text = self.currReply.response;
+  self.responseField.font = [UIFont systemFontOfSize:16];
   self.responseField.delegate = self;
   [responseBackground addSubview:responseLabel];
   [responseBackground addSubview:self.responseField];
@@ -62,12 +63,9 @@
   [super viewWillDisappear:animated];
   
   if (self.didChange) {
-    NSLog(@"Did change!");
     self.currReply.trigger = self.triggerField.text;
     self.currReply.response = self.responseField.text;
     [self.delegate customReplyDidChange:self.currReply];
-  } else {
-    NSLog(@"Didn't change!");
   }
 }
 
@@ -75,7 +73,11 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
   self.didChange = YES;
-  return  YES;
+  return YES;
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+  self.didChange = YES;
+  return YES;
+}
 @end

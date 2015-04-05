@@ -13,7 +13,7 @@
 - (void)customReplyDidChange:(APCustomReply*)reply;
 @end
 
-@interface CustomReplyDetailViewController : UIViewController <UITextFieldDelegate>
+@interface CustomReplyDetailViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
 - (id)initWithCustomReply:(APCustomReply*)reply;
 @property (weak) id<CustomRepliesDelegate> delegate;
 @end

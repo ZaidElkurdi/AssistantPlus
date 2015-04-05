@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "ListenerDetailViewController.h"
 
-@interface ActivatorListenersViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface ActivatorListenersViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, ListenerDetailDelegate>
 @property (strong, nonatomic) UITableView *listenersTable;
 @end

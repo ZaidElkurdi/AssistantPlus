@@ -22,20 +22,16 @@
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self.shouldTerminate = NO;
   }
   return self;
 }
 
 - (void)startMonitoringLocation {
-  NSLog(@"Start monitoring!");
   [locationManager startUpdatingLocation];
 }
 
 - (void)stopMonitoringLocation {
-  NSLog(@"Stop monitoring!");
   [locationManager stopUpdatingLocation];
-
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -54,7 +50,6 @@
                          @"timestamp" : currLocation.timestamp};
   
   CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
-  NSLog(@"Sending %@ to APSpringboardUtils", dict);
   [center sendMessageName:@"RetrievedLocation" userInfo:@{@"Location" : dict}];
 }
 

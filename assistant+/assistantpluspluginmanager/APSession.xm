@@ -21,7 +21,6 @@ static NSMutableDictionary *sessionDict;
     self.refId = [referenceId copy];
     if (!self.refId) self.refId = [@"00000000-0000-0000-0000-000000000000" copy];
     self.connection = connection;
-    NSLog(@"Created a new session for request %@.", self.refId);
   }
   return self;
 }
@@ -54,7 +53,6 @@ static NSMutableDictionary *sessionDict;
 }
 
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props {
-  NSLog(@"Sending snippet: %@", snippetClass);
   [self sendAddViewsSnippet:snippetClass properties:props dialogPhase:@"Completion" scrollToTop:NO temporary:NO];
 }
 
@@ -93,7 +91,6 @@ static NSMutableDictionary *sessionDict;
 
 - (void)handleMessage:(NSString*)name withInfo:(NSDictionary*)locationData {
   if (self.completionHandler) {
-    NSLog(@"Sending %@" ,locationData);
     self.completionHandler(locationData);
   }
 }
@@ -101,23 +98,26 @@ static NSMutableDictionary *sessionDict;
 #pragma mark - AFConnection Communication
 
 - (void)sendCommandToConnection:(NSDictionary*) dict {
-  NSLog(@"Sending %@ to client", dict);
   id ctx = nil;
   
   id AceObject = objc_getClass("AceObject");
   id BasicAceContext = objc_getClass("BasicAceContext");
   
   if (!AceObject) NSLog(@"No AceObject class");
-  if (!BasicAceContext) NSLog(@"AE ERROR: No BasicAceContext class");
+  if (!BasicAceContext) NSLog(@"No BasicAceContext class");
   
   if (!dict) {
-    NSLog(@"AE ERROR: SessionSendToClient: nil dict as an argument!");
     return;
   }
   
   // create context
-  if (ctx == nil) ctx = [[BasicAceContext alloc] init]; // ... is not needed normally, but just in case...
-  if (!ctx) NSLog(@"AE ERROR: No context");
+  if (ctx == nil) {
+    ctx = [[BasicAceContext alloc] init]; // ... is not needed normally, but just in case...
+  }
+  
+  if (!ctx) {
+    NSLog(@"Error getting BasicAceContext!");
+  }
   
   
   if ([dict objectForKey:@"v"] && !s_ver) {
@@ -127,19 +127,15 @@ static NSMutableDictionary *sessionDict;
     [(NSMutableDictionary*)dict setObject:s_ver forKey:@"v"];
   }
   
-  NSLog(@"AE: ###### ===> Sending Ace Object to Client: %@", dict);
-  
   // create real AceObject
   id obj = [AceObject aceObjectWithDictionary:dict context:ctx];
   if (obj == nil) {
-    NSLog(@"AE ERROR: SessionSendToClient: NIL ACE OBJECT RETURNED FOR DICT: %@", dict);
     return;
   }
   
   // call the original method to handle our new object
-  if (self.connection == nil) { NSLog(@"AE: AFConnection is nil"); return; }
+  if (self.connection == nil) { NSLog(@"AP: AFConnection is nil"); return; }
   
-  NSLog(@"Sending this: %@", obj);
   if ([dict[@"$class"] isEqualToString:@"CommandSucceeded"]) {
     [self.connection sendReplyCommand:obj];
   } else {
@@ -149,7 +145,6 @@ static NSMutableDictionary *sessionDict;
 
 -(void)sendAddViewsSnippet:(NSString*)snippetClass properties:(NSDictionary*)props dialogPhase:(NSString*)dialogPhase scrollToTop:(BOOL)scrollToTop temporary:(BOOL)temporary {
   NSArray* views = [NSArray arrayWithObject:[self createSnippet:snippetClass properties:props]];
-  //  NSLog(@"About to send: %@", views);
   [self sendAddViews:views];
 }
 
@@ -160,7 +155,6 @@ static NSMutableDictionary *sessionDict;
   NSMutableDictionary* lowLevelProps = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                         props,@"snippetProps", snippetClass,@"snippetClass", nil];
   
-  NSLog(@"Creating snippet: %@ with properties: %@", snippetClass, lowLevelProps);
   return [self createObjectDictForGroup:@"zaid.assistantplus.plugin" class:@"SnippetObject" properties:lowLevelProps];
 }
 
@@ -183,7 +177,6 @@ static NSMutableDictionary *sessionDict;
       [objDict setObject:properties[currKey] forKey:currKey];
     }
   }
-  NSLog(@"Returning: %@", objDict);
   return objDict;
 }
 

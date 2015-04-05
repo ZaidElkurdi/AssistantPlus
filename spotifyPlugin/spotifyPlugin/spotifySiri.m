@@ -7,15 +7,18 @@
 //
 
 #import "spotifySiri.h"
-#import "spotifyCommands.h"
-#import "spotifySongListViewController.h"
+#import "spotifySearchCommands.h"
+#import "SpotifyPlayCommands.h"
+#import "SpotifySearchResultsViewController.h"
 
 @implementation spotifySiri
 
--(id)initWithSystem:(id<APPluginManager>)system {
+-(id)initWithPluginManager:(id<APPluginManager>)manager {
   if (self = [super init]) {
-    [system registerCommand:[spotifyCommands class]];
-    [system registerSnippet:[spotifySongListViewController class]];
+    //Register the commands and snippet with the plugin manager
+    [manager registerCommand:[SpotifySearchCommands class]];
+    [manager registerCommand:[SpotifyPlayCommands class]];
+    [manager registerSnippet:[SpotifySearchResultsViewController class]];
   }
   return self;
 }

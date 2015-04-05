@@ -7,7 +7,8 @@
 //
 
 #import "APPluginSystem.h"
-#include "APPlugin.h"
+#import "APPlugin.h"
+#import "APActivatorListener.h"
 
 static NSString *PREFERENCE_PATH = @"/var/mobile/Library/Preferences/com.assistantplus.app.plist";
 static NSString *EVENT_PREFIX = @"APListener";
@@ -19,14 +20,14 @@ static NSString *EVENT_PREFIX = @"APListener";
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     sharedManager = [[self alloc] init];
-    NSLog(@"Creating plugin manager again!");
     if ([sharedManager loadPlugins]) {
       NSLog(@"Successfully loaded plugins!");
     } else {
       NSLog(@"Failed to load plugins!");
     }
     
-    [sharedManager reloadActivatorListeners];
+    NSDictionary *pref = [NSDictionary dictionaryWithContentsOfFile:PREFERENCE_PATH];
+    [sharedManager reloadActivatorListeners:pref];
   });
   return sharedManager;
 }
@@ -42,13 +43,9 @@ static NSString *EVENT_PREFIX = @"APListener";
                                                     options:NSDirectoryEnumerationSkipsHiddenFiles
                                                       error:nil];
   
-//  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension == 'assistantPlugin'"];
-  
-  NSLog(@"Loading Plugins:");
-  for (NSURL *fileURL in contents) {//[contents filteredArrayUsingPredicate:predicate]) {
+  for (NSURL *fileURL in contents) {
     NSString *name = [[[fileURL absoluteString] lastPathComponent] stringByDeletingPathExtension];
     
-    NSLog(@"Loading %@ at %@", name, fileURL);
     APPlugin *currPlugin = [[APPlugin alloc] initWithFilePath:fileURL andName:name];
     
     if (currPlugin != nil) {
@@ -60,66 +57,43 @@ static NSString *EVENT_PREFIX = @"APListener";
 }
 
 - (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession {
-  NSLog(@"Looking for command to handle: %@", command);
-  NSLog(@"There are currently %lu plugins registered: %@", (unsigned long)plugins.count, plugins);
-  
   //First check activator listeners
-  NSString *lowercase = [command lowercaseString];
-  lowercase = [lowercase stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-  NSLog(@"Listeners: %@ Query: %@", activatorListenersDict, lowercase);
-  if ([activatorListenersDict objectForKey:lowercase]) {
-    NSLog(@"Handling with activator!");
-    [LASharedActivator sendEventToListener:[LAEvent eventWithName:[activatorListenersDict objectForKey:lowercase] mode:LASharedActivator.currentEventMode]];
-    return YES;
+  NSString *userCommand = [command lowercaseString];
+  userCommand = [userCommand stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+  for (APActivatorListener *currListener in activatorListenersArray) {
+    NSArray *arrayOfAllMatches = [currListener.trigger matchesInString:userCommand options:0 range:NSMakeRange(0, [userCommand length])];
+    for (NSTextCheckingResult *match in arrayOfAllMatches) {
+      if (match.numberOfRanges > 0) {
+        NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener.identifier];
+        [LASharedActivator sendEventToListener:[LAEvent eventWithName:eventName mode:LASharedActivator.currentEventMode]];
+        [currSession sendRequestCompleted];
+        return YES;
+      }
+    }
   }
   
+  NSLog(@"AP: Got Command \"%@\"", userCommand);
   for (APPlugin *currPlugin in plugins) {
-    NSLog(@"Currently on: %@:%@", currPlugin, [currPlugin displayName]);
-    if ([currPlugin handleSpeech:command withTokens:tokens withSession:currSession]) {
-      NSLog(@"%@ is handling command: %@", [currPlugin displayName], command);
+    if ([currPlugin handleSpeech:userCommand withTokens:tokens withSession:currSession]) {
       return YES;
     }
   }
   return NO;
 }
 
-- (id<APPluginSnippet>)viewControllerForClass:(NSString*)snippetClass {
-  NSLog(@"Begin search for: %@ with %d plugins", snippetClass, (int)plugins.count);
+#pragma mark - Message Handlers
+
+- (NSDictionary*)getInstalledPlugins {
+  NSMutableArray *pluginArray = [[NSMutableArray alloc] init];
   for (APPlugin *currPlugin in plugins) {
-    NSLog(@"Current (%@) contains: %@", [currPlugin displayName], [currPlugin getRegisteredSnippets]);
-    if ([[currPlugin getRegisteredSnippets] containsObject:snippetClass]) {
-      NSObject<APPluginSnippet>* snip = [NSClassFromString(snippetClass) alloc];
-      
-      id initRes = nil;
-      
-      if ([snip respondsToSelector:@selector(initWithProperties:)])
-        initRes = [snip initWithProperties:@{@"labelText" : @"fuck you"}];
-      
-      if (!initRes)
-        initRes = [snip init];
-      
-      if (!initRes) {
-        NSLog(@"ERROR: Snippet class %@ failed to initialize!", snippetClass);
-        return nil;
-      }
-      return snip;
-    }
+    NSDictionary *currDict = @{@"name" : [currPlugin displayName],
+                               @"author" :[currPlugin author]};
+    [pluginArray addObject:currDict];
   }
-  NSLog(@"APPluginManager: Found no VC for %@", snippetClass);
-  return nil;
+  return @{@"plugins" : pluginArray};
 }
 
--(NSString*)localizedString:(NSString*)text {
-  return text;
-}
-
--(NSString*)systemVersion {
-  return @"1.0";
-}
-
-#pragma mark - Custom replies 
 - (void)reloadCustomRepliesPlugin:(NSDictionary*)replies {
-  NSLog(@"Updating replies with %@", replies);
   for (APPlugin *currPlugin in plugins) {
     if ([[currPlugin identifier] isEqualToString:@"com.assistantplus.customreplyidentifier"]) {
       id customCmd = [[currPlugin getRegisteredCommands] lastObject];
@@ -131,37 +105,27 @@ static NSString *EVENT_PREFIX = @"APListener";
 
 #pragma mark - Activator Methods
 
-- (void)reloadActivatorListeners {
-  NSLog(@"Reloading listeners!");
-  
-  if (!activatorListenersDict) {
-    activatorListenersDict = [[NSMutableDictionary alloc] init];
-  }
-  
+- (void)reloadActivatorListeners:(NSDictionary*)listeners {
   if (!activatorListenersArray) {
     activatorListenersArray = [[NSMutableArray alloc] init];
   }
   
-  for (NSString *currKey in activatorListenersDict.allKeys) {
-    NSString *identifier = activatorListenersDict[currKey];
+  for (APActivatorListener *currListener in activatorListenersArray) {
+    NSString *identifier = currListener.identifier;
     NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, identifier];
-    NSLog(@"removed eventName = %@", eventName);
     [LASharedActivator unregisterEventDataSourceWithEventName:eventName];
   }
   
-  [activatorListenersDict removeAllObjects];
   [activatorListenersArray removeAllObjects];
   
-  NSDictionary *pref = [NSDictionary dictionaryWithContentsOfFile:PREFERENCE_PATH];
-  if ([pref objectForKey:@"activatorListeners"]) {
-    for (NSDictionary *currListener in [pref objectForKey:@"activatorListeners"]) {
+  if ([listeners objectForKey:@"activatorListeners"]) {
+    for (NSDictionary *currListener in [listeners objectForKey:@"activatorListeners"]) {
       NSString *trigger = currListener[@"trigger"];
       BOOL isEnabled = [currListener[@"enabled"] boolValue];
       if (trigger.length > 0 && isEnabled) {
-        NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener[@"identifier"]];
-        NSLog(@"Registered %@ for %@", eventName, trigger);
-        [activatorListenersDict setObject:eventName forKey:[trigger lowercaseString]];
-        [activatorListenersArray addObject:currListener];
+        APActivatorListener *newListener = [[APActivatorListener alloc] initWithDictionary:currListener];
+        NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, newListener.identifier];
+        [activatorListenersArray addObject:newListener];
         [LASharedActivator registerEventDataSource:self forEventName:eventName];
       }
     }
@@ -169,10 +133,10 @@ static NSString *EVENT_PREFIX = @"APListener";
 }
 
 - (NSString *)localizedTitleForEventName:(NSString *)eventName {
-  for (NSDictionary *currListener in activatorListenersArray) {
-    NSString *comp = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener[@"identifier"]];
+  for (APActivatorListener *currListener in activatorListenersArray) {
+    NSString *comp = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener.identifier];
     if ([comp isEqualToString:eventName]) {
-      return currListener[@"name"];
+      return currListener.name;
     }
   }
   
@@ -184,10 +148,10 @@ static NSString *EVENT_PREFIX = @"APListener";
 }
 
 - (NSString *)localizedDescriptionForEventName:(NSString *)eventName {
-  for (NSDictionary *currListener in activatorListenersArray) {
-    NSString *comp = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener[@"identifier"]];
+  for (APActivatorListener *currListener in activatorListenersArray) {
+    NSString *comp = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener.identifier];
     if ([comp isEqualToString:eventName]) {
-      return [NSString stringWithFormat:@"Siri Query - \"%@\"", currListener[@"trigger"]];
+      return [NSString stringWithFormat:@"Siri Query - \"%@\"", currListener.triggerString];
     }
   }
   

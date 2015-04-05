@@ -1,9 +1,8 @@
 include theos/makefiles/common.mk
-export THEOS_DEVICE_IP=192.168.1.17
 
 export ARCHS = armv7 arm64
 export TARGET = iphone:clang:latest:8.0
-export SDKVERSION=8.2
+export SDKVERSION=8.1
 
 BUNDLE_NAME = spotifySiri
 spotifySiri_BUNDLE_EXTENSION = assistantPlugin

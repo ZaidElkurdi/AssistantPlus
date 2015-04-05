@@ -12,7 +12,8 @@
 @property (strong, nonatomic) APActivatorListener *currListener;
 @property (strong, nonatomic) UISwitch *enabledSwitch;
 @property (strong, nonatomic) UITextField *nameField;
-@property (strong, nonatomic) UITextField *triggerField;
+@property (strong, nonatomic) UITextView *triggerField;
+@property (nonatomic) BOOL didChange;
 @end
 
 @implementation ListenerDetailViewController
@@ -20,6 +21,7 @@
 - (id)initWithListener:(APActivatorListener*)listener {
   if (self = [super init]) {
     self.currListener = listener;
+    self.didChange = NO;
   }
   return self;
 }
@@ -29,7 +31,7 @@
   UIColor *backgroundColor = [UIColor colorWithWhite:.9f alpha:1.0];
   self.view.backgroundColor = backgroundColor;
   
-  UIView *switchBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, 50)];
+  UIView *switchBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width, 50)];
   switchBackground.backgroundColor = [UIColor whiteColor];
   UILabel *switchLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 50)];
   switchLabel.text = @"Enabled:";
@@ -40,7 +42,7 @@
   [switchBackground addSubview:self.enabledSwitch];
   [self.view addSubview:switchBackground];
   
-  UIView *nameBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 190, self.view.frame.size.width, 50)];
+  UIView *nameBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 170, self.view.frame.size.width, 50)];
   nameBackground.backgroundColor = [UIColor whiteColor];
   UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 60, 50)];
   nameLabel.text = @"Name:";
@@ -52,11 +54,12 @@
   [self.view addSubview:nameBackground];
   
   
-  UIView *triggerBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 280, self.view.frame.size.width, 50)];
+  UIView *triggerBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 230, self.view.frame.size.width, 100)];
   triggerBackground.backgroundColor = [UIColor whiteColor];
   UILabel *triggerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 70, 50)];
   triggerLabel.text = @"Trigger:";
-  self.triggerField = [[UITextField alloc] initWithFrame:CGRectMake(90, 2, self.view.frame.size.width-60, 50)];
+  self.triggerField = [[UITextView alloc] initWithFrame:CGRectMake(80, 8, self.view.frame.size.width-80, 90)];
+  self.triggerField.font = [UIFont systemFontOfSize:16];
   self.triggerField.text = self.currListener.trigger;
   self.triggerField.delegate = self;
   [triggerBackground addSubview:triggerLabel];
@@ -64,18 +67,31 @@
   [self.view addSubview:triggerBackground];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+  [super viewWillDisappear:animated];
+  
+  if (self.didChange) {
+    self.currListener.trigger = self.triggerField.text;
+    self.currListener.name = self.nameField.text;
+    [self.delegate listenerDidChange:self.currListener];
+  }
+}
+
 #pragma mark - UI Delegates
 
 - (void)didToggleSwitch:(UISwitch*)theSwitch {
+  self.didChange = YES;
   self.currListener.enabled = theSwitch.on;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-  if (textField == self.triggerField) {
-    self.currListener.trigger = textField.text;
-  } else if (textField == self.nameField) {
-    self.currListener.name = textField.text;
-  }
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+  self.didChange = YES;
+  return  YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+  self.didChange = YES;
+  return  YES;
 }
 
 - (void)didReceiveMemoryWarning {

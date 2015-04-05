@@ -1,10 +1,11 @@
 Package: com.zaid.assistant+
 Name: Assistant+
-Depends: mobilesubstrate
+Depends: libactivator (>= 1.8.3), mobilesubstrate
 Architecture: iphoneos-arm
-Description: Framework for Siri Extensions
+Description: Assign commands to trigger Activator events from Siri, set up custom replies for Siri, and also use and create plugins for Siri using the Assistant+ plugin framework
 Maintainer: Zaid Elkurdi
 Author: Zaid Elkurdi
 Section: Tweaks
-Version: 0.0.1-604
-Installed-Size: 792
+Icon: file:///Applications/AssistantPlusApp.app/Icon.png
+Version: 1.0.0-2
+Installed-Size: 1120
