@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *trigger;
 @property (nonatomic) BOOL enabled;
+@property (nonatomic) BOOL willPassthrough;
 @property (nonatomic, strong) NSString *uniqueId;
 
 -(id)initWithDictionary:(NSDictionary*)dict;

@@ -11,6 +11,7 @@
 @interface ListenerDetailViewController ()
 @property (strong, nonatomic) APActivatorListener *currListener;
 @property (strong, nonatomic) UISwitch *enabledSwitch;
+@property (strong, nonatomic) UISwitch *passthroughSwitch;
 @property (strong, nonatomic) UITextField *nameField;
 @property (strong, nonatomic) UITextView *triggerField;
 @property (nonatomic) BOOL didChange;
@@ -33,12 +34,23 @@
   
   UIView *switchBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width, 50)];
   switchBackground.backgroundColor = [UIColor whiteColor];
-  UILabel *switchLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 50)];
-  switchLabel.text = @"Enabled:";
+  
+  UILabel *enabledSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 50)];
+  enabledSwitchLabel.text = @"Enabled:";
+  
+  UILabel *passthroughSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 0, 80, 50)];
+  passthroughSwitchLabel.text = @"Pass-Through:";
+  
   self.enabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, 9.5, 51, 31)];
   [self.enabledSwitch addTarget:self action:@selector(didToggleSwitch:) forControlEvents:UIControlEventValueChanged];
   self.enabledSwitch.on = self.currListener.enabled;
-  [switchBackground addSubview:switchLabel];
+  
+  self.passthroughSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, 9.5, 51, 31)];
+  [self.passthroughSwitch addTarget:self action:@selector(didToggleSwitch:) forControlEvents:UIControlEventValueChanged];
+  self.passthroughSwitch.on = self.currListener.willPassthrough;
+  
+  [switchBackground addSubview:enabledSwitchLabel];
+  [switchBackground addSubview:passthroughSwitchLabel];
   [switchBackground addSubview:self.enabledSwitch];
   [self.view addSubview:switchBackground];
   
@@ -81,7 +93,12 @@
 
 - (void)didToggleSwitch:(UISwitch*)theSwitch {
   self.didChange = YES;
-  self.currListener.enabled = theSwitch.on;
+  
+  if (theSwitch == self.enabledSwitch) {
+    self.currListener.enabled = theSwitch.on;
+  } else if (theSwitch == self.passthroughSwitch) {
+    self.currListener.willPassthrough = theSwitch.on;
+  }
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

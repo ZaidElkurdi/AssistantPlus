@@ -66,8 +66,10 @@ static NSString *EVENT_PREFIX = @"APListener";
       if (match.numberOfRanges > 0) {
         NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener.identifier];
         [LASharedActivator sendEventToListener:[LAEvent eventWithName:eventName mode:LASharedActivator.currentEventMode]];
-        [currSession sendRequestCompleted];
-        return YES;
+        if (!currListener.willPassthrough) {
+          [currSession sendRequestCompleted];
+          return YES;
+        }
       }
     }
   }

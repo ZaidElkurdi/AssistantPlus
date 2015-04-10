@@ -15,13 +15,21 @@
     NSString *name = dict[@"name"];
     NSString *trigger = dict[@"trigger"];
     NSString *identifier = dict[@"identifier"] ? dict[@"identifier"] : [NSString stringWithFormat:@"%@", [NSDate date]];
+    
     BOOL enabled = false;
     if (dict[@"enabled"]) {
       enabled = [dict[@"enabled"] boolValue];
     }
+    
+    BOOL passthrough = false;
+    if (dict[@"passthrough"]) {
+      enabled = [dict[@"passthrough"] boolValue];
+    }
+    
     self.name = name;
     self.trigger = trigger;
     self.enabled = enabled;
+    self.willPassthrough = passthrough;
     self.uniqueId = identifier;
   }
   return self;
@@ -31,6 +39,7 @@
   return @{@"name" : self.name ? self.name : @"Untitled",
            @"trigger" : self.trigger ? self.trigger : @"",
            @"enabled" : self.enabled ? [NSNumber numberWithBool:self.enabled] : [NSNumber numberWithBool:NO],
+           @"passthrough": self.willPassthrough ? [NSNumber numberWithBool:self.willPassthrough] : [NSNumber numberWithBool:NO],
            @"identifier" : self.uniqueId };
 }
 

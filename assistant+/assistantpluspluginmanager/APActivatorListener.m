@@ -16,6 +16,9 @@
     self.triggerString = dict[@"trigger"];
     self.trigger = [NSRegularExpression regularExpressionWithPattern:self.triggerString options:NSRegularExpressionCaseInsensitive error:nil];
     self.identifier = dict[@"identifier"];
+    
+    NSNumber *pass = dict[@"passthrough"];
+    self.willPassthrough = pass ? [pass boolValue] : NO;
   }
   return self;
 }

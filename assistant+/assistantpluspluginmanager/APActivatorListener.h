@@ -13,5 +13,6 @@
 @property (strong, nonatomic) NSString *triggerString;
 @property (strong, nonatomic) NSRegularExpression *trigger;
 @property (strong, nonatomic) NSString *identifier;
+@property (nonatomic) BOOL willPassthrough;
 - (id)initWithDictionary:(NSDictionary*)dict;
 @end
