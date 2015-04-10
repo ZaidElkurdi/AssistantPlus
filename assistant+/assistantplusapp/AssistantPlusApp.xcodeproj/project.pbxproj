@@ -663,6 +663,7 @@
 				B86E670C1ACE7A77007C6014 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B86E670D1ACE7A77007C6014 /* Build configuration list for PBXNativeTarget "assistantappTests" */ = {
 			isa = XCConfigurationList;
@@ -671,6 +672,7 @@
 				B86E670F1ACE7A77007C6014 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B88C0A591ABF794E00D4D107 /* Build configuration list for PBXProject "AssistantPlusApp" */ = {
 			isa = XCConfigurationList;

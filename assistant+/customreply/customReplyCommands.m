@@ -10,26 +10,27 @@
 #define kPreferencesPath "/var/mobile/Library/Preferences/com.assistantplus.app.plist"
 
 @implementation customReplyCommands {
-  NSDictionary *phrases;
+  NSMutableArray *phrases;
 }
 
+
+// @{ trigger : NSRegularExpression
+//    response : NSString }
+
 - (void)createPhraseDictionary:(NSDictionary*)repliesDict {
-  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  phrases = [[NSMutableArray alloc] init];
   NSArray *customReplies = repliesDict[@"customReplies"];
   if (customReplies) {
     for (NSDictionary *currReply in customReplies) {
       NSString *currTrigger = currReply[@"trigger"];
       NSString *currResponse = currReply[@"response"];
-      if ([dict objectForKey:[currTrigger lowercaseString]]) {
-          NSMutableArray *mutableCmds = [[dict objectForKey:[currTrigger lowercaseString]] mutableCopy];
-          [mutableCmds addObject:currResponse];
-          [dict setObject:mutableCmds forKey:[currTrigger lowercaseString]];
-      } else {
-        [dict setObject:@[currResponse] forKey:[currTrigger lowercaseString]];
+      NSRegularExpression *regExpression = [NSRegularExpression regularExpressionWithPattern:currTrigger options:NSRegularExpressionCaseInsensitive error:nil];
+      if (currTrigger && regExpression) {
+        [phrases addObject:@{@"trigger" : regExpression,
+                             @"response" : currResponse}];
       }
     }
   }
-  phrases = dict;
 }
 
 -(BOOL)handleSpeech:(NSString *)text withTokens:(NSSet *)tokens withSession:(id<APSiriSession>)session {
@@ -40,11 +41,21 @@
   
   text = [[text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] lowercaseString];
   
-  if ([phrases objectForKey:text]) {
-    NSArray *customReplies = [phrases objectForKey:text];
-    for (NSString *currReply in customReplies) {
-      [session sendTextSnippet:currReply temporary:NO scrollToTop:YES dialogPhase:@"Completion"];
+  BOOL didHandle = NO;
+  for (NSDictionary *currDict in phrases) {
+    NSRegularExpression *regExpression = currDict[@"trigger"];
+    if (regExpression) {
+      NSArray *arrayOfAllMatches = [regExpression matchesInString:text options:0 range:NSMakeRange(0, [text length])];
+      for (NSTextCheckingResult *match in arrayOfAllMatches) {
+        if (match.numberOfRanges > 0) {
+          [session sendTextSnippet:currDict[@"response"] temporary:NO scrollToTop:YES dialogPhase:@"Completion"];
+          didHandle = YES;
+        }
+      }
     }
+  }
+  
+  if (didHandle) {
     [session sendRequestCompleted];
     return YES;
   }

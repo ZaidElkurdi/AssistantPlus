@@ -23,7 +23,7 @@
     
     BOOL passthrough = false;
     if (dict[@"passthrough"]) {
-      enabled = [dict[@"passthrough"] boolValue];
+      passthrough = [dict[@"passthrough"] boolValue];
     }
     
     self.name = name;

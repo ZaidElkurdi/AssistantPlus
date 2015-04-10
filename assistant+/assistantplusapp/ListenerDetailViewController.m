@@ -35,23 +35,29 @@
   UIView *switchBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 90, self.view.frame.size.width, 50)];
   switchBackground.backgroundColor = [UIColor whiteColor];
   
-  UILabel *enabledSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 50)];
-  enabledSwitchLabel.text = @"Enabled:";
-  
-  UILabel *passthroughSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 0, 80, 50)];
-  passthroughSwitchLabel.text = @"Pass-Through:";
-  
-  self.enabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, 9.5, 51, 31)];
+  self.enabledSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(85, 9.5, 51, 31)];
   [self.enabledSwitch addTarget:self action:@selector(didToggleSwitch:) forControlEvents:UIControlEventValueChanged];
   self.enabledSwitch.on = self.currListener.enabled;
   
-  self.passthroughSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(100, 9.5, 51, 31)];
+  
+  UILabel *enabledSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 50)];
+  enabledSwitchLabel.text = @"Enabled:";
+  
+  CGFloat viewWidth = self.view.frame.size.width;
+  
+  self.passthroughSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(viewWidth-61, 9.5, 51, 31)];
   [self.passthroughSwitch addTarget:self action:@selector(didToggleSwitch:) forControlEvents:UIControlEventValueChanged];
   self.passthroughSwitch.on = self.currListener.willPassthrough;
+  
+  CGFloat passthroughSwitchXOrigin = self.passthroughSwitch.frame.origin.x;
+  
+  UILabel *passthroughSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(passthroughSwitchXOrigin-110, 0, 110, 50)];
+  passthroughSwitchLabel.text = @"Passthrough:";
   
   [switchBackground addSubview:enabledSwitchLabel];
   [switchBackground addSubview:passthroughSwitchLabel];
   [switchBackground addSubview:self.enabledSwitch];
+  [switchBackground addSubview:self.passthroughSwitch];
   [self.view addSubview:switchBackground];
   
   UIView *nameBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 170, self.view.frame.size.width, 50)];
@@ -77,18 +83,26 @@
   [triggerBackground addSubview:triggerLabel];
   [triggerBackground addSubview:self.triggerField];
   [self.view addSubview:triggerBackground];
+  
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(saveChangesIfNecessary)
+   name:UIApplicationWillResignActiveNotification
+   object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  
+  [self saveChangesIfNecessary];
+}
+
+- (void)saveChangesIfNecessary {
   if (self.didChange) {
     self.currListener.trigger = self.triggerField.text;
     self.currListener.name = self.nameField.text;
     [self.delegate listenerDidChange:self.currListener];
   }
 }
-
 #pragma mark - UI Delegates
 
 - (void)didToggleSwitch:(UISwitch*)theSwitch {
