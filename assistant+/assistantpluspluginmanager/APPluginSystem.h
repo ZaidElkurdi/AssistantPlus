@@ -14,10 +14,17 @@
   NSMutableArray *plugins;
   NSMutableArray *activatorListenersArray;
 }
+
+@property (strong, nonatomic) APSession *currSession;
+
 + (id)sharedManager;
 - (BOOL)loadPlugins;
 - (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession;
 - (void)reloadCustomRepliesPlugin:(NSDictionary*)replies;
 - (void)reloadActivatorListeners:(NSDictionary*)listeners;
+
+//1.0.1
+- (void)siriSay:(NSString*)message;
+
 - (NSDictionary*)getInstalledPlugins;
 @end

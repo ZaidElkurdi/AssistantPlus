@@ -10,8 +10,6 @@
 #import "APLocationManager.h"
 
 int main(int argc, char *argv[]) {
-  NSLog(@"Starting this shit 2");
-  
   APLocationManager *manager = [[APLocationManager alloc] init];
   [manager startMonitoringLocation];
   CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.daemon"];

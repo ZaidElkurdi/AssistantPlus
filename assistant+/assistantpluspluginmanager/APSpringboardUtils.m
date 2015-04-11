@@ -22,8 +22,6 @@
   NSDictionary *currLocation;
 }
 
-static const char *root_helper_path = "/Applications/AssistantPlusApp.app/assistantplus_root_helper";
-
 + (id)sharedAPUtils {
   static APSpringboardUtils *sharedObj = nil;
   @synchronized(self) {
@@ -37,6 +35,7 @@ static const char *root_helper_path = "/Applications/AssistantPlusApp.app/assist
       [center registerForMessageName:@"UpdateCustomReplies" target:sharedObj selector:@selector(updateCustomReplies:withReplies:)];
       [center registerForMessageName:@"respringForListeners" target:sharedObj selector:@selector(respring)];
       [center registerForMessageName:@"getInstalledPlugins" target:sharedObj selector:@selector(getInstalledPlugins:withInfo:)];
+      [center registerForMessageName:@"siriSay" target:sharedObj selector:@selector(siriSay:withMessage:)];
     }
   }
   return sharedObj;
@@ -65,6 +64,10 @@ static const char *root_helper_path = "/Applications/AssistantPlusApp.app/assist
   const char *argv[] = {"killall", "backboardd", NULL};
   posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char *const *)argv, NULL);
   waitpid(pid, &status, WEXITED);
+}
+
+- (void)siriSay:(NSString*)msg withMessage:(NSDictionary*)dict {
+  [pluginManager siriSay:dict[@"message"]];
 }
 
 - (NSDictionary*)getInstalledPlugins:(NSString*)msg withInfo:(NSDictionary*)info {

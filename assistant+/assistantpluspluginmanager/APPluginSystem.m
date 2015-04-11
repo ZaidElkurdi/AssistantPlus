@@ -57,6 +57,7 @@ static NSString *EVENT_PREFIX = @"APListener";
 }
 
 - (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession {
+  self.currSession = currSession;
   //First check activator listeners
   NSString *userCommand = [command lowercaseString];
   userCommand = [userCommand stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -105,6 +106,10 @@ static NSString *EVENT_PREFIX = @"APListener";
       break;
     }
   }
+}
+
+- (void)siriSay:(NSString*)message {
+  [self.currSession sendTextSnippet:message temporary:NO scrollToTop:YES dialogPhase:@"Completion"];
 }
 
 #pragma mark - Activator Methods

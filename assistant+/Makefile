@@ -28,4 +28,5 @@ SUBPROJECTS += assistantplusapp
 SUBPROJECTS += assistantplus_root_helper
 SUBPROJECTS += customreply
 
+SUBPROJECTS += sirisay
 include $(THEOS_MAKE_PATH)/aggregate.mk
