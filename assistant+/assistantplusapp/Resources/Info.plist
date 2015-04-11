@@ -11,7 +11,7 @@
 		<string>iPhoneOS</string>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>${EXECUTABLE_NAME}</string>
+	<string>AssistantPlusApp</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.assistantplus.app</string>
 	<key>CFBundleInfoDictionaryVersion</key>
