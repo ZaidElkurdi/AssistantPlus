@@ -23,7 +23,6 @@
     self.currListener = listener;
     self.didChange = NO;
     self.mutableTriggers = listener.triggers.count > 0 ? [listener.triggers mutableCopy] : [NSMutableArray arrayWithObject:@""];
-    NSLog(@"Triggers: %@", self.mutableTriggers);
   }
   return self;
 }
@@ -86,10 +85,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   if (section == 1) {
     if (self.mutableTriggers.count == 0) {
-    NSLog(@"Returing: 2!");
       return 2;
     } else {
-      NSLog(@"Returing: %ld", 1 + (long)self.mutableTriggers.count);
       return 1 + self.mutableTriggers.count;
     }
   }
@@ -168,7 +165,6 @@
 }
 
 - (UITableViewCell*)createTriggerCellForIndex:(NSInteger)index {
-  NSLog(@"Getting cell for index: %ld", (long)index);
   UITableViewCell *cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   
@@ -217,7 +213,7 @@
 
 - (void)addNewTrigger:(id)sender {
   [self.mutableTriggers addObject:@""];
-  NSLog(@"Mutable triggers: %@", self.mutableTriggers);
+  
   NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:self.mutableTriggers.count inSection:1];
   
   [self.tableView beginUpdates];
