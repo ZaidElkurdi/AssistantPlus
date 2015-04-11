@@ -1,6 +1,6 @@
 include theos/makefiles/common.mk
 
-export ARCHS = armv7s arm64
+export ARCHS = armv7 armv7s arm64
 export TARGET = iphone:clang:latest:8.0
 export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 8.0
 export SDKVERSION=8.1

@@ -98,9 +98,11 @@
       [self goToNewVC:[[CustomRepliesViewController alloc] init]];
       break;
     case 2: {
+#if !(TARGET_IPHONE_SIMULATOR)
       CPDistributedMessagingCenter *center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
       NSDictionary *installed = [center sendMessageAndReceiveReplyName:@"getInstalledPlugins" userInfo:nil];
       [self goToNewVC:[[PluginsViewController alloc] initWithInstalledPlugins:installed[@"plugins"]]];
+#endif
       break; }
     default:
       break;

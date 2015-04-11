@@ -11,7 +11,7 @@
 @interface APActivatorListener : NSObject
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *trigger;
+@property (nonatomic, strong) NSArray *triggers;
 @property (nonatomic) BOOL enabled;
 @property (nonatomic) BOOL willPassthrough;
 @property (nonatomic, strong) NSString *uniqueId;

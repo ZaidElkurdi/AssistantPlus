@@ -13,7 +13,7 @@
 - (void)listenerDidChange:(APActivatorListener*)listener;
 @end
 
-@interface ListenerDetailViewController : UIViewController <UITextViewDelegate, UITextFieldDelegate>
+@interface ListenerDetailViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (assign) id<ListenerDetailDelegate> delegate;
 - (id)initWithListener:(APActivatorListener*)listener;
 @end

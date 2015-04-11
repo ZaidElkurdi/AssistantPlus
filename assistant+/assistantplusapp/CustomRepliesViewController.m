@@ -75,8 +75,10 @@
     [defaults setObject:toSave forKey:@"customReplies"];
     [defaults synchronize];
     
+#if !(TARGET_IPHONE_SIMULATOR)
     CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
     [center sendMessageName:@"UpdateCustomReplies" userInfo:@{@"customReplies" : toSave}];
+#endif
   }
 }
 

@@ -61,14 +61,16 @@ static NSString *EVENT_PREFIX = @"APListener";
   NSString *userCommand = [command lowercaseString];
   userCommand = [userCommand stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
   for (APActivatorListener *currListener in activatorListenersArray) {
-    NSArray *arrayOfAllMatches = [currListener.trigger matchesInString:userCommand options:0 range:NSMakeRange(0, [userCommand length])];
-    for (NSTextCheckingResult *match in arrayOfAllMatches) {
-      if (match.numberOfRanges > 0) {
-        NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener.identifier];
-        [LASharedActivator sendEventToListener:[LAEvent eventWithName:eventName mode:LASharedActivator.currentEventMode]];
-        if (!currListener.willPassthrough) {
-          [currSession sendRequestCompleted];
-          return YES;
+    for (NSRegularExpression *currExpression in currListener.triggers) {
+      NSArray *arrayOfAllMatches = [currExpression matchesInString:userCommand options:0 range:NSMakeRange(0, [userCommand length])];
+      for (NSTextCheckingResult *match in arrayOfAllMatches) {
+        if (match.numberOfRanges > 0) {
+          NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener.identifier];
+          [LASharedActivator sendEventToListener:[LAEvent eventWithName:eventName mode:LASharedActivator.currentEventMode]];
+          if (!currListener.willPassthrough) {
+            [currSession sendRequestCompleted];
+            return YES;
+          }
         }
       }
     }
@@ -122,16 +124,29 @@ static NSString *EVENT_PREFIX = @"APListener";
   
   if ([listeners objectForKey:@"activatorListeners"]) {
     for (NSDictionary *currListener in [listeners objectForKey:@"activatorListeners"]) {
-      NSString *trigger = currListener[@"trigger"];
       BOOL isEnabled = [currListener[@"enabled"] boolValue];
-      if (trigger.length > 0 && isEnabled) {
-        APActivatorListener *newListener = [[APActivatorListener alloc] initWithDictionary:currListener];
-        NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, newListener.identifier];
-        [activatorListenersArray addObject:newListener];
-        [LASharedActivator registerEventDataSource:self forEventName:eventName];
+      BOOL isValid = NO;
+      id triggerValue = currListener[@"trigger"];
+      if ([triggerValue isKindOfClass:[NSArray class]]) {
+        NSArray *triggers = (NSArray*)triggerValue;
+        isValid = triggers.count > 0 && isEnabled;
+        if (isValid) {
+          NSString *firstTrigger = triggers[0];
+          isValid = firstTrigger.length > 0;
+        }
+      } else {
+        //Migration 1.0 -> 1.01
+        NSString *trigger = (NSString*)triggerValue;
+        isValid = trigger.length > 0 && isEnabled;
+      }
+      if (isValid) {
+          APActivatorListener *newListener = [[APActivatorListener alloc] initWithDictionary:currListener];
+          NSString *eventName = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, newListener.identifier];
+          [activatorListenersArray addObject:newListener];
+          [LASharedActivator registerEventDataSource:self forEventName:eventName];
+        }
       }
     }
-  }
 }
 
 - (NSString *)localizedTitleForEventName:(NSString *)eventName {
@@ -152,8 +167,15 @@ static NSString *EVENT_PREFIX = @"APListener";
 - (NSString *)localizedDescriptionForEventName:(NSString *)eventName {
   for (APActivatorListener *currListener in activatorListenersArray) {
     NSString *comp = [NSString stringWithFormat:@"%@%@", EVENT_PREFIX, currListener.identifier];
+    
     if ([comp isEqualToString:eventName]) {
-      return [NSString stringWithFormat:@"Siri Query - \"%@\"", currListener.triggerString];
+      NSMutableString *descriptionString = [NSMutableString string];
+      for (NSInteger currIndex = 0; currIndex < currListener.triggerStrings.count; currIndex++) {
+        NSString *currTrigger = currListener.triggerStrings[currIndex];
+        NSString *format = currIndex == currListener.triggerStrings.count-1 ? @"\"%@\"" : @"\"%@\", ";
+        [descriptionString appendString:[NSString stringWithFormat:format, currTrigger.length > 0 ? currTrigger : @"Empty Trigger"]];
+      }
+      return [NSString stringWithFormat:@"Siri Query - %@", descriptionString];
     }
   }
   

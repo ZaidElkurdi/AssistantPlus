@@ -93,8 +93,10 @@
     [defaults synchronize];
   }
   
+#if !(TARGET_IPHONE_SIMULATOR)
   CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
   [center sendMessageName:@"UpdateActivatorListeners" userInfo:@{@"activatorListeners" : toSave}];
+#endif
 }
 
 #pragma mark - Button Handlers
@@ -117,8 +119,10 @@
 }
 
 - (void)respringPressed:(UIButton*)button {
+#if !(TARGET_IPHONE_SIMULATOR)
   CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
   [center sendMessageName:@"respringForListeners" userInfo:nil];
+#endif
 }
 
 #pragma mark - UITableViewDataSource
@@ -132,7 +136,14 @@
   
   APActivatorListener *currListener = [savedListeners objectAtIndex:indexPath.row];
   cell.textLabel.text = currListener.name.length > 0 ? currListener.name : @"Untitled Listener";
-  cell.detailTextLabel.text = currListener.trigger.length > 0 ? currListener.trigger : @"No Trigger Yet";
+  
+  NSMutableString *detailString = [NSMutableString string];
+  for (NSInteger currIndex = 0; currIndex < currListener.triggers.count; currIndex++) {
+    NSString *currTrigger = currListener.triggers[currIndex];
+    NSString *format = currIndex == currListener.triggers.count-1 ? @"%@" : @"%@, ";
+    [detailString appendString:[NSString stringWithFormat:format, currTrigger.length > 0 ? currTrigger : @"Empty Trigger"]];
+  }
+  cell.detailTextLabel.text = detailString.length > 0 ? detailString : @"No Trigger Yet";
   
   return cell;
 }

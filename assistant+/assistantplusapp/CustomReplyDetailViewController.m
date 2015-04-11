@@ -10,8 +10,7 @@
 
 @interface CustomReplyDetailViewController ()
 @property (strong, nonatomic) APCustomReply *currReply;
-@property (strong, nonatomic) UITextField *triggerField;
-@property (strong, nonatomic) UITextView *responseField;
+@property (strong, nonatomic) UITableView *tableView;
 @property (nonatomic) BOOL didChange;
 @end
 
@@ -27,7 +26,6 @@
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewDidLoad {
@@ -35,49 +33,132 @@
   UIColor *backgroundColor = [UIColor colorWithWhite:.9f alpha:1.0];
   self.view.backgroundColor = backgroundColor;
   
-  UIView *triggerBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, 50)];
-  triggerBackground.backgroundColor = [UIColor whiteColor];
-  UILabel *triggerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 70, 50)];
-  triggerLabel.text = @"Trigger:";
-  self.triggerField = [[UITextField alloc] initWithFrame:CGRectMake(90, 2, self.view.frame.size.width-60, 50)];
-  self.triggerField.text = self.currReply.trigger;
-  self.triggerField.delegate = self;
-  [triggerBackground addSubview:triggerLabel];
-  [triggerBackground addSubview:self.triggerField];
-  [self.view addSubview:triggerBackground];
+  self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+  self.tableView.delegate = self;
+  self.tableView.dataSource = self;
   
-  UIView *responseBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 190, self.view.frame.size.width, 100)];
-  responseBackground.backgroundColor = [UIColor whiteColor];
-  UILabel *responseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 50)];
-  responseLabel.text = @"Response:";
-  self.responseField = [[UITextView alloc] initWithFrame:CGRectMake(110, 8, self.view.frame.size.width-110, 90)];
-  self.responseField.text = self.currReply.response;
-  self.responseField.font = [UIFont systemFontOfSize:16];
-  self.responseField.delegate = self;
-  [responseBackground addSubview:responseLabel];
-  [responseBackground addSubview:self.responseField];
-  [self.view addSubview:responseBackground];
+  CGFloat expectedHeight = [[self getHelpMessage] boundingRectWithSize:CGSizeMake(self.view.frame.size.width-20, CGFLOAT_MAX)
+                                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                                            attributes:@{NSFontAttributeName : [UIFont fontWithName:@"Helvetica" size:14]}
+                                                               context:nil].size.height;
+  
+  UIView *msgView = [[UIView alloc] initWithFrame:CGRectMake(0, 10, self.view.frame.size.width, expectedHeight+30)];
+  UILabel *msgLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, self.view.frame.size.width-20, expectedHeight)];
+  msgLabel.lineBreakMode = NSLineBreakByWordWrapping;
+  msgLabel.numberOfLines = 0;
+  msgLabel.text = [self getHelpMessage];
+  msgLabel.textAlignment = NSTextAlignmentLeft;
+  msgLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
+  msgLabel.textColor = [UIColor darkGrayColor];
+  [msgView addSubview:msgLabel];
+  
+  self.tableView.tableFooterView = msgView;
+  
+  [self.view addSubview:self.tableView];
+ 
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(saveChangesIfNecessary)
+   name:UIApplicationWillResignActiveNotification
+   object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-  
+  [self saveChangesIfNecessary];
+}
+
+- (void)saveChangesIfNecessary {
   if (self.didChange) {
-    self.currReply.trigger = self.triggerField.text;
-    self.currReply.response = self.responseField.text;
     [self.delegate customReplyDidChange:self.currReply];
   }
+}
+
+#pragma mark - UITableViewDataSource
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (indexPath.section == 0) {
+    return [self createTriggerCell];
+  } else {
+    return [self createResponseCell];
+  }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  return 1;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+  return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (indexPath.section == 0) {
+    return 50;
+  } else {
+    return 100;
+  }
+}
+#pragma mark - Cell Helpers
+
+- (UITableViewCell*)createTriggerCell {
+  UITableViewCell *cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  
+  UILabel *triggerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 70, 50)];
+  triggerLabel.text = @"Trigger:";
+  UITextField *triggerField = [[UITextField alloc] initWithFrame:CGRectMake(80, 9, self.view.frame.size.width-80, 35)];
+  triggerField.returnKeyType = UIReturnKeyDone;
+  triggerField.font = [UIFont systemFontOfSize:16];
+  triggerField.text = self.currReply.trigger;
+  triggerField.delegate = self;
+  
+  [cell.contentView addSubview:triggerLabel];
+  [cell.contentView  addSubview:triggerField];
+  return cell;
+}
+
+- (UITableViewCell*)createResponseCell {
+  UITableViewCell *cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  
+  UILabel *responseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, 50)];
+  responseLabel.text = @"Response:";
+  UITextView *responseField = [[UITextView alloc] initWithFrame:CGRectMake(95, 8, self.view.frame.size.width-100, 80)];
+  responseField.font = [UIFont systemFontOfSize:16];
+  responseField.text = self.currReply.response;
+  responseField.delegate = self;
+  
+  [cell.contentView addSubview:responseLabel];
+  [cell.contentView  addSubview:responseField];
+  return cell;
 }
 
 #pragma mark - UI Delegates
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
   self.didChange = YES;
+  NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+  self.currReply.trigger = newString;
   return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [textField resignFirstResponder];
+  return NO;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
   self.didChange = YES;
+  NSString *newString = [textView.text stringByReplacingCharactersInRange:range withString:text];
+  self.currReply.response = newString;
   return YES;
 }
+
+#pragma mark - Helpers
+
+- (NSString*)getHelpMessage {
+  return @"Trigger: The command that will trigger the custom reply. You may use wildcards in the trigger by using (.*). For example, '(.*)turn on the lights' will trigger on \"Turn on the lights\", \"Siri turn on the lights\", \"Hey Siri please turn on the lights\", etc.\n"
+  "\nResponse: What Siri will say in reponse to the trigger.\n";
+}
+
 @end
