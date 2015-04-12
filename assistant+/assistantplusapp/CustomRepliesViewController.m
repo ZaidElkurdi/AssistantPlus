@@ -141,7 +141,10 @@
     APCustomReply *toDelete = [savedReplies objectAtIndex:indexPath.row];
     [savedReplies removeObject:toDelete];
     [self saveRepliesToFile];
-    [self.repliesTableView reloadData];
+    
+    [self.repliesTableView beginUpdates];
+    [self.repliesTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.repliesTableView endUpdates];
   }
 }
 

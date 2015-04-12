@@ -170,7 +170,10 @@
     APActivatorListener *toDelete = [savedListeners objectAtIndex:indexPath.row];
     [savedListeners removeObject:toDelete];
     [self saveListenersToFile];
-    [self.listenersTable reloadData];
+    
+    [self.listenersTable beginUpdates];
+    [self.listenersTable deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.listenersTable endUpdates];
   }
 }
 
