@@ -18,4 +18,5 @@
 - (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
 - (void)loadPlugins;
 - (void)gotCurrentLocation:(NSString*)msg withInfo:(NSDictionary*)info;
+- (void)runCommand:(NSString*)msg withInfo:(NSDictionary*)info;
 @end

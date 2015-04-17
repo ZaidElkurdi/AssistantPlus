@@ -5,7 +5,7 @@ export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 8.0
 
 TWEAK_NAME = AssistantPlusPluginManager
 AssistantPlusPluginManager_CFLAGS = -fobjc-arc
-AssistantPlusPluginManager_FILES = Tweak.xm APPluginSystem.m APPlugin.m APSpringboardUtils.m APActivatorListener.m
+AssistantPlusPluginManager_FILES = Tweak.xm APPluginSystem.m APPlugin.m APSpringboardUtils.m APActivatorListener.m APCaptureGroupCommand.m
 AssistantPlusPluginManager_PRIVATE_FRAMEWORKS = AssistantServices SAObjects AppSupport
 AssistantPlusPluginManager_FRAMEWORKS = Foundation UIKit CoreLocation
 AssistantPlusPluginManager_LIBRARIES = substrate activator

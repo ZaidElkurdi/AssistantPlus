@@ -16,6 +16,12 @@
 - (void)_relaunchSpringBoardNow;
 @end
 
+@interface NSTask : NSObject
+- (void)setLaunchPath:(NSString*)path;
+- (void)setArguments:(NSArray*)args;
+- (void)launch;
+@end
+
 
 @implementation APSpringboardUtils {
   APPluginSystem *pluginManager;
@@ -33,9 +39,11 @@
       [center registerForMessageName:@"RetrievedLocation" target:sharedObj selector:@selector(gotCurrentLocation:withInfo:)];
       [center registerForMessageName:@"UpdateActivatorListeners" target:sharedObj selector:@selector(updateActivatorListeners:withListeners:)];
       [center registerForMessageName:@"UpdateCustomReplies" target:sharedObj selector:@selector(updateCustomReplies:withReplies:)];
+      [center registerForMessageName:@"UpdateCaptureGroupCommands" target:sharedObj selector:@selector(updateCaptureGroupCommands:withCommands:)];
       [center registerForMessageName:@"respringForListeners" target:sharedObj selector:@selector(respring)];
       [center registerForMessageName:@"getInstalledPlugins" target:sharedObj selector:@selector(getInstalledPlugins:withInfo:)];
       [center registerForMessageName:@"siriSay" target:sharedObj selector:@selector(siriSay:withMessage:)];
+      [center registerForMessageName:@"runCommand" target:sharedObj selector:@selector(runCommand:withInfo:)];
     }
   }
   return sharedObj;
@@ -52,6 +60,10 @@
 
 - (void)updateActivatorListeners:(NSString*)msg withListeners:(NSDictionary*)listeners {
   [pluginManager reloadActivatorListeners:listeners];
+}
+
+- (void)updateCaptureGroupCommands:(NSString*)msg withCommands:(NSDictionary*)commands {
+  [pluginManager reloadCaptureGroupCommands:commands];
 }
 
 - (void)updateCustomReplies:(NSString*)msg withReplies:(NSDictionary*)dict {
@@ -90,6 +102,15 @@
     }
   }
   [self stopLocationDaemon];
+}
+
+- (void)runCommand:(NSString*)msg withInfo:(NSDictionary*)info {
+  NSTask *task = [[NSTask alloc] init];
+  [task setLaunchPath: @"/bin/sh"];
+  NSArray *arguments = @[@"-c",
+                         info[@"command"]];
+  [task setArguments:arguments];
+  [task launch];
 }
 
 - (void)startLocationDaemon {

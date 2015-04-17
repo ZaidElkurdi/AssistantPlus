@@ -9,6 +9,8 @@
 #import "APPluginSystem.h"
 #import "APPlugin.h"
 #import "APActivatorListener.h"
+#import "APCaptureGroupCommand.h"
+#import "CPDistributedMessagingCenter.h"
 
 static NSString *PREFERENCE_PATH = @"/var/mobile/Library/Preferences/com.assistantplus.app.plist";
 static NSString *EVENT_PREFIX = @"APListener";
@@ -28,6 +30,7 @@ static NSString *EVENT_PREFIX = @"APListener";
     
     NSDictionary *pref = [NSDictionary dictionaryWithContentsOfFile:PREFERENCE_PATH];
     [sharedManager reloadActivatorListeners:pref];
+    [sharedManager reloadCaptureGroupCommands:pref];
   });
   return sharedManager;
 }
@@ -58,9 +61,12 @@ static NSString *EVENT_PREFIX = @"APListener";
 
 - (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession {
   self.currSession = currSession;
-  //First check activator listeners
+  
+  //Clean up the command
   NSString *userCommand = [command lowercaseString];
   userCommand = [userCommand stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+  
+  //First check activator listeners
   for (APActivatorListener *currListener in activatorListenersArray) {
     for (NSRegularExpression *currExpression in currListener.triggers) {
       NSArray *arrayOfAllMatches = [currExpression matchesInString:userCommand options:0 range:NSMakeRange(0, [userCommand length])];
@@ -77,6 +83,27 @@ static NSString *EVENT_PREFIX = @"APListener";
     }
   }
   
+  //Then check Capture Group Commands
+  for (APCaptureGroupCommand *currCommand in captureGroupCommandsArray) {
+    NSRegularExpression *currExpression = currCommand.trigger;
+    NSArray *arrayOfAllMatches = [currExpression matchesInString:userCommand options:0 range:NSMakeRange(0, [userCommand length])];
+    for (NSTextCheckingResult *match in arrayOfAllMatches) {
+      if (match.numberOfRanges > 0) {
+        NSMutableArray *variableMatches = [[NSMutableArray alloc] init];
+        for (NSInteger currIndex = 1; currIndex < match.numberOfRanges; currIndex++) {
+          NSString *variableValue = [[userCommand substringWithRange:[match rangeAtIndex:currIndex]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+          NSLog(@"Match %ld: %@", (long)currIndex, variableValue);
+          [variableMatches addObject:variableValue];
+        }
+        NSString *commandToExecute = [currCommand buildCommandWithValues:variableMatches];
+        CPDistributedMessagingCenter* center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
+        [center sendMessageName:@"runCommand" userInfo:@{@"command" : commandToExecute}];
+        return YES;
+      }
+    }
+  }
+  
+  //Go through the plugins
   NSLog(@"AP: Got Command \"%@\"", userCommand);
   for (APPlugin *currPlugin in plugins) {
     if ([currPlugin handleSpeech:userCommand withTokens:tokens withSession:currSession]) {
@@ -104,6 +131,22 @@ static NSString *EVENT_PREFIX = @"APListener";
       id customCmd = [[currPlugin getRegisteredCommands] lastObject];
       [customCmd performSelector:@selector(createPhraseDictionary:) withObject:replies];
       break;
+    }
+  }
+}
+
+- (void)reloadCaptureGroupCommands:(NSDictionary*)commands {
+  NSLog(@"Loading capture group commands!");
+  captureGroupCommandsArray = [[NSMutableArray alloc] init];
+  
+  if ([commands objectForKey:@"captureGroupCommands"]) {
+    for (NSDictionary *currCommand in [commands objectForKey:@"captureGroupCommands"]) {
+      id triggerValue = currCommand[@"trigger"];
+      id commandValue = currCommand[@"command"];
+      if (triggerValue && commandValue) {
+        APCaptureGroupCommand *command = [[APCaptureGroupCommand alloc] initWithDictionary:currCommand];
+        [captureGroupCommandsArray addObject:command];
+      }
     }
   }
 }

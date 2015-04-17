@@ -24,6 +24,7 @@
 @protocol APSharedUtils <NSObject>
 + (id)sharedAPUtils;
 - (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
+- (void)runCommand:(NSString*)msg withInfo:(NSDictionary*)info;
 @end
 
 @protocol APPluginSystem <NSObject>

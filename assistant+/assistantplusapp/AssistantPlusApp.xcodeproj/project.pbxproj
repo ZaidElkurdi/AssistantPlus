@@ -20,6 +20,12 @@
 		B86E67181ACE7AC0007C6014 /* APCustomReply.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0AE51AC32CEF00D4D107 /* APCustomReply.m */; };
 		B86E67191ACE7AC0007C6014 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A871ABF7D6200D4D107 /* main.m */; };
 		B86E671B1ACE7C66007C6014 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B86E671A1ACE7C66007C6014 /* Default-568h@2x.png */; };
+		B8B2D2411ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2D2401ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m */; };
+		B8B2D2471ADD879500FEE8C3 /* APCaptureGroupCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2D2461ADD879500FEE8C3 /* APCaptureGroupCommand.m */; };
+		B8B2D24A1ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2D2491ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m */; };
+		B8B2D24B1ADD8EE900FEE8C3 /* CaptureGroupCommandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2D2401ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m */; };
+		B8B2D24C1ADD8EED00FEE8C3 /* CaptureGroupCommandDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2D2491ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m */; };
+		B8B2D24D1ADD8EF100FEE8C3 /* APCaptureGroupCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B2D2461ADD879500FEE8C3 /* APCaptureGroupCommand.m */; };
 		B8EC46D41AC6422100ED3836 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7C1ABF79AA00D4D107 /* AppDelegate.m */; };
 		B8EC46D51AC6422100ED3836 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */; };
 		B8EC46D61AC6422100ED3836 /* ActivatorListenersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0ACD1ABF8F7C00D4D107 /* ActivatorListenersViewController.m */; };
@@ -82,6 +88,12 @@
 		B88C0AE21AC32C2A00D4D107 /* CustomReplyDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomReplyDetailViewController.m; sourceTree = SOURCE_ROOT; };
 		B88C0AE41AC32CEF00D4D107 /* APCustomReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APCustomReply.h; sourceTree = SOURCE_ROOT; };
 		B88C0AE51AC32CEF00D4D107 /* APCustomReply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APCustomReply.m; sourceTree = SOURCE_ROOT; };
+		B8B2D23F1ADD875900FEE8C3 /* CaptureGroupCommandsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureGroupCommandsViewController.h; sourceTree = SOURCE_ROOT; };
+		B8B2D2401ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureGroupCommandsViewController.m; sourceTree = SOURCE_ROOT; };
+		B8B2D2451ADD879500FEE8C3 /* APCaptureGroupCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APCaptureGroupCommand.h; sourceTree = SOURCE_ROOT; };
+		B8B2D2461ADD879500FEE8C3 /* APCaptureGroupCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APCaptureGroupCommand.m; sourceTree = SOURCE_ROOT; };
+		B8B2D2481ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureGroupCommandDetailViewController.h; sourceTree = SOURCE_ROOT; };
+		B8B2D2491ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureGroupCommandDetailViewController.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +186,10 @@
 				B88C0A7E1ABF79AA00D4D107 /* MainViewController.h */,
 				B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */,
 				B834EFF31AC5EF2C00CF009E /* LaunchScreen2.xib */,
+				B8B2D23F1ADD875900FEE8C3 /* CaptureGroupCommandsViewController.h */,
+				B8B2D2401ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m */,
+				B8B2D2481ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.h */,
+				B8B2D2491ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m */,
 				B86E66D81ACD1991007C6014 /* PluginsViewController.h */,
 				B86E66D91ACD1991007C6014 /* PluginsViewController.m */,
 				B88C0ADE1AC32C2000D4D107 /* CustomRepliesViewController.h */,
@@ -188,6 +204,8 @@
 				B88C0AD21ABF968B00D4D107 /* APActivatorListener.m */,
 				B88C0AE41AC32CEF00D4D107 /* APCustomReply.h */,
 				B88C0AE51AC32CEF00D4D107 /* APCustomReply.m */,
+				B8B2D2451ADD879500FEE8C3 /* APCaptureGroupCommand.h */,
+				B8B2D2461ADD879500FEE8C3 /* APCaptureGroupCommand.m */,
 				B88C0A871ABF7D6200D4D107 /* main.m */,
 				B88C0AB61ABF838500D4D107 /* Info.plist */,
 				B88C0AC11ABF864D00D4D107 /* LaunchScreen.xib */,
@@ -353,12 +371,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8EC46D41AC6422100ED3836 /* AppDelegate.m in Sources */,
+				B8B2D2411ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m in Sources */,
 				B8EC46D51AC6422100ED3836 /* MainViewController.m in Sources */,
 				B8EC46D61AC6422100ED3836 /* ActivatorListenersViewController.m in Sources */,
 				B8EC46D71AC6422100ED3836 /* CustomRepliesViewController.m in Sources */,
+				B8B2D24A1ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m in Sources */,
 				B8EC46D81AC6422100ED3836 /* CustomReplyDetailViewController.m in Sources */,
 				B86E66DA1ACD1991007C6014 /* PluginsViewController.m in Sources */,
 				B8EC46D91AC6422100ED3836 /* ListenerDetailViewController.m in Sources */,
+				B8B2D2471ADD879500FEE8C3 /* APCaptureGroupCommand.m in Sources */,
 				B8EC46DA1AC6422100ED3836 /* APActivatorListener.m in Sources */,
 				B8EC46DB1AC6422100ED3836 /* APCustomReply.m in Sources */,
 				B8EC46DC1AC6422100ED3836 /* main.m in Sources */,
@@ -378,12 +399,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B86E67101ACE7AC0007C6014 /* AppDelegate.m in Sources */,
+				B8B2D24B1ADD8EE900FEE8C3 /* CaptureGroupCommandsViewController.m in Sources */,
 				B86E67111ACE7AC0007C6014 /* MainViewController.m in Sources */,
 				B86E67121ACE7AC0007C6014 /* PluginsViewController.m in Sources */,
 				B86E67131ACE7AC0007C6014 /* CustomRepliesViewController.m in Sources */,
 				B86E67141ACE7AC0007C6014 /* CustomReplyDetailViewController.m in Sources */,
+				B8B2D24C1ADD8EED00FEE8C3 /* CaptureGroupCommandDetailViewController.m in Sources */,
 				B86E67151ACE7AC0007C6014 /* ActivatorListenersViewController.m in Sources */,
 				B86E67161ACE7AC0007C6014 /* ListenerDetailViewController.m in Sources */,
+				B8B2D24D1ADD8EF100FEE8C3 /* APCaptureGroupCommand.m in Sources */,
 				B86E67171ACE7AC0007C6014 /* APActivatorListener.m in Sources */,
 				B86E67181ACE7AC0007C6014 /* APCustomReply.m in Sources */,
 				B86E67191ACE7AC0007C6014 /* main.m in Sources */,

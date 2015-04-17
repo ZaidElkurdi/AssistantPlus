@@ -14,6 +14,12 @@
       location = "container:APPlugin.m">
    </FileRef>
    <FileRef
+      location = "group:APCaptureGroupCommand.h">
+   </FileRef>
+   <FileRef
+      location = "group:APCaptureGroupCommand.m">
+   </FileRef>
+   <FileRef
       location = "container:APPluginSystem.h">
    </FileRef>
    <FileRef

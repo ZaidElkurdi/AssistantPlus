@@ -3,6 +3,7 @@
 #import "CustomRepliesViewController.h"
 #import "CPDistributedMessagingCenter.h"
 #import "PluginsViewController.h"
+#import "CaptureGroupCommandsViewController.h"
 
 @implementation MainViewController
 
@@ -54,6 +55,9 @@
       cellTitle = @"Custom Replies";
       break;
     case 2:
+      cellTitle = @"Capture Group Commands";
+      break;
+    case 3:
       cellTitle = @"Installed Plugins";
     default:
       break;
@@ -64,7 +68,7 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return 3;
+  return 4;
 }
 
 - (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {
@@ -97,7 +101,10 @@
     case 1:
       [self goToNewVC:[[CustomRepliesViewController alloc] init]];
       break;
-    case 2: {
+    case 2:
+      [self goToNewVC:[[CaptureGroupCommandsViewController alloc] init]];
+      break;
+    case 3: {
 #if !(TARGET_IPHONE_SIMULATOR)
       CPDistributedMessagingCenter *center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
       NSDictionary *installed = [center sendMessageAndReceiveReplyName:@"getInstalledPlugins" userInfo:nil];

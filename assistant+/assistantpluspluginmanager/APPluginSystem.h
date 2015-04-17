@@ -13,6 +13,7 @@
 @interface APPluginSystem : NSObject<APPluginSystem, LAEventDataSource> {
   NSMutableArray *plugins;
   NSMutableArray *activatorListenersArray;
+  NSMutableArray *captureGroupCommandsArray;
 }
 
 @property (strong, nonatomic) APSession *currSession;
@@ -25,6 +26,9 @@
 
 //1.0.1
 - (void)siriSay:(NSString*)message;
+
+//1.0.2
+- (void)reloadCaptureGroupCommands:(NSDictionary*)commands;
 
 - (NSDictionary*)getInstalledPlugins;
 @end
