@@ -175,10 +175,12 @@ typedef enum {
   
   UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 60, 50)];
   
-  UITextField *nameField = [[UITextField alloc] initWithFrame:CGRectMake(80, 2, self.view.frame.size.width-60, 50)];
+  UITextField *nameField = [[UITextField alloc] initWithFrame:CGRectMake(80, 2, self.view.frame.size.width-80, 50)];
   nameField.delegate = self;
   nameField.tag = -1;
   nameField.returnKeyType = UIReturnKeyDone;
+  nameField.adjustsFontSizeToFitWidth = YES;
+  nameField.minimumFontSize = 3.0f;
   
   if (cellType == APNameCell) {
     nameLabel.text = @"Name:";
@@ -197,6 +199,8 @@ typedef enum {
   } else if (cellType == APCommandCell) {
     nameLabel.hidden = YES;
     nameField.text = self.currCommand.command;
+    nameField.autocorrectionType = UITextAutocorrectionTypeNo;
+    nameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.commandField = nameField;
     
     CGRect oldFrame = self.commandField.frame;
@@ -214,20 +218,39 @@ typedef enum {
   UITableViewCell *cell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
   
-  UITextField *nameField = [[UITextField alloc] initWithFrame:CGRectMake(10, 2, self.view.frame.size.width-10, 50)];
+  UITextField *nameField = [[UITextField alloc] initWithFrame:CGRectMake(10, 2, self.view.frame.size.width-200, 50)];
   nameField.delegate = self;
   nameField.tag = 100+index;
   nameField.returnKeyType = UIReturnKeyDone;
+  nameField.adjustsFontSizeToFitWidth = YES;
+  nameField.minimumFontSize = 8.0f;
   nameField.placeholder = @"Unnamed Variable";
   
-  NSString *variableName = [self.mutableVariables objectAtIndex:index];
+  
+  
+  NSString *variableName = self.mutableVariables[index][0];
+  
   if (variableName.length > 0) {
     nameField.text = variableName;
   } else {
     nameField.text = @"";
   }
   
+  CGFloat nameFieldEnd = nameField.frame.origin.x + nameField.frame.size.width;
+  UILabel *escapeLabel = [[UILabel alloc] initWithFrame:CGRectMake(nameFieldEnd+15, 1, 110, 50)];
+  escapeLabel.text = @"URL Encode:";
+
+  CGFloat escapeLabelEnd = escapeLabel.frame.origin.x + escapeLabel.frame.size.width;
+  UISwitch *escapeSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(escapeLabelEnd+5, 9.5, 51, 31)];
+  [escapeSwitch addTarget:self action:@selector(didToggleSwitch:) forControlEvents:UIControlEventValueChanged];
+  escapeSwitch.tag = index;
+  
+  BOOL enabled = [self.mutableVariables[index][1] boolValue];
+  escapeSwitch.on = enabled;
+  
   [cell.contentView addSubview:nameField];
+  [cell.contentView addSubview:escapeLabel];
+  [cell.contentView addSubview:escapeSwitch];
   
   return cell;
 }
@@ -359,6 +382,11 @@ typedef enum {
   [actionSheet showInView:self.view];
 }
 
+- (void)didToggleSwitch:(UISwitch*)theSwitch {
+  self.didChange = YES;
+  self.mutableVariables[theSwitch.tag] = @[self.mutableVariables[theSwitch.tag][0], [NSNumber numberWithBool:theSwitch.on]];
+}
+
 - (void)whenButtonPressedForIndex:(UIButton*)button {
   self.conditionalToEdit = button.tag;
   self.editingType = APWhenValue;
@@ -373,7 +401,8 @@ typedef enum {
 
 - (void)displayVariableSelection {
   UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select Variable..." delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:nil, nil];
-  for (NSString *name in self.mutableVariables) {
+  for (NSArray *currVariable in self.mutableVariables) {
+    NSString *name = currVariable[0];
     if (name.length > 0) {
       [actionSheet addButtonWithTitle:name];
     }
@@ -389,7 +418,7 @@ typedef enum {
   if (buttonIndex == 1) {
     //variable
     section = 2;
-    [self.mutableVariables addObject:@""];
+    [self.mutableVariables addObject:@[@"", [NSNumber numberWithBool:NO]]];
     row = self.mutableVariables.count-1;
     
   } else if (buttonIndex == 2) {
@@ -410,7 +439,7 @@ typedef enum {
 }
 
 - (void)variableSelectionSheetClickedButtonAtIndex:(NSInteger)buttonIndex {
-  NSString *variableName = [self.mutableVariables objectAtIndex:buttonIndex-1];
+  NSString *variableName = [self.mutableVariables objectAtIndex:buttonIndex-1][0];
   if (self.editingType == APSetValue) {
     [[self.mutableConditionals objectAtIndex:self.conditionalToEdit] setObject:variableName atIndexedSubscript:2];
   } else if (self.editingType == APWhenValue) {
@@ -455,17 +484,20 @@ typedef enum {
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
   self.didChange = YES;
+  
   NSString *newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
   if (textField.tag - 2000 >= 0) {
     [[self.mutableConditionals objectAtIndex:textField.tag-2000] setObject:newText atIndexedSubscript:3];
   } else if (textField.tag - 1000 >= 0) {
     [[self.mutableConditionals objectAtIndex:textField.tag-1000] setObject:newText atIndexedSubscript:1];
   } else if (textField.tag - 100 >= 0) {
-    [self.mutableVariables setObject:newText atIndexedSubscript:textField.tag-100];
+    [self.mutableVariables setObject:@[newText, self.mutableVariables[textField.tag-100][1]] atIndexedSubscript:textField.tag-100];
   } else if (textField == self.nameField) {
     self.currCommand.name = newText;
   } else if (textField == self.triggerField) {
     self.currCommand.trigger = newText;
+  } else if (textField == self.commandField) {
+    self.currCommand.command = newText;
   }
   return  YES;
 }
@@ -477,11 +509,12 @@ typedef enum {
 #pragma mark - Helpers
 
 - (NSString*)getHelpMessage {
-  return @"Enabled: For a listener to appear in Activator it must be enabled\n"
-  "\nPassthrough: If enabled, Assistant+ will continue searching for another Activator listener, custom reply, or plugin to handle the command. If it doesn't find anything to handle the command, Siri will go to its default action. You can add a voice confirmation for your Activator listener if you create a custom reply for the same trigger and then enable passthrough for your listener\n"
-  "\nName: A name to describe your listener. This can be anything and is purely for informational purposes\n"
-  "\nTrigger: The command that will trigger the Activator listener, you must have at least one for the listener to appear in Activator. You may use wildcards in the trigger by using (.*). For example, '(.*)turn on the lights' will trigger on \"Turn on the lights\", \"Siri turn on the lights\", \"Hey Siri please turn on the lights\", etc.\n"
-  "\nOnce you create an Activator listener here you must go to Activator and assign it to an event.";
+  return @"Name: A name to describe your capture group command. This can be anything and is purely for informational purposes\n"
+  "\nTrigger: The command that will trigger the capture group command. In order to capture what the user says and assign it to a variable you must surround the variable's name in square brackets. For example, if 'Search for [query] on Yelp' were your trigger, then the command 'Search for Italian Restaurants on Yelp' would assign 'Italian Restaurants' to the 'query' variable. This field also supports NSRegularExpression syntax, with the only difference being the capture group syntax.\n"
+  "\nVariables: The variables that are involved in your capture group command. In order to capture a variable in your trigger you must first create one with the same name.\n"
+  "\nURL Encode: If you enable this option your variable will be percent encoded. This is useful if you intend to use your variable as an argument in a network call or with uiopen.\n"
+  "\nConditionals: A conditional can be used to assign a value to a variable based on the value of another (or the same) variable. Conditionals are evaluated after your capture group command is triggered and the initial variable values have been captured. Remember that all values will be compared as strings, so \"5.0\" will not equal \"5\".\n"
+  "\nCommand: The shell command that will be executed when your capture group command is triggered. In order to use variables in this command you must follow the same syntax as the trigger and surround the variable's name with square brackets. Following the example in the trigger description, 'uiopen yelp:///search?terms=[query]' will evaluate to 'uiopen yelp:///search?terms=italian%20restaurants'.";
 }
 
 @end

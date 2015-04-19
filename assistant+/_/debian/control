@@ -1,7 +1,7 @@
-Package: com.zaid.assistant+
+Package: org.thebigboss.assistantplus
 Name: Assistant+
 Depends: libactivator (>= 1.8.3), mobilesubstrate
-Version: 1.0.1
+Version: 1.1.0
 Architecture: iphoneos-arm
 Description: Assign commands to trigger Activator events from Siri, set up custom replies for Siri, and also use and create plugins for Siri using the Assistant+ plugin framework
 Maintainer: Zaid Elkurdi
