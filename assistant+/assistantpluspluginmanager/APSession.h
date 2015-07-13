@@ -10,8 +10,12 @@
 #import "AssistantHeaders.h"
 #import <CoreLocation/CoreLocation.h>
 
+@class APPlugin;
+
 @interface APSession : NSObject <APSiriSession, CLLocationManagerDelegate>
 @property (nonatomic, strong) NSString *refId;
+@property (nonatomic, getter=isListeningAfterSpeaking) BOOL listenAfterSpeaking;
+@property (nonatomic, strong) APPlugin *currentPlugin;
 @property (nonatomic, strong) AFConnection *connection;
 @property (nonatomic, copy) void (^completionHandler)(NSDictionary *locationData);
 
@@ -19,13 +23,18 @@
 +(APSession*)sessionWithConnection:(AFConnection*)connection;
     
 - (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase;
+- (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase listenAfterSpeaking:(BOOL)shouldListen;
+
 -(SOObject*)createTextSnippet:(NSString*)text;
+
 - (void)sendAddViews:(NSArray*)views;
 - (void)sendAddViews:(NSArray*)views dialogPhase:(NSString*)dialogPhase scrollToTop:(BOOL)toTop temporary:(BOOL)temporary;
--(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
+
 - (void)sendCustomSnippet:(NSString*)snippetClass withProperties:(NSDictionary*)props;
-- (void)sendRequestCompleted;
+-(SOObject*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
 -(SOObject*)createAssistantUtteranceView:(NSString*)text;
+
+- (void)sendRequestCompleted;
 - (void)getCurrentLocationWithCompletion:(void (^)(NSDictionary *info))completion;
 
 +(NSString*)generateRandomUUID;

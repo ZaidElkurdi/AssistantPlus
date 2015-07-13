@@ -16,13 +16,14 @@
   NSMutableArray *captureGroupCommandsArray;
 }
 
-@property (strong, nonatomic) APSession *currSession;
+@property (strong, nonatomic) APSession *currentSession;
 
 + (id)sharedManager;
 - (BOOL)loadPlugins;
 - (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession;
 - (void)reloadCustomRepliesPlugin:(NSDictionary*)replies;
 - (void)reloadActivatorListeners:(NSDictionary*)listeners;
+- (void)assistantWasDismissed;
 
 //1.0.1
 - (void)siriSay:(NSString*)message;

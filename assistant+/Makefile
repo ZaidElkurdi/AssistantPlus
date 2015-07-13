@@ -1,9 +1,9 @@
 include theos/makefiles/common.mk
 
 export ARCHS = armv7 armv7s arm64
-export TARGET = iphone:clang:latest:8.0
-export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 8.0
-export SDKVERSION=8.1
+export TARGET = iphone:clang:latest:8.4
+export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 8.4
+export SDKVERSION=8.4
 
 TWEAK_NAME = Assistant+
 

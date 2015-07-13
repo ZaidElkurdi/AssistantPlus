@@ -22,9 +22,17 @@ static BOOL defaultHandling = YES;
 static AFConnection *currConnection;
 static APPluginSystem *pluginManager;
 static BOOL hasLoadedSnippets = NO;
+static APSession *previousSession;
 
 BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   pluginManager = [[%c(APSpringboardUtils) sharedAPUtils] getPluginManager];
+  if (previousSession && [previousSession isListeningAfterSpeaking]) {
+    NSLog(@"AP: Using previous session");
+    currSession = previousSession;
+  } else {
+    NSLog(@"AP: Creating new session");
+    previousSession = currSession;
+  }
   NSArray *lowerCaseArr = [[text componentsSeparatedByString: @" "] valueForKey:@"lowercaseString"];
   NSSet *tokens = [NSSet setWithArray:lowerCaseArr];
   BOOL pluginWillHandle = [pluginManager handleCommand:text withTokens:tokens withSession:currSession];
@@ -133,6 +141,14 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   }
 }
 
+- (void)endSession {
+  if (pluginManager) {
+    [pluginManager assistantWasDismissed];
+  }
+  previousSession = nil;
+  %orig;
+}
+
 %end
 
 %hook AFConnectionClientServiceDelegate
@@ -151,7 +167,6 @@ BOOL shouldHandleRequest(NSString *text, APSession *currSession) {
   }
   
   NSLog(@"AP Starting Speech Query: %@", phraseBuilder);
-  
   AFConnection *connection = MSHookIvar<AFConnection*>(self, "_connection");
   APSession *currSession = [APSession sessionWithConnection:connection];
   if (shouldHandleRequest(phraseBuilder, currSession)) {

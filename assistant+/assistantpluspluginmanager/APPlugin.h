@@ -28,6 +28,7 @@
 
 - (id)initWithFilePath:(NSURL*)filePath andName:(NSString*)name;
 - (BOOL)handleSpeech:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session;
+- (void)handleReply:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session;
 /// Register a command class
 -(BOOL)registerCommand:(Class)cls;
 /// Register a snippet class
@@ -35,5 +36,7 @@
 
 - (NSSet*)getRegisteredSnippets;
 - (NSArray*)getRegisteredCommands;
+
+- (void)assistantWasDismissed;
 
 @end

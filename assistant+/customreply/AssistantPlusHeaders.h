@@ -19,6 +19,8 @@
    dialogPhase: Possible values are  Completion, Reflection, Summary, Error, Clarification, and Acknowledgement */
 - (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase;
 
+- (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase listenAfterSpeaking:(BOOL)shouldListen;
+
 /* Create an editable dictionary representing a text snippet. In order to send this
  to the user you must add it to an NSArray and use sendAddviews: */
 -(NSMutableDictionary*)createTextSnippet:(NSString*)text;

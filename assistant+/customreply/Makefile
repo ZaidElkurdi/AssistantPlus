@@ -1,8 +1,8 @@
 include theos/makefiles/common.mk
 
 export ARCHS = armv7 arm64
-export TARGET = iphone:clang:latest:8.0
-export SDKVERSION=8.1
+export TARGET = iphone:clang:latest:8.4
+export SDKVERSION=8.4
 
 BUNDLE_NAME = customreply
 customreply_BUNDLE_EXTENSION = assistantPlugin

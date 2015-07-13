@@ -92,6 +92,24 @@
   return NO;
 }
 
+- (void)handleReply:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session {
+  for (NSObject<APPluginCommand>* cmd in commands) {
+    if ([cmd respondsToSelector:@selector(handleReply:withTokens:withSession:)]) {
+      [cmd handleReply:text withTokens:tokens withSession:session];
+    }
+  }
+}
+
+#pragma mark - Notifications
+
+- (void)assistantWasDismissed {
+  for (NSObject<APPluginCommand>* cmd in commands) {
+    if ([cmd respondsToSelector:@selector(assistantWasDismissed)]) {
+      [cmd assistantWasDismissed];
+    }
+  }
+}
+
 #pragma mark - Snippet Presentation
 
 -(NSObject<APPluginSnippet>*)allocSnippet:(NSString*)snippetClass properties:(NSDictionary *)props {
@@ -153,6 +171,5 @@
   [snippets addObject:className];
   return YES;
 }
-
 
 @end

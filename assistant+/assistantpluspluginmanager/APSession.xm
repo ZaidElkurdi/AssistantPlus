@@ -21,6 +21,7 @@ static NSMutableDictionary *sessionDict;
     self.refId = [referenceId copy];
     if (!self.refId) self.refId = [@"00000000-0000-0000-0000-000000000000" copy];
     self.connection = connection;
+    self.listenAfterSpeaking = NO;
   }
   return self;
 }
@@ -40,6 +41,10 @@ static NSMutableDictionary *sessionDict;
   return currSession;
 }
 
+- (BOOL)isListeningAfterSpeaking {
+  return _listenAfterSpeaking;
+}
+
 #pragma mark - Public Methods
 
 -(SOObject*)createTextSnippet:(NSString*)text {
@@ -47,8 +52,12 @@ static NSMutableDictionary *sessionDict;
 }
 
 - (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase {
+  [self sendTextSnippet:text temporary:temporary scrollToTop:toTop dialogPhase:phase listenAfterSpeaking:NO];
+}
+
+- (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase listenAfterSpeaking:(BOOL)listen {
   NSMutableArray* views = [NSMutableArray arrayWithCapacity:1];
-  [views addObject:[self createAssistantUtteranceView:text]];
+  [views addObject:[self createAssistantUtteranceView:text speakableText:text identifier:@"Misc" listenAfterSpeaking:listen]];
   [self sendAddViews:views dialogPhase:phase scrollToTop:toTop temporary:temporary];
 }
 
@@ -57,6 +66,7 @@ static NSMutableDictionary *sessionDict;
 }
 
 - (void)sendRequestCompleted {
+  self.listenAfterSpeaking = NO;
   NSMutableDictionary* dict = [self createAceRequestCompleted];
   [self sendCommandToConnection:dict];
   [sessionDict removeObjectForKey:self.refId];
@@ -68,25 +78,21 @@ static NSMutableDictionary *sessionDict;
 }
 
 - (void)sendAddViews:(NSArray*)views {
-  return [self sendAddViews:views dialogPhase:@"Completion" scrollToTop:NO temporary:NO];
+  [self sendAddViews:views dialogPhase:@"Completion" scrollToTop:NO temporary:NO];
 }
 
 - (void)sendAddViews:(NSArray*)views dialogPhase:(NSString*)dialogPhase scrollToTop:(BOOL)toTop temporary:(BOOL)temporary {
+  self.listenAfterSpeaking = NO;
+  for (NSDictionary *currView in views) {
+    if ([currView[@"listenAfterSpeaking"] boolValue]) {
+      dialogPhase = @"Clarification";
+      self.listenAfterSpeaking = YES;
+    }
+  }
   NSMutableDictionary* dict = [self createAceAddViews:views forPhase:dialogPhase scrollToTop:toTop temporary:temporary];
-    // listenAfterSpeaking hack!
-    //  for (NSDictionary* view in views)
-    //  {
-    //    NSDictionary* props = [view objectForKey:@"properties"];
-    //    if ([[props objectForKey:@"listenAfterSpeaking"] boolValue])
-    //    {
-    //      _listenAfterSpeaking = YES;
-    //      break;
-    //    }
-    //  }
-  
-    // send
   [self sendCommandToConnection:dict];
 }
+
 #pragma mark - APLocationDaemon Communication
 
 - (void)handleMessage:(NSString*)name withInfo:(NSDictionary*)locationData {
@@ -135,7 +141,7 @@ static NSMutableDictionary *sessionDict;
   
   // call the original method to handle our new object
   if (self.connection == nil) { NSLog(@"AP: AFConnection is nil"); return; }
-  
+
   if ([dict[@"$class"] isEqualToString:@"CommandSucceeded"]) {
     [self.connection sendReplyCommand:obj];
   } else {
@@ -171,7 +177,7 @@ static NSMutableDictionary *sessionDict;
   
   if (properties != nil) {
     //Only necessary for AceObjects
-    [objDict setObject:@"4.0" forKey:@"$v"];
+    [objDict setObject:@"4.3" forKey:@"$v"];
     
     for (NSString *currKey in properties.allKeys) {
       [objDict setObject:properties[currKey] forKey:currKey];
@@ -213,20 +219,17 @@ static NSMutableDictionary *sessionDict;
   return [self createAceObjectDictForGroup:@"com.apple.ace.assistant" class:@"AddViews" properties:props];
 }
 
-//NSMutableDictionary* SOCreateAceAddViewsUtteranceView(NSString* refId, NSString* text, NSString* speakableText, NSString* dialogPhase, BOOL scrollToTop, BOOL temporary) {
-//  NSMutableArray* views = [NSMutableArray arrayWithCapacity:1];
-//  [views addObject:[self createAssistantUtteranceView:text speakableText:speakableText identifier:@"Misc#ident"]];
-//  
-//  return [self createAceAddViews:views forPhase:dialogPhase scrollToTop:scrollToTop temporary:temporary];
-//}
-
 #pragma mark - AssistantUtteranceView Creation
 
--(NSMutableDictionary*)createAssistantUtteranceView:(NSString*)text speakableText:(NSString*)speakableText identifier:(NSString*)dialogIdentifier {
+-(NSMutableDictionary*)createAssistantUtteranceView:(NSString*)text speakableText:(NSString*)speakableText identifier:(NSString*)dialogIdentifier listenAfterSpeaking:(BOOL)listen {
   if (speakableText == nil) speakableText = text;
   NSMutableDictionary* props = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                text,@"text", speakableText,@"speakableText", dialogIdentifier,@"dialogIdentifier", nil];
+                                text,@"text", speakableText,@"speakableText", dialogIdentifier,@"dialogIdentifier", @(listen), @"listenAfterSpeaking", nil];
   return [self createObjectDictForGroup:@"com.apple.ace.assistant" class:@"AssistantUtteranceView" properties:props];
+}
+
+-(NSMutableDictionary*)createAssistantUtteranceView:(NSString*)text speakableText:(NSString*)speakableText identifier:(NSString*)dialogIdentifier {
+  return [self createAssistantUtteranceView:text speakableText:speakableText identifier:dialogIdentifier listenAfterSpeaking:NO];
 }
 
 -(SOObject*)createAssistantUtteranceView:(NSString*)text {

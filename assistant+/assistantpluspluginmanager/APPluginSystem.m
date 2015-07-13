@@ -60,13 +60,24 @@ static NSString *EVENT_PREFIX = @"APListener";
 }
 
 - (BOOL)handleCommand:(NSString*)command withTokens:(NSSet*)tokens withSession:(APSession*)currSession {
-  self.currSession = currSession;
-  
+  self.currentSession = currSession;
   //Clean up the command
   NSString *userCommand = [command lowercaseString];
   userCommand = [userCommand stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
   
-  //First check activator listeners
+  //First, check if a plugin is listening
+  if ([currSession isListeningAfterSpeaking] && currSession.currentPlugin) {
+    NSLog(@"AP: Resuming session");
+    if ([currSession.currentPlugin respondsToSelector:@selector(handleReply:withTokens:withSession:)]) {
+      [currSession.currentPlugin handleReply:userCommand withTokens:tokens withSession:currSession];
+      return YES;
+    } else {
+      currSession.currentPlugin = nil;
+      currSession.listenAfterSpeaking = NO;
+    }
+  }
+  
+  //Then check activator listeners
   for (APActivatorListener *currListener in activatorListenersArray) {
     for (NSRegularExpression *currExpression in currListener.triggers) {
       NSArray *arrayOfAllMatches = [currExpression matchesInString:userCommand options:0 range:NSMakeRange(0, [userCommand length])];
@@ -107,12 +118,20 @@ static NSString *EVENT_PREFIX = @"APListener";
   NSLog(@"AP: Got Command \"%@\"", userCommand);
   for (APPlugin *currPlugin in plugins) {
     if ([currPlugin handleSpeech:userCommand withTokens:tokens withSession:currSession]) {
+      currSession.currentPlugin = currPlugin;
       return YES;
     }
   }
   return NO;
 }
 
+- (void)assistantWasDismissed {
+  for (APPlugin *currPlugin in plugins) {
+    if ([currPlugin respondsToSelector:@selector(assistantWasDismissed)]) {
+      [currPlugin assistantWasDismissed];
+    }
+  }
+}
 #pragma mark - Message Handlers
 
 - (NSDictionary*)getInstalledPlugins {
@@ -152,7 +171,7 @@ static NSString *EVENT_PREFIX = @"APListener";
 }
 
 - (void)siriSay:(NSString*)message {
-  [self.currSession sendTextSnippet:message temporary:NO scrollToTop:YES dialogPhase:@"Completion"];
+  [self.currentSession sendTextSnippet:message temporary:NO scrollToTop:YES dialogPhase:@"Completion"];
 }
 
 #pragma mark - Activator Methods

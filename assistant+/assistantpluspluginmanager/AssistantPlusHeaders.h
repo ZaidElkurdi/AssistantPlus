@@ -12,6 +12,7 @@
 
 @protocol APSiriSession <NSObject>
 - (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase;
+- (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase listenAfterSpeaking:(BOOL)listen;
 - (void)sendAddViews:(NSArray*)views;
 - (void)sendAddViews:(NSArray*)views dialogPhase:(NSString*)dialogPhase scrollToTop:(BOOL)toTop temporary:(BOOL)temporary;
 -(NSMutableDictionary*)createSnippet:(NSString*)snippetClass properties:(NSDictionary*)props;
@@ -32,6 +33,7 @@
 +(id)sharedManager;
 - (void)reloadCustomRepliesPlugin:(NSDictionary*)replies;
 - (void)reloadActivatorListeners:(NSDictionary*)listeners;
+- (void)assistantWasDismissed;
 @end
 
 @protocol APPluginManager <NSObject>
@@ -55,9 +57,13 @@
 @protocol APPluginCommand <NSObject>
 @optional
 -(BOOL)handleSpeech:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session;
+-(void)handleReply:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session;
+-(void)assistantWasDismissed;
 @end
 
 @protocol APPlugin <NSObject>
 @required
 -(id)initWithPluginManager:(id<APPluginManager>)system;
+@optional
+- (void)assistantWasDismissed;
 @end
