@@ -9,10 +9,11 @@ TWEAK_NAME = Assistant+
 
 Assistant+_FILES = AssistantHooks.xm assistantpluspluginmanager/APSession.xm assistantpluspluginmanager/APPluginSnippetViewController.xm
 
-Assistant+_FRAMEWORKS = Foundation UIKit CoreFoundation Accounts CoreLocation
+Assistant+_FRAMEWORKS = Foundation UIKit CoreFoundation Accounts CoreLocation 
 Assistant+_PRIVATE_FRAMEWORKS = AssistantServices SAObjects AppSupport
 Assistant+_LIBRARIES=substrate
 Assistant+_CFLAGS = -fobjc-arc
+Assistant+_LDFLAGS = -F /opt/theos/include
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

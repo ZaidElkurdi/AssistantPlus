@@ -109,6 +109,10 @@
       CPDistributedMessagingCenter *center = [CPDistributedMessagingCenter centerNamed:@"com.zaid.applus.springboard"];
       NSDictionary *installed = [center sendMessageAndReceiveReplyName:@"getInstalledPlugins" userInfo:nil];
       [self goToNewVC:[[PluginsViewController alloc] initWithInstalledPlugins:installed[@"plugins"]]];
+#else
+      NSArray *installed = @[@{@"name" : @"Spotify Control",
+                                  @"author" : @"Zaid Elkurdi"}];
+      [self goToNewVC:[[PluginsViewController alloc] initWithInstalledPlugins:installed]];
 #endif
       break; }
     default:

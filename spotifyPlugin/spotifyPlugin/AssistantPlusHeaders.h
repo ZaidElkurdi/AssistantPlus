@@ -19,6 +19,8 @@
    dialogPhase: Possible values are  Completion, Reflection, Summary, Error, Clarification, and Acknowledgement */
 - (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase;
 
+- (void)sendTextSnippet:(NSString*)text temporary:(BOOL)temporary scrollToTop:(BOOL)toTop dialogPhase:(NSString*)phase listenAfterSpeaking:(BOOL)listen;
+
 /* Create an editable dictionary representing a text snippet. In order to send this
  to the user you must add it to an NSArray and use sendAddviews: */
 -(NSMutableDictionary*)createTextSnippet:(NSString*)text;
@@ -84,6 +86,9 @@
  all installed plugins or until one returns YES. If you've determined that your plugin should handle
  the user's query then do any time-intensive tasks (such as network calls) on another thread */
 -(BOOL)handleSpeech:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session;
+@optional
+-(void)handleReply:(NSString*)text withTokens:(NSSet*)tokens withSession:(id<APSiriSession>)session;
+-(void)assistantWasDismissed;
 @end
 
 

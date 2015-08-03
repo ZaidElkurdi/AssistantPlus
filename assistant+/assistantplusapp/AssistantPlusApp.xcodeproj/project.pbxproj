@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B8169DD91B5744C20050A5E6 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8169DD81B5744C20050A5E6 /* Spotify.framework */; };
+		B8169DDE1B5746550050A5E6 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8169DD81B5744C20050A5E6 /* Spotify.framework */; };
 		B834F0171AC5FEEF00CF009E /* AssistantPlusAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B834F0161AC5FEEF00CF009E /* AssistantPlusAppTests.m */; };
+		B85A467C1B574B9700132D2D /* SpotifyAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B85A467B1B574B9700132D2D /* SpotifyAuthenticationViewController.m */; };
+		B85A467D1B574C2600132D2D /* SpotifyAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B85A467B1B574B9700132D2D /* SpotifyAuthenticationViewController.m */; };
+		B85A46811B57582B00132D2D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85A46801B57582B00132D2D /* AVFoundation.framework */; };
+		B85A46821B57584400132D2D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85A46801B57582B00132D2D /* AVFoundation.framework */; };
+		B85A46841B57585500132D2D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B85A46831B57585500132D2D /* SystemConfiguration.framework */; };
 		B86E66DA1ACD1991007C6014 /* PluginsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B86E66D91ACD1991007C6014 /* PluginsViewController.m */; };
 		B86E67101ACE7AC0007C6014 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7C1ABF79AA00D4D107 /* AppDelegate.m */; };
 		B86E67111ACE7AC0007C6014 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */; };
@@ -55,6 +62,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B8169DD81B5744C20050A5E6 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
 		B834EFB91AC51E4600CF009E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B834EFBB1AC51E4600CF009E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B834EFF31AC5EF2C00CF009E /* LaunchScreen2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen2.xib; sourceTree = SOURCE_ROOT; };
@@ -62,6 +70,11 @@
 		B834F0101AC5FEEF00CF009E /* AssistantPlusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AssistantPlusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B834F0151AC5FEEF00CF009E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B834F0161AC5FEEF00CF009E /* AssistantPlusAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AssistantPlusAppTests.m; sourceTree = "<group>"; };
+		B85A467A1B574B9700132D2D /* SpotifyAuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpotifyAuthenticationViewController.h; path = ../SpotifyAuthenticationViewController.h; sourceTree = "<group>"; };
+		B85A467B1B574B9700132D2D /* SpotifyAuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpotifyAuthenticationViewController.m; path = ../SpotifyAuthenticationViewController.m; sourceTree = "<group>"; };
+		B85A467E1B57581C00132D2D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		B85A46801B57582B00132D2D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		B85A46831B57585500132D2D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B86E66D81ACD1991007C6014 /* PluginsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginsViewController.h; sourceTree = SOURCE_ROOT; };
 		B86E66D91ACD1991007C6014 /* PluginsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PluginsViewController.m; sourceTree = SOURCE_ROOT; };
 		B86E66EA1ACE7A77007C6014 /* assistantapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assistantapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +114,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B85A46811B57582B00132D2D /* AVFoundation.framework in Frameworks */,
+				B8169DD91B5744C20050A5E6 /* Spotify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +130,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B85A46841B57585500132D2D /* SystemConfiguration.framework in Frameworks */,
+				B85A46821B57584400132D2D /* AVFoundation.framework in Frameworks */,
+				B8169DDE1B5746550050A5E6 /* Spotify.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,9 +146,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B8169DDA1B5745CE0050A5E6 /* Custom Replies */ = {
+			isa = PBXGroup;
+			children = (
+				B88C0AE41AC32CEF00D4D107 /* APCustomReply.h */,
+				B88C0AE51AC32CEF00D4D107 /* APCustomReply.m */,
+				B88C0ADE1AC32C2000D4D107 /* CustomRepliesViewController.h */,
+				B88C0ADF1AC32C2000D4D107 /* CustomRepliesViewController.m */,
+				B88C0AE11AC32C2A00D4D107 /* CustomReplyDetailViewController.h */,
+				B88C0AE21AC32C2A00D4D107 /* CustomReplyDetailViewController.m */,
+			);
+			name = "Custom Replies";
+			sourceTree = "<group>";
+		};
+		B8169DDB1B5745DA0050A5E6 /* Activator Listeners */ = {
+			isa = PBXGroup;
+			children = (
+				B88C0ACC1ABF8F7C00D4D107 /* ActivatorListenersViewController.h */,
+				B88C0ACD1ABF8F7C00D4D107 /* ActivatorListenersViewController.m */,
+				B88C0AD81AC0949D00D4D107 /* ListenerDetailViewController.h */,
+				B88C0AD91AC0949D00D4D107 /* ListenerDetailViewController.m */,
+				B88C0AD11ABF968B00D4D107 /* APActivatorListener.h */,
+				B88C0AD21ABF968B00D4D107 /* APActivatorListener.m */,
+			);
+			name = "Activator Listeners";
+			sourceTree = "<group>";
+		};
+		B8169DDC1B5745EE0050A5E6 /* Capture Group Commands */ = {
+			isa = PBXGroup;
+			children = (
+				B8B2D23F1ADD875900FEE8C3 /* CaptureGroupCommandsViewController.h */,
+				B8B2D2401ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m */,
+				B8B2D2481ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.h */,
+				B8B2D2491ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m */,
+				B8B2D2451ADD879500FEE8C3 /* APCaptureGroupCommand.h */,
+				B8B2D2461ADD879500FEE8C3 /* APCaptureGroupCommand.m */,
+			);
+			name = "Capture Group Commands";
+			sourceTree = "<group>";
+		};
+		B8169DDD1B5746000050A5E6 /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				B86E66D81ACD1991007C6014 /* PluginsViewController.h */,
+				B86E66D91ACD1991007C6014 /* PluginsViewController.m */,
+				B85A467A1B574B9700132D2D /* SpotifyAuthenticationViewController.h */,
+				B85A467B1B574B9700132D2D /* SpotifyAuthenticationViewController.m */,
+			);
+			name = Plugins;
+			sourceTree = "<group>";
+		};
 		B834EFB81AC51E4600CF009E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B85A46831B57585500132D2D /* SystemConfiguration.framework */,
+				B85A46801B57582B00132D2D /* AVFoundation.framework */,
+				B85A467E1B57581C00132D2D /* CoreAudio.framework */,
+				B8169DD81B5744C20050A5E6 /* Spotify.framework */,
 				B834EFB91AC51E4600CF009E /* Foundation.framework */,
 				B834EFBB1AC51E4600CF009E /* UIKit.framework */,
 			);
@@ -186,26 +258,10 @@
 				B88C0A7E1ABF79AA00D4D107 /* MainViewController.h */,
 				B88C0A7F1ABF79AA00D4D107 /* MainViewController.m */,
 				B834EFF31AC5EF2C00CF009E /* LaunchScreen2.xib */,
-				B8B2D23F1ADD875900FEE8C3 /* CaptureGroupCommandsViewController.h */,
-				B8B2D2401ADD875900FEE8C3 /* CaptureGroupCommandsViewController.m */,
-				B8B2D2481ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.h */,
-				B8B2D2491ADD87AB00FEE8C3 /* CaptureGroupCommandDetailViewController.m */,
-				B86E66D81ACD1991007C6014 /* PluginsViewController.h */,
-				B86E66D91ACD1991007C6014 /* PluginsViewController.m */,
-				B88C0ADE1AC32C2000D4D107 /* CustomRepliesViewController.h */,
-				B88C0ADF1AC32C2000D4D107 /* CustomRepliesViewController.m */,
-				B88C0AE11AC32C2A00D4D107 /* CustomReplyDetailViewController.h */,
-				B88C0AE21AC32C2A00D4D107 /* CustomReplyDetailViewController.m */,
-				B88C0ACC1ABF8F7C00D4D107 /* ActivatorListenersViewController.h */,
-				B88C0ACD1ABF8F7C00D4D107 /* ActivatorListenersViewController.m */,
-				B88C0AD81AC0949D00D4D107 /* ListenerDetailViewController.h */,
-				B88C0AD91AC0949D00D4D107 /* ListenerDetailViewController.m */,
-				B88C0AD11ABF968B00D4D107 /* APActivatorListener.h */,
-				B88C0AD21ABF968B00D4D107 /* APActivatorListener.m */,
-				B88C0AE41AC32CEF00D4D107 /* APCustomReply.h */,
-				B88C0AE51AC32CEF00D4D107 /* APCustomReply.m */,
-				B8B2D2451ADD879500FEE8C3 /* APCaptureGroupCommand.h */,
-				B8B2D2461ADD879500FEE8C3 /* APCaptureGroupCommand.m */,
+				B8169DDD1B5746000050A5E6 /* Plugins */,
+				B8169DDC1B5745EE0050A5E6 /* Capture Group Commands */,
+				B8169DDA1B5745CE0050A5E6 /* Custom Replies */,
+				B8169DDB1B5745DA0050A5E6 /* Activator Listeners */,
 				B88C0A871ABF7D6200D4D107 /* main.m */,
 				B88C0AB61ABF838500D4D107 /* Info.plist */,
 				B88C0AC11ABF864D00D4D107 /* LaunchScreen.xib */,
@@ -383,6 +439,7 @@
 				B8EC46DA1AC6422100ED3836 /* APActivatorListener.m in Sources */,
 				B8EC46DB1AC6422100ED3836 /* APCustomReply.m in Sources */,
 				B8EC46DC1AC6422100ED3836 /* main.m in Sources */,
+				B85A467C1B574B9700132D2D /* SpotifyAuthenticationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +468,7 @@
 				B86E67171ACE7AC0007C6014 /* APActivatorListener.m in Sources */,
 				B86E67181ACE7AC0007C6014 /* APCustomReply.m in Sources */,
 				B86E67191ACE7AC0007C6014 /* main.m in Sources */,
+				B85A467D1B574C2600132D2D /* SpotifyAuthenticationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +501,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -461,6 +523,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = AssistantPlusApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -515,6 +581,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -535,6 +605,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -114,5 +114,16 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.assistantplus.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>aplus</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

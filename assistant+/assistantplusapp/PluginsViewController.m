@@ -8,6 +8,8 @@
 
 #import "PluginsViewController.h"
 
+#import "SpotifyAuthenticationViewController.h"
+
 @implementation PluginsViewController {
   NSArray *installedPlugins;
 }
@@ -32,6 +34,11 @@
   self.pluginsTable.backgroundColor = backgroundColor;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self.pluginsTable deselectRowAtIndexPath:[self.pluginsTable indexPathForSelectedRow] animated:YES];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -40,16 +47,32 @@
 #pragma mark - UITableViewDelegate
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSDictionary *currPlugin = [installedPlugins objectAtIndex:indexPath.row];
+  NSString *pluginName = currPlugin[@"name"];
+  NSString *authorName = currPlugin[@"author"];
+  
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"pluginCell"];
   if (!cell) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"pluginCell"];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if ([pluginName isEqualToString:@"Spotify Control"]) {
+      cell.selectionStyle = UITableViewCellSelectionStyleGray;
+      cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+      cell.userInteractionEnabled = YES;
+    } else {
+      cell.selectionStyle = UITableViewCellSelectionStyleNone;
+      cell.accessoryType = UITableViewCellAccessoryNone;
+      cell.userInteractionEnabled = NO;
+    }
   }
 
-  NSDictionary *currPlugin = [installedPlugins objectAtIndex:indexPath.row];
-  cell.textLabel.text = currPlugin[@"name"];
-  cell.detailTextLabel.text = currPlugin[@"author"];
+  cell.textLabel.text = pluginName;
+  cell.detailTextLabel.text = authorName;
   return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  SpotifyAuthenticationViewController *authVC = [[SpotifyAuthenticationViewController alloc] init];
+ [self.navigationController pushViewController:authVC animated:YES];
 }
 
 #pragma mark - UITableViewDataSource

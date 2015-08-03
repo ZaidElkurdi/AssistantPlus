@@ -7,7 +7,7 @@
 //
 
 #import "spotifySearchCommands.h"
-#import "AFNetworking/AFNetworking.h"
+#import "Util/AFNetworking/AFNetworking.h"
 
 @implementation SpotifySearchCommands
 

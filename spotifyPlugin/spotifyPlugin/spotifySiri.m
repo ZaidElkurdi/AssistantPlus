@@ -9,6 +9,7 @@
 #import "spotifySiri.h"
 #import "spotifySearchCommands.h"
 #import "SpotifyPlayCommands.h"
+#import "spotifyPlaylistCommands.h"
 #import "SpotifySearchResultsViewController.h"
 
 @implementation spotifySiri
@@ -16,6 +17,7 @@
 -(id)initWithPluginManager:(id<APPluginManager>)manager {
   if (self = [super init]) {
     //Register the commands and snippet with the plugin manager
+    [manager registerCommand:[spotifyPlaylistCommands class]];
     [manager registerCommand:[SpotifySearchCommands class]];
     [manager registerCommand:[SpotifyPlayCommands class]];
     [manager registerSnippet:[SpotifySearchResultsViewController class]];
